@@ -30,7 +30,9 @@ namespace World
         }
 
     }
-
+    
+    
+    
     public class Plate
     {
         public List<MapCell> Nodes;
@@ -45,11 +47,35 @@ namespace World
         public VoronoiNew Voronoi;
         public List<Plate> PlatesRes;
 
-        public void BuildPlatesNew()
-        {
-            
+        public Dictionary<int,List<MapCell>> FindEdgePlates()
+        { 
+            var res = new Dictionary<int, List<MapCell>>();
+            for (int i = 0; i < Voronoi.Ploygens.Count; i++)
+            {
+               var ploygen = Voronoi.Ploygens[i];
+                var plate = PlatesRes.Find(plate => plate.Set.ContainsKey(ploygen));
+                if (plate == null) continue;
+                var plateIndex = PlatesRes.IndexOf(plate);
+                for (int j = 0; j < ploygen.edges.Count; j++)
+                {
+                    var edge = ploygen.edges[j];
+                    if (edge.Twin == null) continue;
+                    var toVertex = edge.Twin.VoronoiPloygen;
+                    var toPlate = PlatesRes.Find(p => p.Set.ContainsKey(toVertex));
+                    if (toPlate == null) continue;
+                    var toPlateIndex = PlatesRes.IndexOf(toPlate);
+                    if (toPlateIndex == plateIndex) continue;
+                    if (!res.ContainsKey(plateIndex))
+                    {
+                        res.Add(plateIndex, new List<MapCell>());
+                    }
+                    res[plateIndex].Add(plate.Set[ploygen]);
+                }
+            }
+ 
+            return res;            
         }
-        
+
         public void BuildPlates()
         {
             var nodes = Voronoi.Ploygens;
@@ -152,12 +178,23 @@ namespace World
             DelaunayGeo.Build(borderList, config.Size);
             Voronoi = new VoronoiNew();
             Voronoi.BuildFromDelaunay(DelaunayGeo);
-            BuildPlates();
+            using (new PerformanceTimer("BuildPlates"))
+            {
+                BuildPlates();
+            }
 
-            BuildLandOcean();
+            using (new PerformanceTimer("BuildLandOcean"))
+            {
+                BuildLandOcean();
+            }
+
+            
         }
 
-        
+        public void RandomWater()
+        {
+            
+        }
         
         public void BuildLandOcean()
         {

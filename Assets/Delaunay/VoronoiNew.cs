@@ -3,6 +3,7 @@ using System.Linq;
 using Delaunay;
 using UnityEngine;
 using UnityEngine.UIElements;
+using World;
 
 
 public class VoronoiPloygen
@@ -59,6 +60,8 @@ public class VoronoiNew
 
     public void BuildFromDelaunay(DelaunayGeo geo)
     {
+
+        var timer = new PerformanceTimer("BuildFromDelaunay");
         var dicVVertexCache = new Dictionary<DFace, VoronoiVertex>();
         var edgeCache = new Dictionary<(VoronoiVertex, VoronoiVertex), VoronoiEdge>();
         InitVertex(geo, dicVVertexCache);
@@ -152,7 +155,9 @@ public class VoronoiNew
             currentEdge.NextEdgeLeft = edgeVoronoiPloygen.edges[0];
             currentEdge.NextEdgeLeft.PreEdgeLeft = currentEdge;
         }
+        timer.Dispose();
     }
+    
 
     public  Mesh BuildMesh()
     {

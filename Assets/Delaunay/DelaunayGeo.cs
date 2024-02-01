@@ -339,34 +339,98 @@ namespace Delaunay
 
         public void Build(List<Vector2> points, Vector2 maxPos, Vector2 minPos = default)
         {
-            CreateVertices(points);
-
-            var f1 = CreateFace();
-            var f2 = CreateFace();
-
-            InitAABB(f1, f2, maxPos, minPos);
-
-            for (int i = 0; i < points.Count; i++)
+            using (new PerformanceTimer("Build Delaunay"))
             {
-                DVertex v = vertexs[i];
-                if (!v.TestAttachToFace(f1))
+                CreateVertices(points);
+
+                var f1 = CreateFace();
+                var f2 = CreateFace();
+
+                InitAABB(f1, f2, maxPos, minPos);
+
+                for (int i = 0; i < points.Count; i++)
                 {
-                    v.Belong = f2;
-                    f2.owned.Add(v);
+                    DVertex v = vertexs[i];
+                    if (!v.TestAttachToFace(f1))
+                    {
+                        v.Belong = f2;
+                        f2.owned.Add(v);
+                    }
+                }
+
+                for (int i = 0; i < points.Count; i++)
+                {
+                    Insert(i);
                 }
             }
 
-            for (int i = 0; i < points.Count; i++)
+
+            using (new PerformanceTimer("Remove Center"))
             {
-                Insert(i);
+                RemoveCorner();
             }
 
-            RemoveCorner();
+            using (new PerformanceTimer("GetCenter"))
+            {
+                CalculateFaceCenters();
+            }
 
-            CalculateFaceCenters();
+            using (new PerformanceTimer("BuildFacedNeighbor"))
+            {
+                BuildFacedNeighbor();
+            }
 
-            BuildFacedNeighbor();
+            Debug.Log($"顶点数量:{vertexs.Count} 边数量:{edges.Count} 面数量:{faces.Count}");
         }
+
+
+        // TODO move toWorld
+        public Mesh BuildMesh()
+        {
+            var mesh = new Mesh();
+            var vertices = new List<Vector3>();
+            var uv = new List<Vector2>();
+            var triangles = new List<int>();
+            var hasBuildVertex = new Dictionary<DVertex, int>();
+            foreach (var vertex in vertexs)
+            {
+                if (hasBuildVertex.ContainsKey(vertex))
+                {
+                    continue;
+                }
+
+                hasBuildVertex.Add(vertex, vertices.Count);
+                vertices.Add(new Vector3(vertex.Pos.x, 0, vertex.Pos.y));
+                uv.Add(vertex.Pos);
+            }
+
+            foreach (var face in faces)
+            {
+                var edge = face.edge;
+                for (int i = 0; i < 3; i++)
+                {
+                    var vertex = edge.FromVertex;
+                    var index = hasBuildVertex[vertex];
+                    if (uv[index].x < 0)
+                    {
+                        uv[index] = new Vector2(face.center.x, face.center.y);
+                    }
+
+                    triangles.Add(index);
+                    edge = edge.NextEdge.NextEdge;
+                }
+            }
+
+
+            mesh.SetVertices(vertices);
+            mesh.SetUVs(0, uv);
+            mesh.SetTriangles(triangles, 0);
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            mesh.RecalculateTangents();
+            return mesh;
+        }
+
 
         private void CalculateFaceCenters()
         {

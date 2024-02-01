@@ -11,31 +11,40 @@ namespace World.Test
     {
         public World World;
         public WorldConfig config;
-        [Button] 
+        public Dictionary<int, List<MapCell>> EdgePlates = new();
+        private bool IsDebugPlateEdge;
+
+        [Button]
         public void Test()
         {
             World = new World(config);
             World.Voronoi.BuildMesh();
-            
-            var meshRender = GetComponent<MeshRenderer>();
-            if (meshRender == null)
-            {
-                meshRender = gameObject.AddComponent<MeshRenderer>();
-            }
-            var meshFilter = GetComponent<MeshFilter>();
-            if (meshFilter == null)
-            {
-                meshFilter = gameObject.AddComponent<MeshFilter>();
-            }
-            meshFilter.mesh = World.Voronoi.BuildMesh();
+            EdgePlates =  World.FindEdgePlates();
+        }
 
+        public void DrawEdge()
+        {
+            if (EdgePlates.Count == 0) return;
+            foreach (var edgePlate in EdgePlates)
+            {
+                foreach (var mapCell in edgePlate.Value)
+                {
+                    foreach (var edge in mapCell.Node.edges)
+                    {
+                        var start = new Vector3(edge.StartVertex.position.x, 0, edge.StartVertex.position.y);
+                        var end = new Vector3(edge.EndVertex.position.x, 0, edge.EndVertex.position.y);
+                        Gizmos.DrawLine(start, end);
+                    }
+                }
+            }
         }
 
         private Color RandomColor()
         {
             return new Color(Random.value, Random.value, Random.value);
         }
-        List<Color> colorList = new ();
+
+        List<Color> colorList = new();
 
         void DrawArrow(Vector3 position, Vector3 direction, float length)
         {
@@ -54,9 +63,8 @@ namespace World.Test
             Handles.DrawAAPolyLine(7, arrowEnd, rightPoint);
             Handles.DrawAAPolyLine(7, arrowEnd, leftPoint);
         }
-        
-        
-        
+
+
         private void OnDrawGizmos()
         {
 
@@ -68,16 +76,15 @@ namespace World.Test
                     colorList.Add(RandomColor());
                 }
             }
-            
-            
-            
+            DrawEdge();
+
             
             if (World == null) return;
             if (World.Voronoi == null) return;
             var index = 0;
             foreach (var nodes in World.PlatesRes)
             {
-                var color = colorList[index];
+                var color = colorList[index % colorList.Count];
                 var center = new Vector2();
                 foreach (var node in nodes.Nodes)
                 {
@@ -89,26 +96,23 @@ namespace World.Test
                     {
                         continue;
                     }
-                    
+            
                     foreach (var edge in node.Node.edges)
                     {
                         var start = new Vector3(edge.StartVertex.position.x, 0, edge.StartVertex.position.y);
                         var end = new Vector3(edge.EndVertex.position.x, 0, edge.EndVertex.position.y);
                         Gizmos.DrawLine(start, end);
                     }
-
-                    
                 }
+            
                 center /= nodes.Nodes.Count;
                 Handles.color = colorList[index] * 1.52f;
                 DrawArrow(new Vector3(center.x, 0, center.y), new Vector3(nodes.FVector.x, 0, nodes.FVector.y), 10);
-                index++;
-            
+                index = (index + 1) % colorList.Count;
             }
+
             Handles.color = Color.white;
             Gizmos.color = Color.white;
-            
         }
-        
     }
 }
