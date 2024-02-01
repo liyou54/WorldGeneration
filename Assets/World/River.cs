@@ -25,8 +25,7 @@ namespace World
             var buffer = new int[geo.faces.Count];
             var res = new List<RiverTree>();
             var leafNode = new List<RiverTree>();
-            // 面以及来自的边
-            var childNode = new List<RiverTree>();
+            var searchingNode = new List<RiverTree>();
             for (var faceId = 0; faceId < geo.faces.Count; faceId++)
             {
                 DEdge cornerEdge = null;
@@ -46,15 +45,15 @@ namespace World
                     riverTree.Face = geo.faces[faceId];
                     riverTree.FromEdge = cornerEdge;
                     hasUsed.Add(geo.faces[faceId]);
-                    childNode.Add(riverTree);
+                    searchingNode.Add(riverTree);
                     res.Add(riverTree);
                 }
             }
 
-            while (childNode.Count > 0)
+            while (searchingNode.Count > 0)
             {
-                var random = Random.Range(0, childNode.Count - 1);
-                var riverTree = childNode[random];
+                var random = Random.Range(0, searchingNode.Count - 1);
+                var riverTree = searchingNode[random];
                 var leftEdge = riverTree.FromEdge.NextEdge.TwinEdge;
                 var leftFace = leftEdge?.Face;
                 var rightEdge = riverTree.FromEdge.NextEdge.NextEdge.TwinEdge;
@@ -70,7 +69,7 @@ namespace World
                         leafNode.Add(riverTree);
                     }
 
-                    childNode.RemoveAt(random);
+                    searchingNode.RemoveAt(random);
                     continue;
                 }
 
@@ -104,10 +103,10 @@ namespace World
                 }
 
                 hasUsed.Add(child.Face);
-                childNode.Add(child);
+                searchingNode.Add(child);
                 if (!canAddRight || !canAddLeft)
                 {
-                    childNode.RemoveAt(random);
+                    searchingNode.RemoveAt(random);
                 }
             }
 
