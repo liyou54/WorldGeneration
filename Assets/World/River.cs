@@ -10,8 +10,8 @@ namespace World
         {
             public RiverTree Left;
             public RiverTree Right;
-            public DFace Face;
-            public DEdge FromEdge;
+            public HFaceId Face;
+            public HEdgeId FromEdge;
             public RiverTree Parent;
             public int Width;
         }
@@ -19,32 +19,33 @@ namespace World
 
         public uint[] RiverBuffer;
 
-        public int[] BuildRiver(DelaunayGeo geo, Mesh mesh)
+        public int[] BuildRiver(Delaunay.Delaunay delaunay)
         {
-            HashSet<DFace> hasUsed = new HashSet<DFace>();
-            var buffer = new int[geo.faces.Count];
+            HashSet<HFaceId> hasUsed = new HashSet<HFaceId>();
+            var buffer = new int[delaunay.Faces.Count];
             var res = new List<RiverTree>();
             var leafNode = new List<RiverTree>();
             var searchingNode = new List<RiverTree>();
-            for (var faceId = 0; faceId < geo.faces.Count; faceId++)
+            for (var faceId = 0; faceId < delaunay.Faces.Count; faceId++)
             {
-                DEdge cornerEdge = null;
+                HEdge cornerEdge = default;
+                cornerEdge.Id = -1;
                 for (int i = 0; i < 3; i++)
                 {
-                    var edge = geo.faces[faceId].edge;
-                    if (edge.NextEdge.TwinEdge == null)
+                    var edge = delaunay.Faces[faceId].EdgeId;
+                    if (edge.GetNextEdge(delaunay).TwinEdgeId == -1)
                     {
-                        cornerEdge = edge.NextEdge;
+                        cornerEdge = edge.GetNextEdge(delaunay);
                         break;
                     }
                 }
 
-                if (cornerEdge != null)
+                if (cornerEdge.Id != -1)
                 {
                     RiverTree riverTree = new RiverTree();
-                    riverTree.Face = geo.faces[faceId];
-                    riverTree.FromEdge = cornerEdge;
-                    hasUsed.Add(geo.faces[faceId]);
+                    riverTree.Face = delaunay.Faces[faceId].Id;
+                    riverTree.FromEdge = cornerEdge.Id;
+                    hasUsed.Add(delaunay.Faces[faceId].Id);
                     searchingNode.Add(riverTree);
                     res.Add(riverTree);
                 }
@@ -54,13 +55,13 @@ namespace World
             {
                 var random = Random.Range(0, searchingNode.Count - 1);
                 var riverTree = searchingNode[random];
-                var leftEdge = riverTree.FromEdge.NextEdge.TwinEdge;
-                var leftFace = leftEdge?.Face;
-                var rightEdge = riverTree.FromEdge.NextEdge.NextEdge.TwinEdge;
-                var rightFace = rightEdge?.Face;
+                var leftEdge = riverTree.FromEdge.GetNextEdge(delaunay).TwinEdgeId;
+                var leftFace = leftEdge.GetFace(delaunay).Id;
+                var rightEdge = riverTree.FromEdge.GetPreEdge(delaunay).TwinEdgeId;
+                var rightFace = rightEdge.GetFace(delaunay).Id;
 
-                var canAddLeft = leftFace != null && !hasUsed.Contains(leftFace);
-                var canAddRight = rightFace != null && !hasUsed.Contains(rightFace);
+                var canAddLeft = leftFace != -1 && !hasUsed.Contains(leftFace);
+                var canAddRight = rightFace != -1 && !hasUsed.Contains(rightFace);
 
                 if (!canAddRight && !canAddLeft)
                 {
@@ -168,18 +169,18 @@ namespace World
                     }
 
                     var startEdgeHex = 0;
-                    var edge = current.Face.edge;
+                    var edge = current.Face.GetHFace(delaunay).EdgeId;
                     var startEdge = current.FromEdge;
                     for (int j = 0; j < 3; j++)
                     {
                         if (edge != startEdge)
                         {
                             startEdgeHex++;
-                            edge = edge.NextEdge;
+                            edge = edge.GetNextEdge(delaunay).Id;
                         }
                     }
 
-                    var faceId = geo.faces.IndexOf(current.Face);
+                    var faceId = delaunay.Faces[current.Face];
                     var hex = (hexNodeType << 2) + startEdgeHex;
                     hex = (hex << 6) + (current.Width > 63 ? 63 : current.Width);
                     var leftWidth = Mathf.Min((current.Left?.Width ?? 0), 63);
@@ -187,7 +188,7 @@ namespace World
                     hex = (hex << 6) + leftWidth;
                     hex = (hex << 6) + rightWidth;
 
-                    buffer[faceId] = hex;
+                    buffer[faceId.Id] = hex;
                 }
             }
 

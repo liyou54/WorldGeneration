@@ -1,82 +1,178 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
-namespace Delaunay
+namespace AwesomeNamespace
 {
-    public static class PoissonDiscSampling
+    // Adapated from java source by Herman Tulleken
+    // http://www.luma.co.za/labs/2008/02/27/poisson-disk-sampling/
+
+    // The algorithm is from the "Fast Poisson Disk Sampling in Arbitrary Dimensions" paper by Robert Bridson
+    // http://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf
+
+    public static class UniformPoissonDiskSampler
     {
-        public static List<Vector2> GeneratePoints(float radius, Vector2 sampleRegionSize, int numSamplesBeforeRejection = 32)
+        public const int DefaultPointsPerIteration = 30;
+
+        static readonly float SquareRootTwo = (float) Math.Sqrt(2);
+
+        struct Settings
         {
-            bool IsValid(Vector2 candidate, Vector2 sampleRegionSize, float cellSize, float radius, List<Vector2> points, int[,] grid)
+            public Vector2 TopLeft, LowerRight, Center;
+            public Vector2 Dimensions;
+            public float? RejectionSqDistance;
+            public float MinimumDistance;
+            public float CellSize;
+            public int GridWidth, GridHeight;
+        }
+
+        struct State
+        {
+            public Vector2?[,] Grid;
+            public List<Vector2> ActivePoints, Points;
+        }
+
+        public static List<Vector2> SampleCircle(Vector2 center, float radius, float minimumDistance)
+        {
+            return SampleCircle(center, radius, minimumDistance, DefaultPointsPerIteration);
+        }
+        public static List<Vector2> SampleCircle(Vector2 center, float radius, float minimumDistance, int pointsPerIteration)
+        {
+            return Sample(center - new Vector2(radius,radius), center + new Vector2(radius,radius), radius, minimumDistance, pointsPerIteration);
+        }
+
+        public static List<Vector2> SampleRectangle(Vector2 topLeft, Vector2 lowerRight, float minimumDistance)
+        {
+            return SampleRectangle(topLeft, lowerRight, minimumDistance, DefaultPointsPerIteration);
+        }
+        public static List<Vector2> SampleRectangle(Vector2 topLeft, Vector2 lowerRight, float minimumDistance, int pointsPerIteration)
+        {
+            return Sample(topLeft, lowerRight, null, minimumDistance, pointsPerIteration);
+        }
+
+        static List<Vector2> Sample(Vector2 topLeft, Vector2 lowerRight, float? rejectionDistance, float minimumDistance, int pointsPerIteration)
+	    {
+            var settings = new Settings
             {
-                if (candidate.x - radius >= 0f && candidate.x + radius < sampleRegionSize.x && candidate.y - radius >= 0f && candidate.y + radius < sampleRegionSize.y)
-                {
-                    int cellX = Mathf.RoundToInt(candidate.x / cellSize);
-                    int cellZ = Mathf.RoundToInt(candidate.y / cellSize);
-                    int searchStartX = Mathf.Max(0, cellX - 3);
-                    int searchEndX = Mathf.Min(cellX + 3, grid.GetLength(0) - 1);
-                    int searchStartZ = Mathf.Max(0, cellZ - 3);
-                    int searchEndZ = Mathf.Min(cellZ + 3, grid.GetLength(1) - 1);
-                    //如果要检测其它格子内的球，需要遍历周围6个格子
+                TopLeft = topLeft, LowerRight = lowerRight,
+                Dimensions = lowerRight - topLeft,
+                Center = (topLeft + lowerRight) / 2,
+                CellSize = minimumDistance / SquareRootTwo,
+                MinimumDistance = minimumDistance,
+                RejectionSqDistance = rejectionDistance == null ? null : rejectionDistance * rejectionDistance
+            };
+            settings.GridWidth = (int) (settings.Dimensions.x / settings.CellSize) + 1;
+            settings.GridHeight = (int) (settings.Dimensions.y/ settings.CellSize) + 1;
 
-                    for (int x = searchStartX; x <= searchEndX; x++)
-                    {
-                        for (int z = searchStartZ; z <= searchEndZ; z++)
-                        {
-                            int pointIndex = grid[x, z] - 1; //存长度不存索引，取时减1,0就变成了-1，不需要初始化数组了
-                            if (pointIndex != -1)
-                            {
-                                float dst = (candidate - points[pointIndex]).magnitude;
-                                if (dst < radius * 2f)
-                                {
-                                    return false;
-                                }
-                            }
-                        }
-                    }
-
-                    return true;
-                }
-
-                return false;
-            }
-
-            float cellSize = radius / Mathf.Sqrt(2);
-
-            int[,] grid = new int[Mathf.CeilToInt(sampleRegionSize.x / cellSize), Mathf.CeilToInt(sampleRegionSize.y / cellSize)];
-            List<Vector2> points = new List<Vector2>();
-            List<Vector2> spawnPoints = new List<Vector2>();
-
-            spawnPoints.Add(new Vector2(sampleRegionSize.x / 2f, sampleRegionSize.y / 2f));
-            while (spawnPoints.Count > 0)
+            var state = new State
             {
-                int spawnIndex = Random.Range(0, spawnPoints.Count);
-                Vector2 spawnCenter = spawnPoints[spawnIndex];
+                Grid = new Vector2?[settings.GridWidth, settings.GridHeight],
+                ActivePoints = new List<Vector2>(),
+                Points = new List<Vector2>()
+            };
 
-                bool candidateAccepted = false;
-                for (int i = 0; i < numSamplesBeforeRejection; i++)
-                {
-                    float angle = Random.value * Mathf.PI * 2f;
-                    Vector2 dir = new Vector2(Mathf.Sin(angle),  Mathf.Cos(angle));
-                    Vector2 candidate = spawnCenter + dir * Random.Range(2f, 3f) * radius;
+		    AddFirstPoint(ref settings, ref state);
 
-                    if (IsValid(candidate, sampleRegionSize, cellSize, radius, points, grid))
-                    {
-                        points.Add(candidate);
-                        spawnPoints.Add(candidate);
-                        grid[Mathf.RoundToInt(candidate.x / cellSize), Mathf.RoundToInt(candidate.y / cellSize)] = points.Count;
-                        candidateAccepted = true;
-                        break;
-                    }
-                }
+            while (state.ActivePoints.Count != 0)
+		    {
+                var listIndex = RandomHelper.Random.Next(state.ActivePoints.Count);
 
-                if (!candidateAccepted)
-                {
-                    spawnPoints.RemoveAt(spawnIndex);
-                }
-            }
+                var point = state.ActivePoints[listIndex];
+			    var found = false;
 
-            return points;
+                for (var k = 0; k < pointsPerIteration; k++)
+				    found |= AddNextPoint(point, ref settings, ref state);
+
+			    if (!found)
+				    state.ActivePoints.RemoveAt(listIndex);
+		    }
+
+		    return state.Points;
+	    }
+
+        static void AddFirstPoint(ref Settings settings, ref State state)
+        {
+            var added = false;
+            while (!added)
+            {
+                var d = RandomHelper.Random.NextDouble();
+                var xr = settings.TopLeft.x + settings.Dimensions.x * d;
+
+                d = RandomHelper.Random.NextDouble();
+                var yr = settings.TopLeft.y+ settings.Dimensions.y* d;
+
+                var p = new Vector2((float) xr, (float) yr);
+                if (settings.RejectionSqDistance != null && Vector2.SqrMagnitude(settings.Center- p) > settings.RejectionSqDistance)
+                    continue;
+                added = true;
+
+                var index = Denormalize(p, settings.TopLeft, settings.CellSize);
+
+                state.Grid[(int) index.x, (int) index.y] = p;
+
+                state.ActivePoints.Add(p);
+                state.Points.Add(p);
+            } 
+        }
+
+        static bool AddNextPoint(Vector2 point, ref Settings settings, ref State state)
+	    {
+		    var found = false;
+            var q = GenerateRandomAround(point, settings.MinimumDistance);
+
+            if (q.x >= settings.TopLeft.x && q.x < settings.LowerRight.x && 
+                q.y> settings.TopLeft.y&& q.y< settings.LowerRight.y&&
+                (settings.RejectionSqDistance == null || Vector2.SqrMagnitude(settings.Center- q) <= settings.RejectionSqDistance))
+		    {
+                var qIndex = Denormalize(q, settings.TopLeft, settings.CellSize);
+			    var tooClose = false;
+
+                for (var i = (int)Math.Max(0, qIndex.x - 2); i < Math.Min(settings.GridWidth, qIndex.x + 3) && !tooClose; i++)
+                    for (var j = (int)Math.Max(0, qIndex.y- 2); j < Math.Min(settings.GridHeight, qIndex.y+ 3) && !tooClose; j++)
+					    if (state.Grid[i, j].HasValue && Vector2.Distance(state.Grid[i, j].Value, q) < settings.MinimumDistance)
+							tooClose = true;
+
+			    if (!tooClose)
+			    {
+				    found = true;
+				    state.ActivePoints.Add(q);
+				    state.Points.Add(q);
+                    state.Grid[(int)qIndex.x, (int)qIndex.y] = q;
+			    }
+		    }
+		    return found;
+	    }
+
+        static Vector2 GenerateRandomAround(Vector2 center, float minimumDistance)
+        {
+            var d = RandomHelper.Random.NextDouble();
+            var radius = minimumDistance + minimumDistance * d;
+
+            d = RandomHelper.Random.NextDouble();
+            var angle = MathHelper.TwoPi * d;
+
+            var newX = radius * Math.Sin(angle);
+            var newY = radius * Math.Cos(angle);
+
+            return new Vector2((float) (center.x + newX), (float) (center.y+ newY));
+        }
+
+        static Vector2 Denormalize(Vector2 point, Vector2 origin, double cellSize)
+        {
+            return new Vector2((int) ((point.x - origin.x) / cellSize), (int) ((point.y- origin.y) / cellSize));
         }
     }
+    
+    public static class RandomHelper
+    {
+        public static readonly Random Random = new Random();
+	}
+	
+    public static class MathHelper
+    {
+        public const float Pi = (float)Math.PI;
+        public const float HalfPi = (float)(Math.PI / 2);
+        public const float TwoPi = (float)(Math.PI * 2);
+    }	
 }

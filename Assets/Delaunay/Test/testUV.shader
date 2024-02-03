@@ -66,17 +66,12 @@ Shader "Unlit/testUV"
                 int offset = (TriTypeBuffer[triangleID] >> 18) % 4;
 
 
-                for (int _ = 0; _ < offset; _++)
+                for (int _ = 0; _ <2- offset; _++)
                 {
                     v2g temp = input[0];
                     input[0] = input[2];
                     input[2] = input[1];
                     input[1] = temp;
-                }
-
-                for (int i = 0; i < 3; ++i)
-                {
-                    scale[i] = length(input[(i) % 3].posWs - input[(i + 1) % 3].posWs);
                 }
 
                 for (int i = 0; i < 3; ++i)
@@ -99,11 +94,14 @@ Shader "Unlit/testUV"
                 int riverMask = (TriTypeBuffer[i.triangleID] >> 20);
                 float2 riverMaskData = float2(riverMask % 2, riverMask / 2);
                 float curWidth = (((buffer >> 12) & 63) + 10) / 256.0;
-                float leftWidth = (((buffer >> 6) & 63) + 10) / 256.0;
-                float rightWidth = (((buffer >> 0) & 63) + 10) / 256.0;
+                float leftWidth = (((buffer >> 0) & 63) + 10) / 256.0;
+                float rightWidth = (((buffer >> 6) & 63) + 10) / 256.0;
+
+
+                
                 float3 scale = 1 / i.uvScale * .01;
                 fixed4 res = 0;
-                if (riverMaskData.r > 0)
+                if (riverMaskData.g > 0)
                 {
                     float rate = i.uvTriPos.y * 2;
                     float width = lerp(curWidth, leftWidth, rate);
@@ -113,7 +111,7 @@ Shader "Unlit/testUV"
                     }
                 }
 
-                if (riverMaskData.g > 0)
+                if (riverMaskData.r > 0)
                 {
                     float rate = i.uvTriPos.y * 2;
                     float width = lerp(curWidth, rightWidth, rate);
