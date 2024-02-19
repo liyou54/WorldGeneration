@@ -1,0 +1,470 @@
+fileFormatVersion: 2
+guid: 9a5c9aa04241a344a932c241ebc8597b
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 2
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 417.3333
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a6483a860bb19646a3aec1d3f5e6146
+      internalID: -1825854582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_1
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 417.3333
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7aeb54d32e7a9524dacea6c5b0c33694
+      internalID: -1214783933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_2
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 417.3333
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09d8b94d5f0ef5e49b14a5927bfa0385
+      internalID: 1342077391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_3
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 417.3333
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b55b536685e070a4bb16c5c65d64f0cb
+      internalID: 700673525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_4
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 417.3333
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38d0ba8bcd6476e4dbe4e0013537b38b
+      internalID: -832805431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 209.33333
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 269079c27de072f448bad6e59dc7b58a
+      internalID: 1865754544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_6
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 209.33333
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7280c38e88bcad944afecd1bfc3ae1b2
+      internalID: -288541288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_7
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 209.33333
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8baca44c87dbb347a262f3b797e5493
+      internalID: 1137757081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_8
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 209.33333
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9bc6b5a7bf27ac641be14d1416c256a5
+      internalID: 1941516586
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_9
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 209.33333
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 806b19913a0adf744afd26dd2390eaf1
+      internalID: 1709508061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1.3333282
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e7cc767503b008448447305522aee50
+      internalID: 217853601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_11
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 1.3333282
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94935a3883cec97408cf230eb73534da
+      internalID: -1573196946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_12
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 1.3333282
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2add56960f6188840bdba2f256e50330
+      internalID: -1757498577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_13
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 1.3333282
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be3bd9f5edf0687478e9403b184ad467
+      internalID: 1496405811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Premium Vector _ Cartoon fire flame sheet sprite animation  set_14
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 1.3333282
+        width: 125.2
+        height: 208.66667
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2504a955039df7445b0e296cd00f113b
+      internalID: -697019338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_0: -1825854582
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_1: -1214783933
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_10: 217853601
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_11: -1573196946
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_12: -1757498577
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_13: 1496405811
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_14: -697019338
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_2: 1342077391
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_3: 700673525
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_4: -832805431
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_5: 1865754544
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_6: -288541288
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_7: 1137757081
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_8: 1941516586
+      Premium Vector _ Cartoon fire flame sheet sprite animation  set_9: 1709508061
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
