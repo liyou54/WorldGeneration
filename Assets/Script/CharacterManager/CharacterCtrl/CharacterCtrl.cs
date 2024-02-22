@@ -16,11 +16,12 @@ using IComponent = Script.EntityManager.IComponent;
 public class OperationAbleComponent : IComponent,IUpdateAble
 {
     List<IOperation> Operations = new List<IOperation>();
-    public int TeamId => GetEntityStatusByKey(EffectKeyTable.TeamId);
+    List<EffectBase> EffectList = new List<EffectBase>();
 
     private BattleContext Context;
     private CharacterEntity _entity;
-
+    
+    
     public void StartBattle(BattleContext context)
     {
         Context = context;
@@ -36,12 +37,6 @@ public class OperationAbleComponent : IComponent,IUpdateAble
         Operations.Add(operation);
     }
 
-    public int GetEntityStatusByKey(EffectKeyTable key)
-    {
-        return 0;
-    }
-    
-    
     public void ForceFinishCurrentOperation()
     {
         if (Operations.Count > 0)
@@ -61,7 +56,7 @@ public class OperationAbleComponent : IComponent,IUpdateAble
     {
     }
 
-    public void Update()
+    public void UpdateOperation()
     {
         if (Operations.Count == 0)
         {
@@ -91,6 +86,11 @@ public class OperationAbleComponent : IComponent,IUpdateAble
         {
             current.Update(Context, _entity);
         }
+    }
+
+    public void Update()
+    {
+        UpdateOperation();
     }
 }
 

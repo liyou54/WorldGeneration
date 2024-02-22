@@ -15,18 +15,17 @@ namespace AI.Agent
 
     public class CharacterAgent : BasicAgent
     {
-        public OperationAbleComponent CharacterCtrl { get; set; }
+        public OperationAbleComponent OperationAbleCharacter { get; set; }
         public TargetAbleComponent Target { get; set; }
         
+        public float CharacteSafeDistance = 10;
         
         public bool NeedUpdateTarget;
-        public int TeamId = 0;
 
-        public void BindCharacterCtrl(OperationAbleComponent ctrl)
+        public void BindCharacterCtrl(OperationAbleComponent operationAbleComponent)
         {
-            CharacterCtrl = ctrl;
+            OperationAbleCharacter = operationAbleComponent;
             ResetAgentStatus();
-            TeamId = CharacterCtrl.GetEntityStatusByKey(EffectKeyTable.TeamId);
         }
 
         public void ResetAgentStatus()

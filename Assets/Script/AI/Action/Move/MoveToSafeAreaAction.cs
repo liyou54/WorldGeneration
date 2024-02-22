@@ -17,11 +17,16 @@ namespace AI.Action
             Debug.Log("start move to attack action");
             characterAgent = AgentData.Agent as CharacterAgent;
             var targetTrs = characterAgent.Target.Entity.transform;
-            var agent = characterAgent.CharacterCtrl;
+            var agent = characterAgent.OperationAbleCharacter;
             var dir = (agent.Entity.transform.position - targetTrs.position).normalized;
-            safeDistance = agent.GetEntityStatusByKey(EffectKeyTable.SafeDistance);
+            if (dir == Vector3.zero )
+            {
+                var rand  = Random.insideUnitCircle.normalized;
+                dir = new Vector3(rand.x, 0, rand.y);
+            }
+            safeDistance = characterAgent.CharacteSafeDistance;
             moveOperation = new MoveOperation(targetTrs.position + dir * safeDistance);
-            characterAgent.CharacterCtrl.AddOperation(moveOperation);
+            characterAgent.OperationAbleCharacter.AddOperation(moveOperation);
         }
 
         public override void OnUpdatePerform()

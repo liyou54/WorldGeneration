@@ -16,5 +16,7 @@ namespace Script.CharacterManager.CharacterEntity
         {
             
         }
+        
+
     }
 }

@@ -6,7 +6,7 @@ namespace Faction
     [AddOnce(typeof(FactionMemberComponent))]
     public class FactionMemberComponent : IComponent
     {
-        private int TeamId { get; set; } = -1;
+        public int TeamId { get; set; } = -1;
         public EntityBase Entity { get; set; }
 
         public void SetTeamId(int teamId)

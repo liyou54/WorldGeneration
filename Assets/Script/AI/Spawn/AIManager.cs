@@ -10,6 +10,8 @@ using UnityEngine;
 public class AIManager : GameSingleton<AIManager>
 {
     [AssetsOnly] public List<CharacterAgent> agentPrefabList;
+    
+    
     public void CreatAgent(OperationAbleComponent ctrl)
     {
         var agentInst = Instantiate(agentPrefabList[0]);

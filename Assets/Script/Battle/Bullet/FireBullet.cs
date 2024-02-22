@@ -12,7 +12,7 @@ public class FireBullet : MonoBehaviour
     Vector3 StartPos = Vector3.zero;
     Vector3 Direction = Vector3.zero;
     Transform Target;
-    Effect Effect;
+    EffectBase _effectBase;
     
     
     
@@ -24,9 +24,9 @@ public class FireBullet : MonoBehaviour
         transform.LookAt(target);
     }
 
-    public void SetEffect(Effect effect)
+    public void SetEffect(EffectBase effectBase)
     {
-        Effect = effect;
+        _effectBase = effectBase;
     }
 
     private void Update()
@@ -39,7 +39,7 @@ public class FireBullet : MonoBehaviour
         transform.position += Direction * Time.deltaTime * 7f;
         if (Vector3.Distance(transform.position, Target.position) < 0.1f)
         {
-            Effect.ExcuteFunc(Effect.Target);
+            _effectBase.ExcuteFunc(_effectBase.Target);
             Destroy(gameObject);
         }
     }

@@ -16,7 +16,7 @@ public class EnemySensor : Sensor
     public override void OnAwake()
     {
         _agent = Agent as CharacterAgent;
-        _characterCtrl = _agent.CharacterCtrl;
+        _characterCtrl = _agent.OperationAbleCharacter;
     }
 
 
@@ -38,7 +38,8 @@ public class EnemySensor : Sensor
         }
 
         FactionManager factionManager = FactionManager.Instance as FactionManager;
-        var enemyTeam = factionManager.GetEnemyMembers(_agent.TeamId);
+        var factionMemberComponent = _agent.OperationAbleCharacter.Entity.GetEntityComponent<FactionMemberComponent>();
+        var enemyTeam = factionManager.GetEnemyMembers(factionMemberComponent.TeamId);
         var minDistance = float.MaxValue;
         TargetAbleComponent target = null;
         foreach (var member in enemyTeam)
@@ -48,7 +49,7 @@ public class EnemySensor : Sensor
             {
                 continue;
             }
-            var distance = Vector3.Distance(targetTemp.Entity.transform.position,_agent.CharacterCtrl.Entity.transform.position );
+            var distance = Vector3.Distance(targetTemp.Entity.transform.position,_agent.OperationAbleCharacter.Entity.transform.position );
             if (distance < minDistance)
             {
                 target = targetTemp;
@@ -56,7 +57,7 @@ public class EnemySensor : Sensor
             }
         }
 
-        if (minDistance < _agent.CharacterCtrl.GetEntityStatusByKey(EffectKeyTable.SafeDistance))
+        if (minDistance < _agent.CharacteSafeDistance)
         {
             _agent.States.AddState("InDanger", 1);
         }

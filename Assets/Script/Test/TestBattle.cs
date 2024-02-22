@@ -2,6 +2,7 @@ using System;
 using Battle.Effect;
 using Faction;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Script.Test
 {
@@ -13,10 +14,9 @@ namespace Script.Test
             var factionManager = FactionManager.Instance as FactionManager;
             factionManager.AddRelation(1, 2, -100);
             // 创建两个角色
-            var entityManager = global::EntityManager.Instance as global::EntityManager;
             var characterManager =CharacterManager.CharacterManager.Instance as CharacterManager.CharacterManager;
-            var entity1 = characterManager.CreateCharacter();
-            var entity2 = characterManager.CreateCharacter();
+            var entity1 = characterManager.CreateCharacter(Random.insideUnitCircle * 20);
+            var entity2 = characterManager.CreateCharacter(Random.insideUnitCircle * 20);
             var factionComp1= entity1.GetEntityComponent<FactionMemberComponent>();
             var factionComp2 = entity2.GetEntityComponent<FactionMemberComponent>();
             factionComp1.SetTeamId(1);
