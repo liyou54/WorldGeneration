@@ -9,17 +9,17 @@ namespace Script.Skill.TimelineTrack
     [DisplayName("技能/Clip/移动")]
     public class SkillMoveClip : SkillClipBase, IClipConvertToLogic
     {
-        public bool IsDynamicMoveTarget;
+       [LabelText("是否是移动目标")]  public bool IsDynamicMoveTarget;
         [GraphProcessor.ShowInInspector]
-        public SkillTimelineParamSetterBase<bool> OnAttactTarget;
+       [LabelText("达到目标时参数Setter")] public SkillTimelineParamSetterBase<bool> OnAttactTarget;
 
         [GraphProcessor.ShowInInspector, ShowIf("@IsDynamicMoveTarget== true")]
-        public SkillTimelineParamGetterBase<GameObject> MoveTarget;
+       [LabelText("动态目标实例")]  public SkillTimelineParamGetterBase<GameObject> MoveTarget;
 
         [GraphProcessor.ShowInInspector, ShowIf("@IsDynamicMoveTarget==false")]
-        public SkillTimelineParamGetterBase<Vector3> MovePosition;
+        [LabelText("静态目标位置")] public SkillTimelineParamGetterBase<Vector3> MovePosition;
 
-        [GraphProcessor.ShowInInspector] public float Speed;
+        [LabelText("移动速度")] [GraphProcessor.ShowInInspector] public float Speed;
 
         public SkillClipLogicBase Convert(float start, float end)
         {

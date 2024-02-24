@@ -22,7 +22,6 @@ namespace Script.Skill.TimelineTrack
     public class SkillFxMark : SkillMarkBase,ISkillMarkConvertToView
     {
         public ParticleSystem PatricleFx;
-        public ParticleSystem TrailRenderer;
         [EnumToggleButtons] [LabelText("特效触发位置种类")]
         public SkillItemFollowType FollowType;
 
@@ -34,12 +33,11 @@ namespace Script.Skill.TimelineTrack
         [LabelText("是否跟随目标")]
         public bool IsFollow;
 
-        public SkillMarkViewBase Convert(float time)
+        public SkillMarkViewBase Convert()
         {
-            var res = new SkillMarkFxView();
+            var res = new SkillMarkFxView(); 
             res.PatricleFx = PatricleFx;
-            res.TrailRenderer = TrailRenderer;
-            res.StartTime = time;
+            res.StartTime = (float)time;
             res.FollowType = FollowType;
             res.IsWorld = IsWorld;
             res.Offset = Offset;

@@ -8,17 +8,17 @@ namespace Script.Skill.SkillLogic
     public class SkillClipLoopLogic:SkillClipLogicBase,ISkillTimeJumpAble
     {
         public SkillTimelineParamGetterBase<bool> BreakCondition;
-        public bool IsPlayContinue;
+        public bool IsContinuePlayWhenTrue;
         
         
         
-        public void JumpSkillTime()
+        public  void JumpSkillTime(SkillContext context)
         {
-            var timelineTime = Context.GetTimelineTime();
-            var isBreak = BreakCondition.GetValue(Context.SkillDataRuntime.BlackBoard);
+            var timelineTime = context.GetTimelineTime();
+            var isBreak = BreakCondition.GetValue(context.SkillDataRuntime.BlackBoard);
             var jumpToTimelineTime = -1f;
             var isOutTime = timelineTime >= EndTime;
-            if (isBreak && !IsPlayContinue)
+            if (isBreak && !IsContinuePlayWhenTrue)
             {
                 jumpToTimelineTime = EndTime ;
             }
@@ -32,7 +32,7 @@ namespace Script.Skill.SkillLogic
                 return;
             }
             
-            var lastLogic = Context.SkillDataRuntime.GetLastLogicList();
+            var lastLogic = context.SkillDataRuntime.GetLastLogicList();
             foreach (var logic in lastLogic)
             {
                 if (jumpToTimelineTime >= logic.EndTime)
@@ -49,8 +49,9 @@ namespace Script.Skill.SkillLogic
             
             
             Debug.Log("跳转");
-            Context.LoopStartTimelineTime = jumpToTimelineTime;
-            Context.LastLoopTime = Context.AllRunTime;
+            context.LastTimeLineTime = jumpToTimelineTime;
+            context.LoopStartTimelineTime = jumpToTimelineTime;
+            context.LastLoopTime = context.AllRunTime;
             
 
         }

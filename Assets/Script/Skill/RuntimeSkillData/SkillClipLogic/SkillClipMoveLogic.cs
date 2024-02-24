@@ -18,51 +18,45 @@ namespace Script.Skill.SkillLogic
         public bool IsDynamicMoveTarget { get; set; }
 
         // 逻辑与表现先混着
-        public override void Start()
+        public override void Start(SkillContext context)
         {
             if (!IsDynamicMoveTarget)
             {
-                var trs = Context.Owner.transform;
-                var forward = trs.forward * MovePosition.GetValue(Context.SkillDataRuntime.BlackBoard).z;
-                var right = trs.right * MovePosition.GetValue(Context.SkillDataRuntime.BlackBoard).x;
-                var up = trs.up * MovePosition.GetValue(Context.SkillDataRuntime.BlackBoard).y;
-                TargetPosition = Context.Owner.transform.position + forward + right + up;
+                var trs = context.Owner.transform;
+                var forward = trs.forward * MovePosition.GetValue(context.SkillDataRuntime.BlackBoard).z;
+                var right = trs.right * MovePosition.GetValue(context.SkillDataRuntime.BlackBoard).x;
+                var up = trs.up * MovePosition.GetValue(context.SkillDataRuntime.BlackBoard).y;
+                TargetPosition = context.Owner.transform.position + forward + right + up;
             }
             else
             {
-                TargetPosition = MoveTarget.GetValue(Context.SkillDataRuntime.BlackBoard).transform.position;
+                TargetPosition = MoveTarget.GetValue(context.SkillDataRuntime.BlackBoard).transform.position;
             }
         }
 
-        public override void Update()
+        public override void Update(SkillContext context)
         {
             if (IsDynamicMoveTarget)
             {
-                TargetPosition = MoveTarget.GetValue(Context.SkillDataRuntime.BlackBoard).transform.position;
+                TargetPosition = MoveTarget.GetValue(context.SkillDataRuntime.BlackBoard).transform.position;
             }
             
-            var distance = Vector3.Distance(Context.Owner.transform.position, TargetPosition);
-            if (distance < 0.01f)
+            var distance = Vector3.Distance(context.Owner.transform.position, TargetPosition);
+            if (distance < Speed * context.DeltaTime)
             {
-                OnAttachTarget.SetValue(Context.SkillDataRuntime.BlackBoard);        
-                return;
-            }
-            var dir = (TargetPosition - Context.Owner.transform.position).normalized;
-            if (distance < Speed * Context.DeltaTime)
-            {
-                Context.Owner.transform.position = TargetPosition;
-                Context.SetBlackData("InTargetAround",true);
+                context.Owner.transform.position = TargetPosition;
+                OnAttachTarget.SetValue(context.SkillDataRuntime.BlackBoard);        
                 Debug.Log("finish");
             }
             else
             {
-                Debug.Log($"run: {dir * Speed * Context.DeltaTime} delta: {Context.DeltaTime}");
-                Context.Owner.transform.position += dir * Speed * Context.DeltaTime;
+                var dir = (TargetPosition - context.Owner.transform.position).normalized;
+                context.Owner.transform.position += dir * Speed * context.DeltaTime;
             }
            
         }
 
-        public override void Finish()
+        public override void Finish(SkillContext context)
         {
         }
     }

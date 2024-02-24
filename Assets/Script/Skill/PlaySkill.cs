@@ -5,9 +5,11 @@ using Animancer;
 using Script.Skill.BlackBoardParam;
 using Script.Skill.RuntimeSkillData.SkillView;
 using Script.Skill.SkillLogic;
+using Script.Skill.TimelineTrack;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
+
 
 namespace Script.Skill
 {
@@ -29,25 +31,32 @@ namespace Script.Skill
 
     public class SkillDataRuntime
     {
-        private readonly List<SkillClipLogicBase> LogicList = new List<SkillClipLogicBase>();
-        private readonly List<SkillClipViewBase> ViewList = new List<SkillClipViewBase>();
+        private readonly List<SkillClipLogicBase> LogicList;
+        private readonly List<SkillClipViewBase> ViewList;
         public BlackBoardParamSet BlackBoard;
         private readonly List<TaskArea<SkillClipLogicBase>> PreLogicClipList = new List<TaskArea<SkillClipLogicBase>>();
         public TaskArea<SkillClipLogicBase> LastLogicArea;
         private readonly List<TaskArea<SkillClipViewBase>> PreViewClipList = new List<TaskArea<SkillClipViewBase>>();
         public TaskArea<SkillClipViewBase> LastViewArea;
 
-        public List<SkillMarkLogicBase> MarkLogicList = new List<SkillMarkLogicBase>();
-        public List<SkillMarkViewBase> MarkViewList = new List<SkillMarkViewBase>();
+        public List<SkillMarkLogicBase> MarkLogicList;
+        public List<SkillMarkViewBase> MarkViewList;
 
         public float SkillDuring;
 
-        public SkillDataRuntime(List<SkillClipLogicBase> logicList, List<SkillClipViewBase> viewList, BlackBoardParamSet blackBoard, float skillDuring)
+        public SkillDataRuntime(
+            List<SkillClipLogicBase> logicList,
+            List<SkillClipViewBase> viewList,
+            List<SkillMarkLogicBase> markLogicList,
+            List<SkillMarkViewBase> markViewList,
+            BlackBoardParamSet blackBoard, float skillDuring)
         {
             LogicList = logicList;
             ViewList = viewList;
             BlackBoard = blackBoard;
             SkillDuring = skillDuring;
+            MarkLogicList = markLogicList;
+            MarkViewList = markViewList;
             PreLogicClipList.Clear();
             PreViewClipList.Clear();
             BuildTaskArea(LogicList, PreLogicClipList);
@@ -165,9 +174,11 @@ namespace Script.Skill
             context = new SkillContext();
             List<SkillClipLogicBase> logicRes = new();
             List<SkillClipViewBase> viewRes = new();
-            SerializeToRuntime(logicRes, viewRes);
+            List<SkillMarkLogicBase> markLogicRes = new();
+            List<SkillMarkViewBase> markViewRes = new();
+            SerializeToRuntime(logicRes, viewRes, markLogicRes, markViewRes);
             var blackBoard = skillEntityData.Data.Copy();
-            context.SkillDataRuntime = new SkillDataRuntime(logicRes, viewRes, blackBoard, (float)skillEntityData.duration);
+            context.SkillDataRuntime = new SkillDataRuntime(logicRes, viewRes, markLogicRes, markViewRes, blackBoard, (float)skillEntityData.duration);
             context.Owner = owner;
             context.Animancer = owner.GetComponent<AnimancerComponent>();
             blackBoardParamSet = blackBoard;
@@ -180,7 +191,7 @@ namespace Script.Skill
             {
                 if (logic.Status != SkillClipStatus.End && logic.Status != SkillClipStatus.Finish)
                 {
-                    logic.JumpSkillTime();
+                    logic.JumpSkillTime(context);
                 }
             }
         }
@@ -193,7 +204,7 @@ namespace Script.Skill
             {
                 if (logic.Status != SkillClipStatus.End && logic.Status != SkillClipStatus.NoStart)
                 {
-                    logic.Finish();
+                    logic.Finish(context);
                     logic.Status = SkillClipStatus.End;
                 }
             }
@@ -203,11 +214,24 @@ namespace Script.Skill
             {
                 if (view.Status != SkillClipStatus.End && view.Status != SkillClipStatus.NoStart)
                 {
-                    view.Finish();
+                    view.Finish(context);
                     view.Status = SkillClipStatus.End;
                 }
             }
 
+            var lastMarkLogicList = context.SkillDataRuntime.MarkLogicList;
+            
+            foreach (var markLogic in lastMarkLogicList)
+            {
+                markLogic.Finish();                
+            }
+            
+            var lastMarkViewList = context.SkillDataRuntime.MarkViewList;
+            foreach (var markView in lastMarkViewList)
+            {
+                markView.Finish();
+            }
+            
             Debug.Log("技能结束");
             context.Owner.transform.position = Vector3.zero;
             context = null;
@@ -234,27 +258,38 @@ namespace Script.Skill
             var timelineTime = context.GetTimelineTime();
             context.SkillDataRuntime.UpdateData(timelineTime);
             var logics = context.SkillDataRuntime.GetLastLogicList();
-
+            
             foreach (var logic in logics)
             {
                 var inTimeRange = logic.IsInTimeRange(timelineTime);
                 if (inTimeRange == 0 && logic.Status != SkillClipStatus.Doing)
                 {
-                    logic.Start();
+                    logic.Start(context);
                     logic.Status = SkillClipStatus.Doing;
                 }
 
                 if (inTimeRange == 1 && logic.Status != SkillClipStatus.End)
                 {
-                    logic.Finish();
+                    logic.Finish(context);
                     logic.Status = SkillClipStatus.End;
                 }
 
                 if (inTimeRange == 0 && logic.Status == SkillClipStatus.Doing)
                 {
-                    logic.Update();
+                    logic.Update(context);
                 }
             }
+
+            foreach (var markLogic in context.SkillDataRuntime.MarkLogicList)
+            {
+                markLogic.Update(context);
+            }
+
+            foreach (var markView in context.SkillDataRuntime.MarkViewList)
+            {
+                markView.Update(context);
+            }
+            
 
 
             var views = context.SkillDataRuntime.GetLastViewsList();
@@ -263,29 +298,34 @@ namespace Script.Skill
                 var inTimeRange = view.IsInTimeRange(timelineTime);
                 if (inTimeRange == 0 && view.Status != SkillClipStatus.Doing)
                 {
-                    view.Start();
+                    view.Start(context);
                     view.Status = SkillClipStatus.Doing;
                 }
 
                 if (inTimeRange == 1 && view.Status != SkillClipStatus.End)
                 {
-                    view.Finish();
+                    view.Finish(context);
                     view.Status = SkillClipStatus.End;
                 }
 
                 if (inTimeRange == 0 && view.Status == SkillClipStatus.Doing)
                 {
-                    view.Update();
+                    view.Update(context);
                 }
             }
 
 
             context.DeltaTime = Time.deltaTime;
+            context.LastTimeLineTime = timelineTime;
             context.AllRunTime += Time.deltaTime;
         }
 
 
-        private void SerializeToRuntime(List<SkillClipLogicBase> logicRes, List<SkillClipViewBase> viewRes)
+        private void SerializeToRuntime(
+            List<SkillClipLogicBase> logicRes,
+            List<SkillClipViewBase> viewRes,
+            List<SkillMarkLogicBase> markLogicRes,
+            List<SkillMarkViewBase> markViewRes)
         {
             var tracks = skillEntityData.GetOutputTracks();
             foreach (var track in tracks)
@@ -299,7 +339,6 @@ namespace Script.Skill
                         if (logicClip is not null)
                         {
                             var logic = logicClip.Convert((float)asset.start, (float)asset.end);
-                            logic.Context = context;
                             logicRes.Add(logic);
                         }
 
@@ -307,8 +346,22 @@ namespace Script.Skill
                         if (viewClip is not null)
                         {
                             var view = viewClip.Convert((float)asset.start, (float)asset.end);
-                            view.Context = context;
                             viewRes.Add(view);
+                        }
+                    }
+
+                    foreach (var marker in track.GetMarkers())
+                    {
+                        if (marker is ISkillMarkConvertToLogic markLogic)
+                        {
+                            var markRuntime = markLogic.Convert();
+                            markLogicRes.Add(markRuntime);
+                        }
+
+                        if (marker is ISkillMarkConvertToView markView)
+                        {
+                            var markRuntime = markView.Convert();
+                            markViewRes.Add(markRuntime);
                         }
                     }
                 }

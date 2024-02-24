@@ -1,7 +1,5 @@
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
-using UnityEditor.Timeline;
-using UnityEngine.Timeline;
 
 namespace Script.Skill.TimelineTrack.Editor
 {

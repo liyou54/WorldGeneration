@@ -15,7 +15,7 @@ namespace Script.Skill.RuntimeSkillData.SkillView
         
         public GameObject Character { get; set; }
         public GameObject RunTimeParticle { get; set; }
-        public override void Start()
+        public override void Start(SkillContext context)
         {
             Component component = PatricleFx;
             component = TrailRenderer;
@@ -24,16 +24,16 @@ namespace Script.Skill.RuntimeSkillData.SkillView
                 return;
             }
 
-            Character = Context.Owner;
+            Character = context.Owner;
             RunTimeParticle = GameObject.Instantiate(component).gameObject;
         }
         
-        public override void Update()
+        public override void Update(SkillContext context)
         {
             RunTimeParticle.transform.position = Character.transform.position;
         }
 
-        public override void Finish()
+        public override void Finish(SkillContext context)
         {
             GameObject.Destroy(RunTimeParticle);
         }

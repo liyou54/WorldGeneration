@@ -2,7 +2,6 @@ namespace Script.Skill.SkillLogic
 {
     public abstract class SkillClipExecute
     {
-        public SkillContext Context;
         public SkillClipStatus Status { get; set; }
         public float StartTime;
         public float EndTime;
@@ -25,8 +24,8 @@ namespace Script.Skill.SkillLogic
             return 0;
         }
         
-        public virtual void Start(){}
-        public virtual void Update(){}
-        public virtual void Finish(){}
+        public virtual void Start(SkillContext Context){}
+        public virtual void Update(SkillContext Context){}
+        public virtual void Finish(SkillContext Context){}
     }
 }
