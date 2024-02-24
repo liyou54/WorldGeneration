@@ -24,7 +24,7 @@ namespace Script.Skill.RuntimeSkillData.SkillView
                 return;
             }
 
-            Character = context.Owner;
+            Character = context.Character;
             RunTimeParticle = GameObject.Instantiate(component).gameObject;
         }
         

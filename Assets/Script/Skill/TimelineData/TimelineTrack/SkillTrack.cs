@@ -4,6 +4,6 @@ using UnityEngine.Timeline;
 
 [TrackClipType(typeof(SkillClipBase))]
 [Serializable]
-public class BattleTrack : TrackAsset
+public class SkillTrack : TrackAsset
 {
 }

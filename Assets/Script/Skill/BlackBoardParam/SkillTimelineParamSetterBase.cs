@@ -8,10 +8,11 @@ namespace Script.Skill.BlackBoardParam
 {
 
     [HideReferenceObjectPicker] [Serializable]
-    public class SkillTimelineParamSetterBase<T> 
+    public class SkillTimelineParamSetterBase<T> :IBlackBoardKey
     {
-        [ValueDropdown("GetBlackBoardKey"),SerializeField]
-        public String BlackBoardKey;
+        [ValueDropdown("GetBlackBoardKey")]
+        public string BlackBoardKey;
+
 
         [SerializeField]
         private T Value;
@@ -29,8 +30,12 @@ namespace Script.Skill.BlackBoardParam
             return Timeline?.Invoke().GetBlackBoardKey<T>();
         }
 
-        
-    }
 
+        public string BlackBoardKeyField
+        {
+            get { return BlackBoardKey; }
+            set { BlackBoardKey = value; }
+        }
+    }
     
 }

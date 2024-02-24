@@ -32,7 +32,7 @@ namespace Script.Skill.TimelineTrack
                 "this.FollowType == SkillItemFollowType.Character")]
         [LabelText("是否跟随目标")]
         public bool IsFollow;
-
+        
         public SkillMarkViewBase Convert()
         {
             var res = new SkillMarkFxView(); 

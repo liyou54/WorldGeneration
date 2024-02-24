@@ -22,11 +22,11 @@ namespace Script.Skill.SkillLogic
         {
             if (!IsDynamicMoveTarget)
             {
-                var trs = context.Owner.transform;
+                var trs = context.Character.transform;
                 var forward = trs.forward * MovePosition.GetValue(context.SkillDataRuntime.BlackBoard).z;
                 var right = trs.right * MovePosition.GetValue(context.SkillDataRuntime.BlackBoard).x;
                 var up = trs.up * MovePosition.GetValue(context.SkillDataRuntime.BlackBoard).y;
-                TargetPosition = context.Owner.transform.position + forward + right + up;
+                TargetPosition = context.Character.transform.position + forward + right + up;
             }
             else
             {
@@ -41,17 +41,17 @@ namespace Script.Skill.SkillLogic
                 TargetPosition = MoveTarget.GetValue(context.SkillDataRuntime.BlackBoard).transform.position;
             }
             
-            var distance = Vector3.Distance(context.Owner.transform.position, TargetPosition);
+            var distance = Vector3.Distance(context.Character.transform.position, TargetPosition);
             if (distance < Speed * context.DeltaTime)
             {
-                context.Owner.transform.position = TargetPosition;
+                context.Character.transform.position = TargetPosition;
                 OnAttachTarget.SetValue(context.SkillDataRuntime.BlackBoard);        
                 Debug.Log("finish");
             }
             else
             {
-                var dir = (TargetPosition - context.Owner.transform.position).normalized;
-                context.Owner.transform.position += dir * Speed * context.DeltaTime;
+                var dir = (TargetPosition - context.Character.transform.position).normalized;
+                context.Character.transform.position += dir * Speed * context.DeltaTime;
             }
            
         }

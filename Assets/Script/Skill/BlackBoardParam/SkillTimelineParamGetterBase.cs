@@ -12,23 +12,28 @@ namespace Script.Skill.BlackBoardParam
         BlackBoard,
     }
 
-
-    [HideReferenceObjectPicker] [Serializable]
-    public class SkillTimelineParamGetterBase<T> 
+    public interface IBlackBoardKey
     {
-        [EnumToggleButtons]
-        public EInputType InputType;
+        public string BlackBoardKeyField { get; set; }
+    }
+
+
+    [HideReferenceObjectPicker]
+    [Serializable]
+    public class SkillTimelineParamGetterBase<T> : IBlackBoardKey
+    {
+        [EnumToggleButtons] public EInputType InputType;
 
         [ShowIf("InputType", EInputType.BlackBoard)] [ValueDropdown("GetBlackBoardKey")]
         public String BlackBoardKey;
 
-        [ShowIf("InputType", EInputType.Default),SerializeField]
+        [ShowIf("InputType", EInputType.Default), SerializeField]
         private T Value;
-        
-        
+
+
         [NonSerialized] public Func<SkillEntityTimeline> Timeline;
 
-        public T GetValue(BlackBoardParamSet  blackBoard)
+        public T GetValue(BlackBoardParamSet blackBoard)
         {
             if (InputType == EInputType.BlackBoard)
             {
@@ -46,8 +51,11 @@ namespace Script.Skill.BlackBoardParam
             return Timeline?.Invoke().GetBlackBoardKey<T>();
         }
 
-        
-    }
 
-    
+        public string BlackBoardKeyField
+        {
+            get { return BlackBoardKey; }
+            set { BlackBoardKey = value; }
+        }
+    }
 }

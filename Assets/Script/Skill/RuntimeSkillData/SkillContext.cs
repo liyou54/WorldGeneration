@@ -15,7 +15,12 @@ namespace Script.Skill.SkillLogic
         public float DeltaTime; // 时间间隔
         public float LastTimeLineTime; // 上一次Timeline时间
         
-        public GameObject Owner { get; set; }
+        public GameObject Character { get; set; }
+        
+        public GameObject Target { get; set; }
+        
+        public Vector3 TargetPosition { get; set; }
+        
         public SkillDataRuntime SkillDataRuntime { get; set; }
         public AnimancerComponent Animancer { get; set; }
 

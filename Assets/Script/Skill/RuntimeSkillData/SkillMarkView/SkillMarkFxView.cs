@@ -22,7 +22,7 @@ namespace Script.Skill.SkillLogic
             if (MarkExecute.PatricleFx != null)
             {
                 particleSystem = GameObject.Instantiate(MarkExecute.PatricleFx);
-                particleSystem.transform.position = Context.Owner.transform.position;
+                particleSystem.transform.position = Context.Character.transform.position;
                 particleSystem.Play();
             }
         }

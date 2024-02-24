@@ -29,213 +29,25 @@ namespace Script.Skill
         }
     }
 
-    public class SkillDataRuntime
+
+    public class PlaySkill
     {
-        private readonly List<SkillClipLogicBase> LogicList;
-        private readonly List<SkillClipViewBase> ViewList;
-        public BlackBoardParamSet BlackBoard;
-        private readonly List<TaskArea<SkillClipLogicBase>> PreLogicClipList = new List<TaskArea<SkillClipLogicBase>>();
-        public TaskArea<SkillClipLogicBase> LastLogicArea;
-        private readonly List<TaskArea<SkillClipViewBase>> PreViewClipList = new List<TaskArea<SkillClipViewBase>>();
-        public TaskArea<SkillClipViewBase> LastViewArea;
-
-        public List<SkillMarkLogicBase> MarkLogicList;
-        public List<SkillMarkViewBase> MarkViewList;
-
-        public float SkillDuring;
-
-        public SkillDataRuntime(
-            List<SkillClipLogicBase> logicList,
-            List<SkillClipViewBase> viewList,
-            List<SkillMarkLogicBase> markLogicList,
-            List<SkillMarkViewBase> markViewList,
-            BlackBoardParamSet blackBoard, float skillDuring)
-        {
-            LogicList = logicList;
-            ViewList = viewList;
-            BlackBoard = blackBoard;
-            SkillDuring = skillDuring;
-            MarkLogicList = markLogicList;
-            MarkViewList = markViewList;
-            PreLogicClipList.Clear();
-            PreViewClipList.Clear();
-            BuildTaskArea(LogicList, PreLogicClipList);
-            BuildTaskArea(ViewList, PreViewClipList);
-            LastLogicArea = PreLogicClipList[0];
-            LastViewArea = PreViewClipList[0];
-        }
-
-
-        public List<ISkillTimeJumpAble> GetLastJumpTimeAbleList()
-        {
-            return LastLogicArea?.SkillTimeJumpAbleList;
-        }
-
-        public List<SkillClipLogicBase> GetLastLogicList()
-        {
-            return LastLogicArea.ClipList;
-        }
-
-        public List<SkillClipViewBase> GetLastViewsList()
-        {
-            return LastViewArea.ClipList;
-        }
-
-        public void UpdateData(float time)
-        {
-            if (LastLogicArea != null && time >= LastLogicArea.StartTime && time <= LastLogicArea.EndTime)
-            {
-                return;
-            }
-
-            UpdateLastTaskArea(time);
-        }
-
-
-        private void UpdateLastTaskArea(float time)
-        {
-            foreach (var taskArea in PreLogicClipList)
-            {
-                if (time >= taskArea.StartTime && time <= taskArea.EndTime)
-                {
-                    LastLogicArea = taskArea;
-                    return;
-                }
-            }
-
-            foreach (var taskArea in PreViewClipList)
-            {
-                if (time >= taskArea.StartTime && time <= taskArea.EndTime)
-                {
-                    LastViewArea = taskArea;
-                    return;
-                }
-            }
-        }
-
-        private void BuildTaskArea<T>(List<T> srcData, List<TaskArea<T>> res) where T : SkillClipExecute
-        {
-            // 获取所有时间点
-            HashSet<float> timePoints = new HashSet<float>();
-            timePoints.Add(0);
-            timePoints.Add(SkillDuring);
-            foreach (var src in srcData)
-            {
-                timePoints.Add(src.StartTime);
-                timePoints.Add(src.EndTime);
-            }
-
-            // 对时间点进行排序
-            List<float> sortedTimePoints = timePoints.OrderBy(tp => tp).ToList();
-
-            // 划分时间片段并生成区间
-            for (int i = 0; i < sortedTimePoints.Count - 1; i++)
-            {
-                float startTime = sortedTimePoints[i];
-                float endTime = sortedTimePoints[i + 1];
-                res.Add(new TaskArea<T>(startTime, endTime));
-            }
-
-            // 将逻辑放入区间
-            foreach (var clip in srcData)
-            {
-                foreach (var taskArea in res)
-                {
-                    if (clip.StartTime >= taskArea.StartTime || clip.EndTime <= taskArea.EndTime)
-                    {
-                        if (clip is ISkillTimeJumpAble preUpdate)
-                        {
-                            taskArea.SkillTimeJumpAbleList.Add(preUpdate);
-                        }
-
-                        taskArea.ClipList.Add(clip);
-                    }
-                }
-            }
-        }
-    }
-
-    public class PlaySkill : MonoBehaviour
-    {
-        [FormerlySerializedAs("skillData")] public SkillEntityTimeline skillEntityData;
-
         public SkillContext context;
 
-        public GameObject owner;
-
-        //Debug 
-        [DictionaryDrawerSettings, ShowInInspector, NonSerialized, HideReferenceObjectPicker]
-        private BlackBoardParamSet blackBoardParamSet;
-
-
-        [Button]
-        public void Test()
+        public PlaySkill(SkillTimeline skillTimeline, GameObject character, GameObject target)
         {
-            context = new SkillContext();
-            List<SkillClipLogicBase> logicRes = new();
-            List<SkillClipViewBase> viewRes = new();
-            List<SkillMarkLogicBase> markLogicRes = new();
-            List<SkillMarkViewBase> markViewRes = new();
-            SerializeToRuntime(logicRes, viewRes, markLogicRes, markViewRes);
-            var blackBoard = skillEntityData.Data.Copy();
-            context.SkillDataRuntime = new SkillDataRuntime(logicRes, viewRes, markLogicRes, markViewRes, blackBoard, (float)skillEntityData.duration);
-            context.Owner = owner;
-            context.Animancer = owner.GetComponent<AnimancerComponent>();
-            blackBoardParamSet = blackBoard;
+            InitSkill(skillTimeline);
+            context.Character = character;
+            context.Animancer = character.GetComponent<AnimancerComponent>();
+            context.Target = target;
         }
 
-        public void UpJumpTime()
+        public PlaySkill(SkillTimeline skillTimeline, GameObject character, Vector3 targetPos)
         {
-            var lastLogicList = context.SkillDataRuntime.GetLastJumpTimeAbleList();
-            foreach (var logic in lastLogicList)
-            {
-                if (logic.Status != SkillClipStatus.End && logic.Status != SkillClipStatus.Finish)
-                {
-                    logic.JumpSkillTime(context);
-                }
-            }
-        }
-
-
-        public void OnSkillFinish()
-        {
-            var lastLogicList = context.SkillDataRuntime.GetLastLogicList();
-            foreach (var logic in lastLogicList)
-            {
-                if (logic.Status != SkillClipStatus.End && logic.Status != SkillClipStatus.NoStart)
-                {
-                    logic.Finish(context);
-                    logic.Status = SkillClipStatus.End;
-                }
-            }
-
-            var lastViewList = context.SkillDataRuntime.LastViewArea.ClipList;
-            foreach (var view in lastViewList)
-            {
-                if (view.Status != SkillClipStatus.End && view.Status != SkillClipStatus.NoStart)
-                {
-                    view.Finish(context);
-                    view.Status = SkillClipStatus.End;
-                }
-            }
-
-            var lastMarkLogicList = context.SkillDataRuntime.MarkLogicList;
-            
-            foreach (var markLogic in lastMarkLogicList)
-            {
-                markLogic.Finish();                
-            }
-            
-            var lastMarkViewList = context.SkillDataRuntime.MarkViewList;
-            foreach (var markView in lastMarkViewList)
-            {
-                markView.Finish();
-            }
-            
-            Debug.Log("技能结束");
-            context.Owner.transform.position = Vector3.zero;
-            context = null;
-            blackBoardParamSet = null;
+            InitSkill(skillTimeline);
+            context.Character = character;
+            context.Animancer = character.GetComponent<AnimancerComponent>();
+            context.TargetPosition = targetPos;
         }
 
         public void Update()
@@ -252,13 +64,13 @@ namespace Script.Skill
             }
 
 
-            UpJumpTime();
+            UpdateJumpTime();
 
 
             var timelineTime = context.GetTimelineTime();
             context.SkillDataRuntime.UpdateData(timelineTime);
             var logics = context.SkillDataRuntime.GetLastLogicList();
-            
+
             foreach (var logic in logics)
             {
                 var inTimeRange = logic.IsInTimeRange(timelineTime);
@@ -289,7 +101,6 @@ namespace Script.Skill
             {
                 markView.Update(context);
             }
-            
 
 
             var views = context.SkillDataRuntime.GetLastViewsList();
@@ -321,16 +132,84 @@ namespace Script.Skill
         }
 
 
+        private void InitSkill(SkillTimeline skillTimeline)
+        {
+            context = new SkillContext();
+            List<SkillClipLogicBase> logicRes = new();
+            List<SkillClipViewBase> viewRes = new();
+            List<SkillMarkLogicBase> markLogicRes = new();
+            List<SkillMarkViewBase> markViewRes = new();
+            SerializeToRuntime(logicRes, viewRes, markLogicRes, markViewRes, skillTimeline);
+            var blackBoard = skillTimeline.Data.CopyTo();
+            context.SkillDataRuntime = new SkillDataRuntime(logicRes, viewRes, markLogicRes, markViewRes, blackBoard, (float)skillTimeline.duration);
+        }
+
+        private void UpdateJumpTime()
+        {
+            var lastLogicList = context.SkillDataRuntime.GetLastJumpTimeAbleList();
+            foreach (var logic in lastLogicList)
+            {
+                if (logic.Status != SkillClipStatus.End && logic.Status != SkillClipStatus.Finish)
+                {
+                    logic.JumpSkillTime(context);
+                }
+            }
+        }
+
+
+        private void OnSkillFinish()
+        {
+            var lastLogicList = context.SkillDataRuntime.GetLastLogicList();
+            foreach (var logic in lastLogicList)
+            {
+                if (logic.Status != SkillClipStatus.End && logic.Status != SkillClipStatus.NoStart)
+                {
+                    logic.Finish(context);
+                    logic.Status = SkillClipStatus.End;
+                }
+            }
+
+            var lastViewList = context.SkillDataRuntime.LastViewArea.ClipList;
+            foreach (var view in lastViewList)
+            {
+                if (view.Status != SkillClipStatus.End && view.Status != SkillClipStatus.NoStart)
+                {
+                    view.Finish(context);
+                    view.Status = SkillClipStatus.End;
+                }
+            }
+
+            var lastMarkLogicList = context.SkillDataRuntime.MarkLogicList;
+
+            foreach (var markLogic in lastMarkLogicList)
+            {
+                markLogic.Finish();
+            }
+
+            var lastMarkViewList = context.SkillDataRuntime.MarkViewList;
+            foreach (var markView in lastMarkViewList)
+            {
+                markView.Finish();
+            }
+
+            Debug.Log("技能结束");
+            context.Character.transform.position = Vector3.zero;
+            context = null;
+        }
+
+
         private void SerializeToRuntime(
             List<SkillClipLogicBase> logicRes,
             List<SkillClipViewBase> viewRes,
             List<SkillMarkLogicBase> markLogicRes,
-            List<SkillMarkViewBase> markViewRes)
+            List<SkillMarkViewBase> markViewRes,
+            SkillTimeline skillTimeline
+        )
         {
-            var tracks = skillEntityData.GetOutputTracks();
+            var tracks = skillTimeline.GetOutputTracks();
             foreach (var track in tracks)
             {
-                if (track is BattleTrack battleTrack)
+                if (track is SkillTrack battleTrack)
                 {
                     var battleClip = battleTrack.GetClips();
                     foreach (var asset in battleClip)
