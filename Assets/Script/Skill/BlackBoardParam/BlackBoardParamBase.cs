@@ -13,6 +13,7 @@ namespace Script.Skill.BlackBoardParam
     public abstract class BlackBoardParam
     {
          public abstract string Key { get; set; }
+         public abstract bool ReadOnly { get; set; }
          public abstract void CopyTo(BlackBoardParam other);
 
     }
@@ -27,6 +28,40 @@ namespace Script.Skill.BlackBoardParam
         
     }
     
+    public class BlackBoardQuaternionParam:BlackBoardParam<Quaternion>
+    {
+        
+    }
+    
+    public class BlackBoardVector3Param:BlackBoardParam<Vector3>
+    {
+        
+    }
+    
+    public class BlackBoardFloatParam:BlackBoardParam<float>
+    {
+        
+    }
+    
+    public class BlackBoardStringParam:BlackBoardParam<string>
+    {
+        
+    }
+    
+    public class BlackBoardGameObjectParam:BlackBoardParam<GameObject>
+    {
+        
+    }
+    
+    public class BlackBoardTransformParam:BlackBoardParam<Transform>
+    {
+        
+    }
+    
+    public class BlackBoardColorParam:BlackBoardParam<Color>
+    {
+        
+    }
     
     [HideReferenceObjectPicker]
     public abstract class BlackBoardParam<T>:BlackBoardParam
@@ -42,7 +77,9 @@ namespace Script.Skill.BlackBoardParam
         #endregion
 
         [HideReferenceObjectPicker] public T Value;
-        [field: SerializeField] public bool ReadOnly { get; set; }
+        
+        [field: SerializeField]
+        public override bool ReadOnly { get; set; }
         
         
         public override void CopyTo(BlackBoardParam other) 

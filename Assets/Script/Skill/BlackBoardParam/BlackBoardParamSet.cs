@@ -70,7 +70,7 @@ namespace Script.Skill.BlackBoardParam
                 {
                     var newItem = (BlackBoardParam)Activator.CreateInstance(item.GetType());
                     temp.CopyTo(newItem);
-                    dst.Data.Add(newItem);
+                    dst.DataDictRuntime.Add(newItem.Key, newItem);
                 }
             }
         }

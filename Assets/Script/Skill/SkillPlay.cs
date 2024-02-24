@@ -30,11 +30,11 @@ namespace Script.Skill
     }
 
 
-    public class PlaySkill
+    public class SkillPlay
     {
         public SkillContext context;
 
-        public PlaySkill(SkillTimeline skillTimeline, GameObject character, GameObject target)
+        public SkillPlay(SkillTimeline skillTimeline, GameObject character, GameObject target)
         {
             InitSkill(skillTimeline);
             context.Character = character;
@@ -42,7 +42,7 @@ namespace Script.Skill
             context.Target = target;
         }
 
-        public PlaySkill(SkillTimeline skillTimeline, GameObject character, Vector3 targetPos)
+        public SkillPlay(SkillTimeline skillTimeline, GameObject character, Vector3 targetPos)
         {
             InitSkill(skillTimeline);
             context.Character = character;

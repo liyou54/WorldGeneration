@@ -107,7 +107,11 @@ namespace Script.Skill.BlackBoardParam.Editor
             EditorGUILayout.EndHorizontal();
             if (IsFoldout)
             {
+                EditorGUI.indentLevel += 2;
                 Property.Children["Value"].Draw(new GUIContent("Value"));
+                data.ReadOnly = EditorGUILayout.Toggle("ReadOnly", data.ReadOnly);
+                EditorGUI.indentLevel -= 2;
+
             }
         }
     }

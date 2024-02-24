@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
-using Sirenix.Utilities.Editor;
 using UnityEngine;
 
 namespace Script.Skill.BlackBoardParam.Editor
 {
     public class BlackBoardParamSetInspector : OdinValueDrawer<BlackBoardParamSet>
     {
-        public IEnumerable<Type>  GetParamType()
+        public IEnumerable<Type> GetParamType()
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
@@ -41,12 +39,39 @@ namespace Script.Skill.BlackBoardParam.Editor
             {
                 AddParam();
             }
-            
         }
-        
+
+        private string GetDefaultName(Type type)
+        {
+            var baseName = type.Name.Substring(10, type.Name.Length - 5 - 10);
+            var index = 0;
+            while (true)
+            {
+                var find = false;
+                foreach (var param in this.ValueEntry.SmartValue.Data)
+                {
+                    if ((param as BlackBoardParam).Key == baseName + "_" + index)
+                    {
+                        find = true;
+                        break;
+                    }
+                }
+
+                if (find)
+                {
+                    index++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return baseName + "_" + index;
+        }
+
         private void AddParam()
         {
-            
             GenericSelector<Type> CustomGenericSelector;
             IEnumerable<GenericSelectorItem<Type>> customCollection = GetParamType().Select(x => new GenericSelectorItem<Type>(x.Name, x));
             CustomGenericSelector = new GenericSelector<Type>("添加黑板变量", false, customCollection);
@@ -57,13 +82,14 @@ namespace Script.Skill.BlackBoardParam.Editor
                 if (result != null)
                 {
                     var instance = Activator.CreateInstance(result);
+                    var blackBoardParam = instance as BlackBoardParam;
+
+                    blackBoardParam.Key = GetDefaultName(instance.GetType());
+
                     this.ValueEntry.SmartValue.Data.Add(instance);
                 }
             };
             CustomGenericSelector.ShowInPopup();
-            
-
         }
-        
     }
 }

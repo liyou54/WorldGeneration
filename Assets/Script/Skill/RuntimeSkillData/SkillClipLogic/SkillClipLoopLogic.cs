@@ -16,6 +16,7 @@ namespace Script.Skill.SkillLogic
         {
             var timelineTime = context.GetTimelineTime();
             var isBreak = BreakCondition.GetValue(context.SkillDataRuntime.BlackBoard);
+            Debug.Log(timelineTime);
             var jumpToTimelineTime = -1f;
             var isOutTime = timelineTime >= EndTime;
             if (isBreak && !IsContinuePlayWhenTrue)

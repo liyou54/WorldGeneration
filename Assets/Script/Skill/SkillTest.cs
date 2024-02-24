@@ -11,21 +11,21 @@ public class SkillTest : MonoBehaviour
     public Vector3 TargetPosition;
     public SkillTimeline skillTimeline;
     public EntityManager entityManager;
-    public PlaySkill playSkill;
+    public SkillPlay SkillPlay;
     [Button("Play")]
     public void Play()
     {
-        playSkill = new PlaySkill(skillTimeline,Character,TargetPosition);
+        SkillPlay = new SkillPlay(skillTimeline,Character,TargetPosition);
     }
     
     public void Update()
     {
-        if (playSkill == null)
+        if (SkillPlay == null)
         {
             return;
         }
         
-        playSkill.Update();
+        SkillPlay.Update();
     }
     
 }
