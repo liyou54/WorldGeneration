@@ -14,7 +14,7 @@ namespace Script.Skill.TimelineTrack
         public AnimationClip AnimationClip;
 
 
-        public SkillClipViewBase Convert(float start, float end)
+        public SkillClipExecute ConvertToView(float start, float end)
         {
             var view = new SkillClipClipAnimationView();
             view.AnimationClip = AnimationClip;
@@ -22,5 +22,6 @@ namespace Script.Skill.TimelineTrack
             view.EndTime = end;
             return view;
         }
+
     }
 }

@@ -15,7 +15,7 @@ public abstract class SkillEntityTimeline : TimelineAsset, ISerializationCallbac
 {
     [NonSerialized, ShowInInspector] public BlackBoardParamSet Data = new BlackBoardParamSet();
     [SerializeField, HideInInspector] private byte[] DataBytes;
-
+    
     public void OnBeforeSerialize()
     {
         if (Data != null)

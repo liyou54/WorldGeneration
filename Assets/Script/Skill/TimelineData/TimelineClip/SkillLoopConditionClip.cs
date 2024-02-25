@@ -14,7 +14,7 @@ namespace Script.Skill.TimelineTrack
         [LabelText("达到条件是否继续播放")]
         public bool IsContinuePlayWhenTrue;
 
-        public SkillClipLogicBase Convert(float start, float end)
+        public SkillClipExecute ConvertToLogic(float start, float end)
         {
             var logic = new SkillClipLoopLogic();
             logic.BreakCondition = BreakCondition;

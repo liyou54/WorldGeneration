@@ -5,7 +5,7 @@ using Debug = UnityEngine.Debug;
 
 namespace Script.Skill.SkillLogic
 {
-    public class SkillClipMoveLogic : SkillClipLogicBase
+    public class SkillClipMoveLogic : SkillClipExecute
     {
         Vector3 TargetPosition { get; set; }
 

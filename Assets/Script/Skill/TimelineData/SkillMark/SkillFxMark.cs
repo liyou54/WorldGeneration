@@ -33,7 +33,8 @@ namespace Script.Skill.TimelineTrack
         [LabelText("是否跟随目标")]
         public bool IsFollow;
         
-        public SkillMarkViewBase Convert()
+
+        public SkillMarkExecute ConvertToView()
         {
             var res = new SkillMarkFxView(); 
             res.PatricleFx = PatricleFx;

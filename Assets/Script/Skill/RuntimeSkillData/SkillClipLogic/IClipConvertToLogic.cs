@@ -1,8 +1,8 @@
 using Script.Skill.SkillLogic;
 
-public interface IClipConvertToLogic:ISkillClipConvert<SkillClipLogicBase>
+public interface IClipConvertToLogic
 {
-    
+    public SkillClipExecute ConvertToLogic(float start, float end);
 }
 
 public interface ISkillTimeJumpAble

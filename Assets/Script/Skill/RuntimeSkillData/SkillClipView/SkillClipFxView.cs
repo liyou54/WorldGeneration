@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Script.Skill.RuntimeSkillData.SkillView
 {
-    public class SkillClipFxView:SkillClipViewBase
+    public class SkillClipFxView:SkillClipExecute
     {
         public ParticleSystem PatricleFx { get; set; }
         public TrailRenderer TrailRenderer { get; set; }

@@ -34,12 +34,15 @@ namespace Script.Skill
     {
         public SkillContext context;
 
+        public float TimeScale = 1;
+        
         public SkillPlay(SkillTimeline skillTimeline, GameObject character, GameObject target)
         {
             InitSkill(skillTimeline);
             context.Character = character;
             context.Animancer = character.GetComponent<AnimancerComponent>();
             context.Target = target;
+            TimeScale = 1;
         }
 
         public SkillPlay(SkillTimeline skillTimeline, GameObject character, Vector3 targetPos)
@@ -48,6 +51,12 @@ namespace Script.Skill
             context.Character = character;
             context.Animancer = character.GetComponent<AnimancerComponent>();
             context.TargetPosition = targetPos;
+            TimeScale = 1;
+        }
+        
+        public void SetTimeScale(float timeScale)
+        {
+            TimeScale = timeScale;
         }
 
         public void Update()
@@ -125,20 +134,20 @@ namespace Script.Skill
                 }
             }
 
-
-            context.DeltaTime = Time.deltaTime;
+            float scaleDeltaTime = Time.deltaTime * TimeScale;
+            context.DeltaTime = scaleDeltaTime;
             context.LastTimeLineTime = timelineTime;
-            context.AllRunTime += Time.deltaTime;
+            context.AllRunTime += scaleDeltaTime;
         }
 
 
         private void InitSkill(SkillTimeline skillTimeline)
         {
             context = new SkillContext();
-            List<SkillClipLogicBase> logicRes = new();
-            List<SkillClipViewBase> viewRes = new();
-            List<SkillMarkLogicBase> markLogicRes = new();
-            List<SkillMarkViewBase> markViewRes = new();
+            List<SkillClipExecute> logicRes = new();
+            List<SkillClipExecute> viewRes = new();
+            List<SkillMarkExecute> markLogicRes = new();
+            List<SkillMarkExecute> markViewRes = new();
             SerializeToRuntime(logicRes, viewRes, markLogicRes, markViewRes, skillTimeline);
             var blackBoard = skillTimeline.Data.CopyTo();
             context.SkillDataRuntime = new SkillDataRuntime(logicRes, viewRes, markLogicRes, markViewRes, blackBoard, (float)skillTimeline.duration);
@@ -199,10 +208,10 @@ namespace Script.Skill
 
 
         private void SerializeToRuntime(
-            List<SkillClipLogicBase> logicRes,
-            List<SkillClipViewBase> viewRes,
-            List<SkillMarkLogicBase> markLogicRes,
-            List<SkillMarkViewBase> markViewRes,
+            List<SkillClipExecute> logicRes,
+            List<SkillClipExecute> viewRes,
+            List<SkillMarkExecute> markLogicRes,
+            List<SkillMarkExecute> markViewRes,
             SkillTimeline skillTimeline
         )
         {
@@ -217,14 +226,14 @@ namespace Script.Skill
                         var logicClip = asset.asset as IClipConvertToLogic;
                         if (logicClip is not null)
                         {
-                            var logic = logicClip.Convert((float)asset.start, (float)asset.end);
+                            var logic = logicClip.ConvertToLogic((float)asset.start, (float)asset.end);
                             logicRes.Add(logic);
                         }
 
                         var viewClip = asset.asset as IClipConvertToView;
                         if (viewClip is not null)
                         {
-                            var view = viewClip.Convert((float)asset.start, (float)asset.end);
+                            var view = viewClip.ConvertToView((float)asset.start, (float)asset.end);
                             viewRes.Add(view);
                         }
                     }
@@ -233,13 +242,13 @@ namespace Script.Skill
                     {
                         if (marker is ISkillMarkConvertToLogic markLogic)
                         {
-                            var markRuntime = markLogic.Convert();
+                            var markRuntime = markLogic.ConvertToLogic();
                             markLogicRes.Add(markRuntime);
                         }
 
                         if (marker is ISkillMarkConvertToView markView)
                         {
-                            var markRuntime = markView.Convert();
+                            var markRuntime = markView.ConvertToView();
                             markViewRes.Add(markRuntime);
                         }
                     }

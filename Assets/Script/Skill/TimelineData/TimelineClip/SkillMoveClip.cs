@@ -21,7 +21,7 @@ namespace Script.Skill.TimelineTrack
 
         [LabelText("移动速度")] [GraphProcessor.ShowInInspector] public float Speed;
 
-        public SkillClipLogicBase Convert(float start, float end)
+        public SkillClipExecute ConvertToLogic(float start, float end)
         {
             var res = new SkillClipMoveLogic();
             res.MoveTarget = MoveTarget;
@@ -33,5 +33,6 @@ namespace Script.Skill.TimelineTrack
             res.OnAttachTarget = OnAttactTarget;
             return res;
         }
+
     }
 }

@@ -5,7 +5,7 @@ using Debug = UnityEngine.Debug;
 namespace Script.Skill.SkillLogic
 {
     // 这个类用于控制循环
-    public class SkillClipLoopLogic:SkillClipLogicBase,ISkillTimeJumpAble
+    public class SkillClipLoopLogic:SkillClipExecute,ISkillTimeJumpAble
     {
         public SkillTimelineParamGetterBase<bool> BreakCondition;
         public bool IsContinuePlayWhenTrue;

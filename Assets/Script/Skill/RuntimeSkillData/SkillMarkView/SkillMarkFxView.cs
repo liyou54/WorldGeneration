@@ -40,7 +40,7 @@ namespace Script.Skill.SkillLogic
         public SkillContext Context { get; set; }
     }
 
-    public class SkillMarkFxView : SkillMarkViewBase
+    public class SkillMarkFxView : SkillMarkExecute
     {
         public ParticleSystem PatricleFx { get; set; }
         public SkillItemFollowType FollowType { get; set; }

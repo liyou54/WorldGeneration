@@ -22,9 +22,12 @@ namespace Script.Skill.BlackBoardParam
     [Serializable]
     public class SkillTimelineParamGetterBase<T> : IBlackBoardKey
     {
-        [EnumToggleButtons] public EInputType InputType;
+        [EnumToggleButtons]
+        [LabelText("输入类型")]
+        public EInputType InputType;
 
-        [ShowIf("InputType", EInputType.BlackBoard)] [ValueDropdown("GetBlackBoardKey")]
+        [ShowIf("InputType", EInputType.BlackBoard)] 
+        [ValueDropdown("GetBlackBoardKey")]
         public String BlackBoardKey;
 
         [ShowIf("InputType", EInputType.Default), SerializeField]

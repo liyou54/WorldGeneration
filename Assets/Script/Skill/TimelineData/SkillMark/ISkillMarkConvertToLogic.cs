@@ -2,8 +2,8 @@ using Script.Skill.SkillLogic;
 
 namespace Script.Skill.TimelineTrack
 {
-    public interface ISkillMarkConvertToLogic:ISkillMarkConvert<SkillMarkLogicBase>
+    public interface ISkillMarkConvertToLogic
     {
-        
+       public SkillMarkExecute ConvertToLogic();
     }
 }

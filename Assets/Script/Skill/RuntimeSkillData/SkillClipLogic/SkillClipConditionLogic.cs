@@ -1,6 +1,6 @@
 namespace Script.Skill.SkillLogic
 {
-    public class SkillClipConditionLogic : SkillClipLogicBase
+    public class SkillClipConditionLogic : SkillClipExecute
     {
         public override void Start(SkillContext context)
         {

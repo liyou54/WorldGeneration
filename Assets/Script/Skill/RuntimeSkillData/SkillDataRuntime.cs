@@ -6,24 +6,24 @@ namespace Script.Skill.SkillLogic
 {
     public class SkillDataRuntime
     {
-        private readonly List<SkillClipLogicBase> LogicList;
-        private readonly List<SkillClipViewBase> ViewList;
+        private readonly List<SkillClipExecute> LogicList;
+        private readonly List<SkillClipExecute> ViewList;
         public BlackBoardParamSet BlackBoard;
-        private readonly List<TaskArea<SkillClipLogicBase>> PreLogicClipList = new List<TaskArea<SkillClipLogicBase>>();
-        public TaskArea<SkillClipLogicBase> LastLogicArea;
-        private readonly List<TaskArea<SkillClipViewBase>> PreViewClipList = new List<TaskArea<SkillClipViewBase>>();
-        public TaskArea<SkillClipViewBase> LastViewArea;
+        private readonly List<TaskArea<SkillClipExecute>> PreLogicClipList = new List<TaskArea<SkillClipExecute>>();
+        public TaskArea<SkillClipExecute> LastLogicArea;
+        private readonly List<TaskArea<SkillClipExecute>> PreViewClipList = new List<TaskArea<SkillClipExecute>>();
+        public TaskArea<SkillClipExecute> LastViewArea;
 
-        public List<SkillMarkLogicBase> MarkLogicList;
-        public List<SkillMarkViewBase> MarkViewList;
+        public List<SkillMarkExecute> MarkLogicList;
+        public List<SkillMarkExecute> MarkViewList;
 
         public float SkillDuring;
 
         public SkillDataRuntime(
-            List<SkillClipLogicBase> logicList,
-            List<SkillClipViewBase> viewList,
-            List<SkillMarkLogicBase> markLogicList,
-            List<SkillMarkViewBase> markViewList,
+            List<SkillClipExecute> logicList,
+            List<SkillClipExecute> viewList,
+            List<SkillMarkExecute> markLogicList,
+            List<SkillMarkExecute> markViewList,
             BlackBoardParamSet blackBoard, float skillDuring)
         {
             LogicList = logicList;
@@ -46,12 +46,12 @@ namespace Script.Skill.SkillLogic
             return LastLogicArea?.SkillTimeJumpAbleList;
         }
 
-        public List<SkillClipLogicBase> GetLastLogicList()
+        public List<SkillClipExecute> GetLastLogicList()
         {
             return LastLogicArea.ClipList;
         }
 
-        public List<SkillClipViewBase> GetLastViewsList()
+        public List<SkillClipExecute> GetLastViewsList()
         {
             return LastViewArea.ClipList;
         }
