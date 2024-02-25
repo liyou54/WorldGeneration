@@ -17,6 +17,5 @@ namespace Battle.Operation
         public void Start(BattleContext context,EntityBase entityBase);
         public void Update(BattleContext context,EntityBase entityBase);
         public void Finish(BattleContext context,EntityBase entityBase);
-
     }
 }

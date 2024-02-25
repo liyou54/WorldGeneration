@@ -41,19 +41,14 @@ namespace Script.Skill.SkillLogic
         Replay,
     }
 
-    public enum SkillMarkPersistentTimeType
-    {
-        Immediately,
-        Tween,
-    }
     
-    [Serializable]
+    
+    
     public abstract class SkillMarkExecute : IComparable<SkillMarkExecute>
     {
         public List<ISkillMarkExecuteInstance> CurrentPlayList = new List<ISkillMarkExecuteInstance>();
         public float StartTime;
         SkillMarkReplyType MarkReplyType;
-        SkillMarkPersistentTimeType PersistentTimeType;
 
         public bool IsPlaying => CurrentPlayList?.Count > 0;
 
@@ -87,11 +82,6 @@ namespace Script.Skill.SkillLogic
             if (!IsPlaying && !IsInTime(context))
             {
                 return;
-            }
-
-            if (IsInTime(context) && PersistentTimeType == SkillMarkPersistentTimeType.Immediately)
-            {
-                
             }
             
             if (CanAddMark(context))

@@ -15,9 +15,34 @@ public abstract class SkillEntityTimeline : TimelineAsset, ISerializationCallbac
 {
     [NonSerialized, ShowInInspector] public BlackBoardParamSet Data = new BlackBoardParamSet();
     [SerializeField, HideInInspector] private byte[] DataBytes;
+
+    public void SetRequireBoardBlack()
+    {
+        Dictionary<string,Type> typeDict = new Dictionary<string, Type>()
+        {
+            { "TargetGo" , typeof(BlackBoardGameObjectParam) },
+            { "TargetPos" , typeof(BlackBoardVector3Param) },
+        };
+        
+        
+        foreach (var requireKv in typeDict)
+        {
+            var key = requireKv.Key;
+            var hasAdd = Data.Data.Any(obj => (obj as BlackBoardParam).Key == key);
+            if (!hasAdd)
+            {
+                var type = requireKv.Value;
+                var instance = Activator.CreateInstance(type);
+                (instance as BlackBoardParam).Key = key;
+                Data.Data.Add(instance);
+            }
+        }
+    }
     
     public void OnBeforeSerialize()
     {
+        SetRequireBoardBlack();
+        
         if (Data != null)
         {
             DataBytes = SerializationUtility.SerializeValue(Data, DataFormat.JSON);

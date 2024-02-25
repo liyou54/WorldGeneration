@@ -11,7 +11,7 @@ namespace Script.Skill.TimelineTrack
 {
     
     [DisplayName("技能/Mark/子弹")]
-    public class SkillBulletMark : SkillMarkBase,ISkillDataHasEffect,ISkillMarkConvertToLogic
+    public class SkillBulletMark : SkillMarkBase,ISkillDataHasEffect,IMarkConvertToEmitter
     {
         [LabelText("目标对象")] public SkillTimelineParamGetterBase<GameObject> TargetGo;
         [LabelText("目标位置")] public SkillTimelineParamGetterBase<Vector3> TargetPos;
@@ -30,16 +30,15 @@ namespace Script.Skill.TimelineTrack
             base.OnBeforeSerialize();
             
         }
-
- 
-        public SkillMarkExecute ConvertToLogic()
+        public SkillMarkEmitter ConvertToEmitter()
         {
-            var logic = new SkillMarkBulletLogic();
+            var logic = new SkillMarkBulletEmitter();
             logic.TargetGo = TargetGo;
             logic.TargetPos = TargetPos;
             logic.BulletPrefab = BulletPrefab;
             logic.Speed = Speed;
             logic.BoneName = BoneName;
+            logic.StartTime = (float)time;
             logic.Offset = Offset;
             logic.EffectDataList = EffectDataList;
             return logic;

@@ -16,9 +16,5 @@ namespace Battle
             var team1 = factionManager.GetFactionMembers(1);
             var team2 = factionManager.GetEnemyMembers(2);
         }
-        
-        
-        
-        
     }
 }

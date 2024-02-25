@@ -15,7 +15,7 @@ public class SkillTest : MonoBehaviour
     [Button("Play")]
     public void Play()
     {
-        SkillPlay = new SkillPlay(skillTimeline,Character,TargetPosition);
+        SkillPlay = new SkillPlay(skillTimeline,Character,Target);
     }
     
     public void Update()

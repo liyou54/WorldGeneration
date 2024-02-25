@@ -55,6 +55,7 @@ namespace Script.Skill.BlackBoardParam
     [HideReferenceObjectPicker]
     public abstract class BlackBoardParam<T> : BlackBoardParam
     {
+        
         [field: SerializeField] public override string Key { get; set; }
 
         public T Value;

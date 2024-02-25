@@ -32,135 +32,148 @@ namespace Script.Skill
 
     public class SkillPlay
     {
-        public SkillContext context;
+        private SkillContext _context;
 
-        public float TimeScale = 1;
-        
+        private float _timeScale = 1f;
+
         public SkillPlay(SkillTimeline skillTimeline, GameObject character, GameObject target)
         {
             InitSkill(skillTimeline);
-            context.Character = character;
-            context.Animancer = character.GetComponent<AnimancerComponent>();
-            context.Target = target;
-            TimeScale = 1;
+            _context.SetBlackData("TargetGo", target);
+            _context.Character = character;
+            _context.Animancer = character.GetComponent<AnimancerComponent>();
+            _context.Target = target;
+            _timeScale = 1;
         }
+
 
         public SkillPlay(SkillTimeline skillTimeline, GameObject character, Vector3 targetPos)
         {
             InitSkill(skillTimeline);
-            context.Character = character;
-            context.Animancer = character.GetComponent<AnimancerComponent>();
-            context.TargetPosition = targetPos;
-            TimeScale = 1;
+            _context.SetBlackData("TargetPos", targetPos);
+            _context.Character = character;
+            _context.Animancer = character.GetComponent<AnimancerComponent>();
+            _context.TargetPosition = targetPos;
+            _timeScale = 1;
         }
-        
+
         public void SetTimeScale(float timeScale)
         {
-            TimeScale = timeScale;
+            _timeScale = timeScale;
         }
 
-        public void Update()
+
+        private void UpdateLogic()
         {
-            if (context == null)
-            {
-                return;
-            }
-
-            if (context.GetTimelineTime() > context.SkillDataRuntime.SkillDuring)
-            {
-                OnSkillFinish();
-                return;
-            }
-
-
-            UpdateJumpTime();
-
-
-            var timelineTime = context.GetTimelineTime();
-            context.SkillDataRuntime.UpdateData(timelineTime);
-            var logics = context.SkillDataRuntime.GetLastLogicList();
+            var timelineTime = _context.GetTimelineTime();
+            var logics = _context.SkillDataRuntime.GetLastLogicList();
 
             foreach (var logic in logics)
             {
                 var inTimeRange = logic.IsInTimeRange(timelineTime);
                 if (inTimeRange == 0 && logic.Status != SkillClipStatus.Doing)
                 {
-                    logic.Start(context);
+                    logic.Start(_context);
                     logic.Status = SkillClipStatus.Doing;
                 }
 
                 if (inTimeRange == 1 && logic.Status != SkillClipStatus.End)
                 {
-                    logic.Finish(context);
+                    logic.Finish(_context);
                     logic.Status = SkillClipStatus.End;
                 }
 
                 if (inTimeRange == 0 && logic.Status == SkillClipStatus.Doing)
                 {
-                    logic.Update(context);
+                    logic.Update(_context);
                 }
             }
 
-            foreach (var markLogic in context.SkillDataRuntime.MarkLogicList)
+            foreach (var markLogic in _context.SkillDataRuntime.MarkLogicList)
             {
-                markLogic.Update(context);
+                markLogic.Update(_context);
+            }
+        }
+
+        private void UpdateView()
+        {
+            var timelineTime = _context.GetTimelineTime();
+
+            foreach (var markView in _context.SkillDataRuntime.MarkViewList)
+            {
+                markView.Update(_context);
             }
 
-            foreach (var markView in context.SkillDataRuntime.MarkViewList)
-            {
-                markView.Update(context);
-            }
-
-
-            var views = context.SkillDataRuntime.GetLastViewsList();
+            var views = _context.SkillDataRuntime.GetLastViewsList();
             foreach (var view in views)
             {
                 var inTimeRange = view.IsInTimeRange(timelineTime);
                 if (inTimeRange == 0 && view.Status != SkillClipStatus.Doing)
                 {
-                    view.Start(context);
+                    view.Start(_context);
                     view.Status = SkillClipStatus.Doing;
                 }
 
                 if (inTimeRange == 1 && view.Status != SkillClipStatus.End)
                 {
-                    view.Finish(context);
+                    view.Finish(_context);
                     view.Status = SkillClipStatus.End;
                 }
 
                 if (inTimeRange == 0 && view.Status == SkillClipStatus.Doing)
                 {
-                    view.Update(context);
+                    view.Update(_context);
                 }
             }
+        }
 
-            float scaleDeltaTime = Time.deltaTime * TimeScale;
-            context.DeltaTime = scaleDeltaTime;
-            context.LastTimeLineTime = timelineTime;
-            context.AllRunTime += scaleDeltaTime;
+        public void Update()
+        {
+            if (_context == null)
+            {
+                return;
+            }
+
+            if (_context.GetTimelineTime() > _context.SkillDataRuntime.SkillDuring)
+            {
+                OnSkillFinish();
+                return;
+            }
+
+            UpdateJumpTime();
+            var timelineTime = _context.GetTimelineTime();
+            _context.SkillDataRuntime.UpdateData(timelineTime);
+            UpdateLogic();
+            _context.SkillDataRuntime.UpdateMarkEmitter(_context);
+            UpdateView();
+            float scaleDeltaTime = Time.deltaTime * _timeScale;
+            _context.DeltaTime = scaleDeltaTime;
+            _context.LastTimeLineTime = timelineTime;
+            _context.AllRunTime += scaleDeltaTime;
         }
 
 
         private void InitSkill(SkillTimeline skillTimeline)
         {
-            context = new SkillContext();
+            _context = new SkillContext();
             List<SkillClipExecute> logicRes = new();
             List<SkillClipExecute> viewRes = new();
             List<SkillMarkExecute> markLogicRes = new();
             List<SkillMarkExecute> markViewRes = new();
-            SerializeToRuntime(logicRes, viewRes, markLogicRes, markViewRes, skillTimeline);
+            List<SkillMarkEmitter> skillMarkEmitters = new();
+            SerializeToRuntime(logicRes, viewRes, markLogicRes, markViewRes, skillMarkEmitters, skillTimeline);
             var blackBoard = skillTimeline.Data.CopyTo();
-            context.SkillDataRuntime = new SkillDataRuntime(logicRes, viewRes, markLogicRes, markViewRes, blackBoard, (float)skillTimeline.duration);
+            _context.SkillDataRuntime = new SkillDataRuntime(logicRes, viewRes, markLogicRes, markViewRes, skillMarkEmitters, blackBoard, (float)skillTimeline.duration);
         }
 
         private void UpdateJumpTime()
         {
-            var lastLogicList = context.SkillDataRuntime.GetLastJumpTimeAbleList();
+            var lastLogicList = _context.SkillDataRuntime.GetLastJumpTimeAbleList();
             foreach (var logic in lastLogicList)
             {
                 if (logic.Status != SkillClipStatus.End && logic.Status != SkillClipStatus.Finish)
                 {
-                    logic.JumpSkillTime(context);
+                    logic.JumpSkillTime(_context);
                 }
             }
         }
@@ -168,42 +181,42 @@ namespace Script.Skill
 
         private void OnSkillFinish()
         {
-            var lastLogicList = context.SkillDataRuntime.GetLastLogicList();
+            var lastLogicList = _context.SkillDataRuntime.GetLastLogicList();
             foreach (var logic in lastLogicList)
             {
                 if (logic.Status != SkillClipStatus.End && logic.Status != SkillClipStatus.NoStart)
                 {
-                    logic.Finish(context);
+                    logic.Finish(_context);
                     logic.Status = SkillClipStatus.End;
                 }
             }
 
-            var lastViewList = context.SkillDataRuntime.LastViewArea.ClipList;
+            var lastViewList = _context.SkillDataRuntime.LastViewArea.ClipList;
             foreach (var view in lastViewList)
             {
                 if (view.Status != SkillClipStatus.End && view.Status != SkillClipStatus.NoStart)
                 {
-                    view.Finish(context);
+                    view.Finish(_context);
                     view.Status = SkillClipStatus.End;
                 }
             }
 
-            var lastMarkLogicList = context.SkillDataRuntime.MarkLogicList;
+            var lastMarkLogicList = _context.SkillDataRuntime.MarkLogicList;
 
             foreach (var markLogic in lastMarkLogicList)
             {
                 markLogic.Finish();
             }
 
-            var lastMarkViewList = context.SkillDataRuntime.MarkViewList;
+            var lastMarkViewList = _context.SkillDataRuntime.MarkViewList;
             foreach (var markView in lastMarkViewList)
             {
                 markView.Finish();
             }
 
             Debug.Log("技能结束");
-            context.Character.transform.position = Vector3.zero;
-            context = null;
+            _context.Character.transform.position = Vector3.zero;
+            _context = null;
         }
 
 
@@ -212,6 +225,7 @@ namespace Script.Skill
             List<SkillClipExecute> viewRes,
             List<SkillMarkExecute> markLogicRes,
             List<SkillMarkExecute> markViewRes,
+            List<SkillMarkEmitter> emitterRes,
             SkillTimeline skillTimeline
         )
         {
@@ -240,7 +254,7 @@ namespace Script.Skill
 
                     foreach (var marker in track.GetMarkers())
                     {
-                        if (marker is ISkillMarkConvertToLogic markLogic)
+                        if (marker is ISkillMarkConvertToExecuteLogic markLogic)
                         {
                             var markRuntime = markLogic.ConvertToLogic();
                             markLogicRes.Add(markRuntime);
@@ -250,6 +264,12 @@ namespace Script.Skill
                         {
                             var markRuntime = markView.ConvertToView();
                             markViewRes.Add(markRuntime);
+                        }
+
+                        if (marker is IMarkConvertToEmitter markEmitter)
+                        {
+                            var emitter = markEmitter.ConvertToEmitter();
+                            emitterRes.Add(emitter);
                         }
                     }
                 }

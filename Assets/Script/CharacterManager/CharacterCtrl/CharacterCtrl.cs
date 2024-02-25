@@ -11,17 +11,17 @@ using Script.EntityManager;
 using Script.EntityManager.Attribute;
 using IComponent = Script.EntityManager.IComponent;
 
-[AddOnce(typeof(OperationAbleComponent))]
+//  OperationAbleSetting IOperation  OperationAbleComponent ?? Update
 
-public class OperationAbleComponent : IComponent,IUpdateAble
+[AddOnce(typeof(OperationAbleComponent))]
+public class OperationAbleComponent : IComponent, IUpdateAble
 {
     List<IOperation> Operations = new List<IOperation>();
     List<EffectBase> EffectList = new List<EffectBase>();
 
     private BattleContext Context;
     private CharacterEntity _entity;
-    
-    
+
     public void StartBattle(BattleContext context)
     {
         Context = context;
@@ -93,4 +93,3 @@ public class OperationAbleComponent : IComponent,IUpdateAble
         UpdateOperation();
     }
 }
-

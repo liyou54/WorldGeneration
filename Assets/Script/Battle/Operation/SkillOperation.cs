@@ -1,5 +1,6 @@
 using Battle.Context;
 using Battle.Effect;
+using Script.Skill;
 using UnityEngine;
 
 namespace Battle.Operation
@@ -8,8 +9,8 @@ namespace Battle.Operation
     {
         public OperationStatus Status { get; set; }
         public ESkillTargetFunctionType SkillTargetFunctionType { get; set; }
-        public SkillBase SkillBase { get; set; } 
-        
+        public SkillBase SkillBase { get; set; }
+        public SkillPlay SkillPlay;
         public SkillOperation(SkillBase skillBase, TargetAbleComponent targetAbleComponent)
         {
         }
@@ -24,7 +25,7 @@ namespace Battle.Operation
 
         public void Update(BattleContext context, EntityBase entityBase)
         {
-            
+            SkillPlay.Update();
         }
 
         public void Finish(BattleContext context, EntityBase entityBase)

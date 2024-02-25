@@ -14,8 +14,6 @@ namespace Script.Skill.TimelineTrack
     [Serializable]
     public abstract class SkillMarkBase : Marker, ISerializationCallbackReceiver, IUseBlackBoardAsset
     {
-        [LabelText("持续时间类型")]
-        public SkillMarkPersistentTimeType PersistentTimeType;
         
         [LabelText("重播方式")]
         public SkillMarkReplyType SkillMarkReplyType;
