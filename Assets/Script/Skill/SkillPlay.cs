@@ -61,7 +61,17 @@ namespace Script.Skill
         {
             _timeScale = timeScale;
         }
-
+        
+        public void Interrupt()
+        {
+            OnSkillFinish();
+        }
+        
+        public void ForceInterrupt()
+        {
+            OnSkillFinish();
+        }
+        
 
         private void UpdateLogic()
         {

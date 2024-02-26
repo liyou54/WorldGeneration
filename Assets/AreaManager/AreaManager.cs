@@ -9,16 +9,16 @@ namespace AreaManager
     {
         [SerializeField] private int ChunkSize = 32;
 
-        public void AddEntity(AreaComponent component)
+        public void AddEntity(AreaEntityComponentBase entityComponentBase)
         {
-            var chunkId = PositionToChunkId(component.Entity.transform.position);
+            var chunkId = PositionToChunkId(entityComponentBase.Entity.transform.position);
             var chunk = TryGetOrCreateChunk(chunkId);
-            chunk.Add(component, cacheDic);
+            chunk.Add(entityComponentBase, cacheDic);
         }
 
-        public List<AreaComponent> GetEntity(Rect rect)
+        public List<AreaEntityComponentBase> GetEntity(Rect rect)
         {
-            var result = new List<AreaComponent>();
+            var result = new List<AreaEntityComponentBase>();
             foreach (var chunk in GetEntityIEnumerator(rect))
             {
                 chunk.GetEntity(result, rect);
@@ -28,25 +28,25 @@ namespace AreaManager
         }
         
         
-        public void UpdateChunkPosition(AreaComponent component)
+        public void UpdateChunkPosition(AreaEntityComponentBase entityComponentBase)
         {
-            var oldPos = component.LastPosition;
-            var newPos = component.Entity.transform.position;
+            var oldPos = entityComponentBase.LastPosition;
+            var newPos = entityComponentBase.Entity.transform.position;
             if (oldPos == newPos)
             {
                 return;
             }
 
-            var tree = cacheDic[component.Entity.Id];
+            var tree = cacheDic[entityComponentBase.Entity.Id];
             if (tree.Rect.Contains(newPos))
             {
                 return;
             }
 
-            tree.Datas.Remove(component);
+            tree.Datas.Remove(entityComponentBase);
             var chunkId = PositionToChunkId(newPos);
             var chunk = TryGetOrCreateChunk(chunkId);
-            chunk.Add(component, cacheDic);
+            chunk.Add(entityComponentBase, cacheDic);
         }
         
         private QuadTree TryGetOrCreateChunk(Vector2Int chunkId)
@@ -94,7 +94,7 @@ namespace AreaManager
 
         private class QuadTree
         {
-            public List<AreaComponent> Datas = new List<AreaComponent>();
+            public List<AreaEntityComponentBase> Datas = new List<AreaEntityComponentBase>();
             public Rect Rect;
             private QuadTree[] Children;
 
@@ -140,7 +140,7 @@ namespace AreaManager
             }
 
 
-            public void GetEntity(List<AreaComponent> result, Rect rect)
+            public void GetEntity(List<AreaEntityComponentBase> result, Rect rect)
             {
                 if (Children != null)
                 {
@@ -164,17 +164,17 @@ namespace AreaManager
                 }
             }
 
-            public void Add(AreaComponent component, Dictionary<long, QuadTree> cacheDic)
+            public void Add(AreaEntityComponentBase entityComponentBase, Dictionary<long, QuadTree> cacheDic)
             {
                 if (Children != null)
                 {
-                    var child = GetChildByPos(component.LastPosition);
-                    child.Add(component, cacheDic);
+                    var child = GetChildByPos(entityComponentBase.LastPosition);
+                    child.Add(entityComponentBase, cacheDic);
                     return;
                 }
 
-                Datas.Add(component);
-                cacheDic[component.Entity.Id] = this;
+                Datas.Add(entityComponentBase);
+                cacheDic[entityComponentBase.Entity.Id] = this;
                 if (Datas.Count > 31)
                 {
                     SplitChild(cacheDic);

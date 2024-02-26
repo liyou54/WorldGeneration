@@ -5,17 +5,21 @@ using UnityEngine;
 
 namespace Script.CharacterManager.CharacterEntity
 {
-    [AddOnce(typeof(AnimatorComponent))]
-    public class AnimatorComponent : IComponent
+    [AddOnce]
+    public class AnimatorEntityComponentBase : EntityComponentBase
     {
         private Animator _animator;
-        public EntityBase Entity { get; set; }
 
-        public void OnCreate()
+        public override void OnCreate()
         {
         }
 
-        public void Start()
+        public override void OnDestroy()
+        {
+            
+        }
+
+        public override void Start()
         {
             _animator = Entity.GetComponent<Animator>();
         }

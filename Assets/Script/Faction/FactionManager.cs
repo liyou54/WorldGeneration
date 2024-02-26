@@ -6,14 +6,14 @@ namespace Faction
 {
     public class FactionManager:GameSingleton<FactionManager>
     {
-        public Dictionary<int, List<FactionMemberComponent>> Members = new Dictionary<int, List<FactionMemberComponent>>();
+        public Dictionary<int, List<FactionMemberEntityComponentBase>> Members = new Dictionary<int, List<FactionMemberEntityComponentBase>>();
         public Dictionary<int,Dictionary<int,int>> Relations = new Dictionary<int, Dictionary<int, int>>();
-        public Dictionary<int,List<FactionMemberComponent>> CachedEnemyMembers = new Dictionary<int, List<FactionMemberComponent>>();
+        public Dictionary<int,List<FactionMemberEntityComponentBase>> CachedEnemyMembers = new Dictionary<int, List<FactionMemberEntityComponentBase>>();
         
         private bool IsDirty = false;
     
         
-        public List<FactionMemberComponent> GetFactionMembers(int teamId)
+        public List<FactionMemberEntityComponentBase> GetFactionMembers(int teamId)
         {
             if (Members.ContainsKey(teamId))
             {
@@ -40,30 +40,30 @@ namespace Faction
 
         }
         
-        public void AddMember(int teamId,FactionMemberComponent member)
+        public void AddMember(int teamId,FactionMemberEntityComponentBase memberEntity)
         {
             if (!Members.ContainsKey(teamId))
             {
-                Members.Add(teamId,new List<FactionMemberComponent>());
+                Members.Add(teamId,new List<FactionMemberEntityComponentBase>());
             }
-            Members[teamId].Add(member);
+            Members[teamId].Add(memberEntity);
             IsDirty = true;
         }
         
-        public void RemoveMember(int teamId,FactionMemberComponent member)
+        public void RemoveMember(int teamId,FactionMemberEntityComponentBase memberEntity)
         {
             if (!Members.ContainsKey(teamId))
             {
                 return;
             }
-            Members[teamId].Remove(member);
+            Members[teamId].Remove(memberEntity);
             IsDirty = true;
         }
         
         
-        public List<FactionMemberComponent> GetEnemyMembers(int teamId)
+        public List<FactionMemberEntityComponentBase> GetEnemyMembers(int teamId)
         {
-            var result = new List<FactionMemberComponent>();
+            var result = new List<FactionMemberEntityComponentBase>();
             if (IsDirty == true)
             {
                 CachedEnemyMembers.Clear();

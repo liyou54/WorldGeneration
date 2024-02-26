@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Script.Skill.SkillLogic;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -48,6 +49,12 @@ namespace Script.Skill.BlackBoardParam
 
             return Value;
         }
+        
+        public T GetValue(SkillContext skillContext)
+        {
+            return GetValue(skillContext.SkillDataRuntime.BlackBoard);
+        }
+        
 
         public IEnumerable<string> GetBlackBoardKey()
         {

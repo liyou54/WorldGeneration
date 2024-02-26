@@ -9,12 +9,10 @@ using Faction;
 using UnityEngine;
 using Script.EntityManager;
 using Script.EntityManager.Attribute;
-using IComponent = Script.EntityManager.IComponent;
 
-//  OperationAbleSetting IOperation  OperationAbleComponent ?? Update
 
-[AddOnce(typeof(OperationAbleComponent))]
-public class OperationAbleComponent : IComponent, IUpdateAble
+[AddOnce]
+public class OperationAbleEntityComponentBase : EntityComponentBase, IUpdateAble
 {
     List<IOperation> Operations = new List<IOperation>();
 
@@ -44,14 +42,17 @@ public class OperationAbleComponent : IComponent, IUpdateAble
         }
     }
 
-    public EntityBase Entity { get; set; }
-
-    public void OnCreate()
+    public override void OnCreate()
     {
     }
 
+    public override void OnDestroy()
+    {
+        
+    }
 
-    public void Start()
+
+    public override void Start()
     {
     }
 

@@ -2,16 +2,31 @@ using UnityEngine;
 
 namespace Script.GameLaunch
 {
-    public class GameSingleton<T>:MonoBehaviour
+    public class GameSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        public static GameSingleton<T> Instance;
+        private static T instance;
+
+        public static T Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = FindObjectOfType<T>();
+                }
+
+                if (instance == null)
+                {
+                    instance = new GameObject(typeof(T).Name).AddComponent<T>();
+                }
+
+                return instance;
+            }
+        }
+
         public virtual void OnInit()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
+
         }
     }
 }

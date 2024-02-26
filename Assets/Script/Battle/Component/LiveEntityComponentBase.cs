@@ -4,21 +4,25 @@ using Script.EntityManager.Attribute;
 
 namespace Battle.Effect
 {
-    [AddOnce(typeof(LiveComponent))]
-    public class LiveComponent:IComponent
+    [AddOnce]
+    public class LiveEntityComponentBase:EntityComponentBase
     {
-        public EntityBase Entity { get; set; }
         public int Hp = 100;
         public int MaxHp = 100;
         
         public ECharacterAliveStatus AliveStatus = ECharacterAliveStatus.None;
         
-        public void OnCreate()
+        public override void OnCreate()
         {
             
         }
 
-        public void Start()
+        public override void OnDestroy()
+        {
+            
+        }
+
+        public override void Start()
         {
             AliveStatus = ECharacterAliveStatus.Alive;
         }

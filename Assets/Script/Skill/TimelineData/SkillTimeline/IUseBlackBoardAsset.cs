@@ -9,7 +9,6 @@ namespace Script.Skill.SkillLogic.SkillTimeline
 {
     public interface IUseBlackBoardAsset
     {
-
         public SkillEntityTimeline GetTimeLine()
         {
             var path = AssetDatabase.GetAssetPath(this as UnityEngine.Object);

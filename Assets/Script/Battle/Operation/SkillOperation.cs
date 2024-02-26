@@ -11,7 +11,7 @@ namespace Battle.Operation
         public ESkillTargetFunctionType SkillTargetFunctionType { get; set; }
         public SkillBase SkillBase { get; set; }
         public SkillPlay SkillPlay;
-        public SkillOperation(SkillBase skillBase, TargetAbleComponent targetAbleComponent)
+        public SkillOperation(SkillBase skillBase, TargetAbleEntityComponentBase targetAbleEntityComponentBase)
         {
         }
 

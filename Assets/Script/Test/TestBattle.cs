@@ -17,15 +17,15 @@ namespace Script.Test
             var characterManager =CharacterManager.CharacterManager.Instance as CharacterManager.CharacterManager;
             var entity1 = characterManager.CreateCharacter(Random.insideUnitCircle * 20);
             var entity2 = characterManager.CreateCharacter(Random.insideUnitCircle * 20);
-            var factionComp1= entity1.GetEntityComponent<FactionMemberComponent>();
-            var factionComp2 = entity2.GetEntityComponent<FactionMemberComponent>();
+            var factionComp1= entity1.GetEntityComponent<FactionMemberEntityComponentBase>();
+            var factionComp2 = entity2.GetEntityComponent<FactionMemberEntityComponentBase>();
             factionComp1.SetTeamId(1);
             factionComp2.SetTeamId(2);
             // // 添加到阵营
             // // 添加AI
             var aiManager = AIManager.Instance as AIManager;
-            var ctrl1 = entity1.GetEntityComponent<OperationAbleComponent>();
-            var ctrl2 = entity2.GetEntityComponent<OperationAbleComponent>();
+            var ctrl1 = entity1.GetEntityComponent<OperationAbleEntityComponentBase>();
+            var ctrl2 = entity2.GetEntityComponent<OperationAbleEntityComponentBase>();
             aiManager.CreatAgent(ctrl1);
             aiManager.CreatAgent(ctrl2);
 

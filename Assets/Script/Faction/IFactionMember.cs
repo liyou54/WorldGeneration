@@ -3,11 +3,10 @@ using Script.EntityManager.Attribute;
 
 namespace Faction
 {
-    [AddOnce(typeof(FactionMemberComponent))]
-    public class FactionMemberComponent : IComponent
+    [AddOnce]
+    public class FactionMemberEntityComponentBase : EntityComponentBase
     {
         public int TeamId { get; set; } = -1;
-        public EntityBase Entity { get; set; }
 
         public void SetTeamId(int teamId)
         {
@@ -16,11 +15,16 @@ namespace Faction
             factionMgr.AddMember(TeamId, this);
         }
 
-        public void OnCreate()
+        public override void OnCreate()
         {
         }
 
-        public void Start()
+        public override void OnDestroy()
+        {
+            
+        }
+
+        public override void Start()
         {
         }
     }

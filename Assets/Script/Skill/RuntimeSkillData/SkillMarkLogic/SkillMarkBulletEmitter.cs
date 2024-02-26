@@ -7,10 +7,8 @@ using UnityEngine.Pool;
 
 namespace Script.Skill.SkillLogic
 {
-    
-    public class SkillMarkBulletEmitter:SkillMarkEmitter
+    public class SkillMarkBulletEmitter : SkillMarkEmitter
     {
-
         public SkillTimelineParamGetterBase<GameObject> TargetGo { get; set; }
         public SkillTimelineParamGetterBase<Vector3> TargetPos { get; set; }
         public string BoneName { get; set; }
@@ -19,11 +17,19 @@ namespace Script.Skill.SkillLogic
 
         public override void Emit(SkillContext context)
         {
-            // var data = BulletPrefab.GetValue(context.SkillDataRuntime.BlackBoard);
-            // var go = GameObject.Instantiate(data);
-            // var target = TargetGo.GetValue(context.SkillDataRuntime.BlackBoard);
-            // var pos = target.transform.position;
-            // go.transform.position = pos;
+            BulletManager bulletManager = BulletManager.Instance;
+            BulletBuilder bulletBuilder = bulletManager.CreateBulletBuilder();
+            bulletBuilder.SetBulletSO(BulletSo);
+            if (TargetGo != null)
+            {
+                bulletBuilder.SetTarget(TargetGo.GetValue(context));
+            }
+            else if (TargetPos != null)
+            {
+                bulletBuilder.SetTarget(TargetPos.GetValue(context));
+            }
+
+            bulletManager.Build(bulletBuilder);
         }
     }
 }

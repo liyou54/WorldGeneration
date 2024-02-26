@@ -1,24 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Script.EntityManager.Attribute
 {
     public class AddOnceAttribute : CachedAttribute
     {
-        private static HashSet<Type> AttachOnce = new();
+        private static Dictionary<Type, bool> AttachOnce = new();
 
-        public AddOnceAttribute(Type attachType)
+        public AddOnceAttribute()
         {
-            AttachOnce.Add(attachType);
         }
 
         public static bool IsOnceAddComp(Type compType)
         {
-            return AttachOnce.Contains(compType);
-        }
-        public static bool IsOnceAddComp<T>()
-        {
-            return AttachOnce.Contains(typeof(T));
+            if (!AttachOnce.ContainsKey(compType))
+            {
+                var isAddOnce = compType.GetCustomAttributes(typeof(AddOnceAttribute), false).FirstOrDefault() == null;
+                AttachOnce.Add(compType, isAddOnce);
+            }
+
+            return AttachOnce[compType];
         }
     }
 }

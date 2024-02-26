@@ -1,3 +1,4 @@
+using Battle.Bullet;
 using Battle.Context;
 using Script.CharacterManager.CharacterEntity;
 using UnityEngine;
@@ -26,7 +27,7 @@ namespace Battle.Operation
         public void Update(BattleContext context, EntityBase entityBase)
         {
             entityBase.transform.position += direction * Time.deltaTime * 7f;
-            entityBase.GetEntityComponent<MoveComponent>();
+            entityBase.GetEntityComponent<MoveToTargetEntityComponentBase>();
             timeRate += Time.deltaTime;
             if (Vector3.Distance(entityBase.transform.position, Position) < 0.1f || timeRate > 3f)
             {

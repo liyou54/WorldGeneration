@@ -11,12 +11,12 @@ using UnityEngine;
 public class EnemySensor : Sensor
 {
     private CharacterAgent _agent;
-    private OperationAbleComponent _characterCtrl;
+    private OperationAbleEntityComponentBase _characterCtrl;
 
     public override void OnAwake()
     {
         _agent = Agent as CharacterAgent;
-        _characterCtrl = _agent.OperationAbleCharacter;
+        _characterCtrl = _agent.OperationAbleEntityCharacter;
     }
 
 
@@ -38,18 +38,18 @@ public class EnemySensor : Sensor
         }
 
         FactionManager factionManager = FactionManager.Instance as FactionManager;
-        var factionMemberComponent = _agent.OperationAbleCharacter.Entity.GetEntityComponent<FactionMemberComponent>();
+        var factionMemberComponent = _agent.OperationAbleEntityCharacter.Entity.GetEntityComponent<FactionMemberEntityComponentBase>();
         var enemyTeam = factionManager.GetEnemyMembers(factionMemberComponent.TeamId);
         var minDistance = float.MaxValue;
-        TargetAbleComponent target = null;
+        TargetAbleEntityComponentBase target = null;
         foreach (var member in enemyTeam)
         {
-           var  targetTemp = member.Entity.GetEntityComponent<TargetAbleComponent>();
+           var  targetTemp = member.Entity.GetEntityComponent<TargetAbleEntityComponentBase>();
             if (targetTemp == null)
             {
                 continue;
             }
-            var distance = Vector3.Distance(targetTemp.Entity.transform.position,_agent.OperationAbleCharacter.Entity.transform.position );
+            var distance = Vector3.Distance(targetTemp.Entity.transform.position,_agent.OperationAbleEntityCharacter.Entity.transform.position );
             if (distance < minDistance)
             {
                 target = targetTemp;

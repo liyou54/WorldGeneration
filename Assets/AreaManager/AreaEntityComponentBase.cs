@@ -4,18 +4,22 @@ using UnityEngine;
 
 namespace AreaManager
 {
-    [AddOnce(typeof(AreaComponent))]
-    public class AreaComponent : IComponent,IUpdateAble
+    [AddOnce]
+    public class AreaEntityComponentBase : EntityComponentBase,IUpdateAble
     {
-        public EntityBase Entity { get; set; }
 
         public Vector3 LastPosition;
 
-        public void OnCreate()
+        public override void OnCreate()
         {
         }
 
-        public void Start()
+        public override void OnDestroy()
+        {
+            
+        }
+
+        public override void Start()
         {
             LastPosition = Entity.transform.position;
             var areaManager = AreaManager.Instance as AreaManager;

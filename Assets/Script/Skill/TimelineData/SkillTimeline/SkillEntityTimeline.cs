@@ -18,31 +18,36 @@ public abstract class SkillEntityTimeline : TimelineAsset, ISerializationCallbac
 
     public void SetRequireBoardBlack()
     {
-        Dictionary<string,Type> typeDict = new Dictionary<string, Type>()
+        Dictionary<string, (Type, object)> typeDict = new Dictionary<string, (Type, object)>()
         {
-            { "TargetGo" , typeof(BlackBoardGameObjectParam) },
-            { "TargetPos" , typeof(BlackBoardVector3Param) },
+            { "TargetGo", (typeof(BlackBoardGameObjectParam), null) },
+            { "TargetPos", (typeof(BlackBoardVector3Param), Vector3.zero) },
+            { "CanBeInterrupt", (typeof(BlackBoardBoolParam), true) },
         };
-        
-        
+
+
         foreach (var requireKv in typeDict)
         {
             var key = requireKv.Key;
             var hasAdd = Data.Data.Any(obj => (obj as BlackBoardParam).Key == key);
             if (!hasAdd)
             {
-                var type = requireKv.Value;
+                var (type,defaultValue) = requireKv.Value;
                 var instance = Activator.CreateInstance(type);
                 (instance as BlackBoardParam).Key = key;
+                // 通过反射设置默认值
+                var field = type.GetField("Value", BindingFlags.Public | BindingFlags.Instance);
+                field.SetValue(instance, defaultValue);
+
                 Data.Data.Add(instance);
             }
         }
     }
-    
+
     public void OnBeforeSerialize()
     {
         SetRequireBoardBlack();
-        
+
         if (Data != null)
         {
             DataBytes = SerializationUtility.SerializeValue(Data, DataFormat.JSON);
@@ -107,8 +112,8 @@ public abstract class SkillEntityTimeline : TimelineAsset, ISerializationCallbac
                     }
                 }
             }
-
         }
+
         return res;
     }
 }

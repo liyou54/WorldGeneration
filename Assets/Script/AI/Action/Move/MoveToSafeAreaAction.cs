@@ -17,7 +17,7 @@ namespace AI.Action
             Debug.Log("start move to attack action");
             characterAgent = AgentData.Agent as CharacterAgent;
             var targetTrs = characterAgent.Target.Entity.transform;
-            var agent = characterAgent.OperationAbleCharacter;
+            var agent = characterAgent.OperationAbleEntityCharacter;
             var dir = (agent.Entity.transform.position - targetTrs.position).normalized;
             if (dir == Vector3.zero )
             {
@@ -26,7 +26,7 @@ namespace AI.Action
             }
             safeDistance = characterAgent.CharacteSafeDistance;
             moveOperation = new MoveOperation(targetTrs.position + dir * safeDistance);
-            characterAgent.OperationAbleCharacter.AddOperation(moveOperation);
+            characterAgent.OperationAbleEntityCharacter.AddOperation(moveOperation);
         }
 
         public override void OnUpdatePerform()

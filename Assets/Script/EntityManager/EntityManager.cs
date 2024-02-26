@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using Script.EntityManager;
 using Script.EntityManager.Attribute;
 using Script.GameLaunch;
+using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class EntityWithComp
 {
     public EntityBase EntityBase;
-    public List<IComponent> Components;
-    public Dictionary<Type, List<IComponent>> ComponentsDic;
+    public List<EntityComponentBase> Components;
+    public Dictionary<Type, List<EntityComponentBase>> ComponentsDic;
 
     public EntityWithComp(EntityBase entityBase)
     {
         EntityBase = entityBase;
-        Components = new List<IComponent>();
-        ComponentsDic = new Dictionary<Type, List<IComponent>>();
+        Components = new List<EntityComponentBase>();
+        ComponentsDic = new Dictionary<Type, List<EntityComponentBase>>();
         EntityBase.Components = Components;
-        EntityBase.ComponentsDic = new ReadOnlyDictionary<Type, List<IComponent>>(ComponentsDic);
+        EntityBase.ComponentsDic = new ReadOnlyDictionary<Type, List<EntityComponentBase>>(ComponentsDic);
     }
 
     public void Init()
@@ -28,10 +31,8 @@ public class EntityWithComp
         }
     }
 
-    public IComponent AddComponent(Type compType)
+    public EntityComponentBase AddComponent(Type compType)
     {
-        
-        // check once add Comp is vaild 
         if (AddOnceAttribute.IsOnceAddComp(compType))
         {
             if (ComponentsDic.TryGetValue(compType, out var tempList))
@@ -43,18 +44,18 @@ public class EntityWithComp
                 }
             }
         }
-        
-        var comp = (IComponent)Activator.CreateInstance(compType);
+
+        var comp = (EntityComponentBase)Activator.CreateInstance(compType);
 
         comp.Entity = EntityBase;
+        comp.Valid = true;
         if (ComponentsDic.TryGetValue(comp.GetType(), out var list))
         {
             list.Add(comp);
         }
         else
         {
-
-            list = new List<IComponent>();
+            list = new List<EntityComponentBase>();
             list.Add(comp);
             ComponentsDic.Add(comp.GetType(), list);
         }
@@ -64,7 +65,7 @@ public class EntityWithComp
         return comp;
     }
 
-    public T AddComponent<T>() where T : IComponent, new()
+    public T AddComponent<T>() where T : EntityComponentBase, new()
     {
         var comp = new T();
         comp.Entity = EntityBase;
@@ -74,7 +75,7 @@ public class EntityWithComp
         }
         else
         {
-            list = new List<IComponent>();
+            list = new List<EntityComponentBase>();
             list.Add(comp);
             ComponentsDic.Add(typeof(T), list);
         }
@@ -88,85 +89,153 @@ public class EntityWithComp
 public class EntityManager : GameSingleton<EntityManager>
 {
     public IDAllocator IDAllocator = new IDAllocator();
-
-    public Dictionary<long, EntityWithComp> EntityDic = new Dictionary<long, EntityWithComp>();
-    public Dictionary<Type, HashSet<IComponent>> EntityList = new Dictionary<Type, HashSet<IComponent>>();
+    [ShowInInspector] public Dictionary<long, EntityWithComp> EntityDic = new Dictionary<long, EntityWithComp>();
+    [ShowInInspector] public Dictionary<Type, HashSet<EntityComponentBase>> ComponentList = new Dictionary<Type, HashSet<EntityComponentBase>>();
     public HashSet<Type> NeedUpdateCompsType = new HashSet<Type>();
-
     
+    public void ReleaseEntity(EntityBase entityBase)
+    {
+        if (EntityDic.TryGetValue(entityBase.Id, out var entityWithComp))
+        {
+            foreach (var component in entityWithComp.Components)
+            {
+                component.Valid = false;
+                component.OnDestroy();
+                ComponentList[component.GetType()].Remove(component);
+            }
+
+            entityBase.Valid = false;
+            entityBase.OnDestroyEntity();
+            EntityDic.Remove(entityBase.Id);
+            Destroy(entityBase.gameObject);
+        }
+    }
+    
+    public EntityBase ConvertGameObjectToEntity(GameObject go)
+    {
+        
+        var entity = go.GetComponent<EntityBase>();
+
+        if (entity == null)
+        {
+            Debug.LogError("ConvertGameObjectToEntity Error! EntityComponent Dont Exist!" );
+            return null;
+        }
+        
+        if ( entity.Id != 0)
+        {
+            Debug.LogError("ConvertGameObjectToEntity Error! EntityComponent Id Already Exist!");
+            return null;
+        }
+        
+        return _AddEntityToMgr(entity.gameObject, entity);
+    }
+
+
     public EntityBase CreateEntityFromPrefab(GameObject prefab)
     {
         GameObject prefabInstance = GameObject.Instantiate(prefab);
         var entityPrefab = prefabInstance.GetComponent<EntityBase>();
-        return  _AddEntityToMgr(prefabInstance,entityPrefab);
+        return _AddEntityToMgr(prefabInstance, entityPrefab);
     }
-    
-    public T CopyEntity<T>(T entity) where T:EntityBase
+
+    public T CreateEntityFromPrefab<T>(T entityBase) where T : EntityBase
+    {
+        return CreateEntityFromPrefab(entityBase.gameObject) as T;
+    }
+
+    public T CopyEntity<T>(T entity) where T : EntityBase
     {
         var instance = GameObject.Instantiate(entity);
         var entityPrefab = instance.GetComponent<EntityBase>();
-        return  _AddEntityToMgr(instance.gameObject,entityPrefab) as T;
+        return _AddEntityToMgr(instance.gameObject, entityPrefab) as T;
     }
-    
+
     public T CreateEntity<T>() where T : EntityBase, new()
     {
         var instance = new GameObject();
         var entity = instance.AddComponent<T>();
-        return  _AddEntityToMgr(instance,entity);
+        return _AddEntityToMgr(instance, entity);
     }
 
-    public void AttachComponent<T>(EntityBase entityBase) where T : IComponent, new()
+    public void AttachComponent<T>(EntityBase entityBase) where T : EntityComponentBase, new()
     {
         var entityWithComp = EntityDic[entityBase.Id];
-        var comp = entityWithComp.AddComponent<T>();
-        if (!EntityList.TryGetValue(typeof(T), out var set))
+
+        if (entityWithComp.EntityBase.Valid == false)
         {
-            set = new HashSet<IComponent>();
-            EntityList.Add(typeof(T), set);
+            return;
         }
+        
+        var comp = entityWithComp.AddComponent<T>();
+        if (!ComponentList.TryGetValue(typeof(T), out var set))
+        {
+            set = new HashSet<EntityComponentBase>();
+            ComponentList.Add(typeof(T), set);
+        }
+
         set.Add(comp);
         if (comp is IUpdateAble)
         {
             NeedUpdateCompsType.Add(comp.GetType());
         }
-
     }
 
-    public void RemoveComponent<T>(EntityBase entityBase) where T : IComponent
+    public void RemoveComponent<T>(EntityBase entityBase) where T : EntityComponentBase
     {
         var comp = entityBase.GetEntityComponent<T>();
         if (comp != null)
         {
-            // TODO   
         }
     }
 
+    public Type[] NeedUpdateTypeIter = new Type[1024];
+    public EntityComponentBase[] NeedUpdateCompsIter = new EntityComponentBase[1024];
     public void Update()
     {
-        foreach (var type in NeedUpdateCompsType)
+        
+        var iterCount = NeedUpdateCompsType.Count;
+        if (NeedUpdateTypeIter.Length < iterCount)
         {
-            if (EntityList.TryGetValue(type, out var set))
+            NeedUpdateTypeIter = new Type[iterCount];
+        }
+        NeedUpdateCompsType.CopyTo(NeedUpdateTypeIter);   
+
+        for(int i = 0; i < iterCount; i++)
+        {
+            var type = NeedUpdateTypeIter[i];
+            if (ComponentList.TryGetValue(type, out var set))
             {
-                foreach (var comp in set)
+                var iterCountComp = set.Count;
+                if (NeedUpdateCompsIter.Length < iterCountComp)
                 {
-                    if (comp is IUpdateAble updateAble)
+                    NeedUpdateCompsIter = new EntityComponentBase[iterCountComp];
+                }
+
+                set.CopyTo(NeedUpdateCompsIter);
+                for (int j = 0; j < iterCountComp; j++)
+                {
+                    var comp = NeedUpdateCompsIter[j];
+                    if (comp.Valid)
                     {
-                        updateAble.Update();
+                        (comp as IUpdateAble)?.Update();
                     }
                 }
             }
+
         }
     }
 
-    private T _AddEntityToMgr<T>(GameObject go,T entity) where T : EntityBase
+    private T _AddEntityToMgr<T>(GameObject go, T entity) where T : EntityBase
     {
+        
         var id = IDAllocator.AllocateID();
         entity.Id = id;
         var entityWithComp = new EntityWithComp(entity);
         EntityDic.Add(id, entityWithComp);
         entity.OnCreateEntity();
-        
-        InitRequiredCompAttribute.RequireComps.TryGetValue(entity.GetType(), out var list);
+
+       var list =  InitRequiredCompAttribute.TryGetRequireComps(entity);
         if (list != null)
         {
             foreach (var compType in list)
@@ -177,10 +246,10 @@ public class EntityManager : GameSingleton<EntityManager>
                     NeedUpdateCompsType.Add(compType);
                 }
 
-                if (!EntityList.TryGetValue(compInst.GetType(), out var set))
+                if (!ComponentList.TryGetValue(compInst.GetType(), out var set))
                 {
-                    set = new HashSet<IComponent>();
-                    EntityList.Add(compInst.GetType(), set);
+                    set = new HashSet<EntityComponentBase>();
+                    ComponentList.Add(compInst.GetType(), set);
                 }
 
                 set.Add(compInst);
@@ -190,5 +259,4 @@ public class EntityManager : GameSingleton<EntityManager>
         entityWithComp.Init();
         return entity;
     }
-
 }
