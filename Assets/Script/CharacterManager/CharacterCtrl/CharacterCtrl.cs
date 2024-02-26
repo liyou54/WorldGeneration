@@ -17,7 +17,6 @@ using IComponent = Script.EntityManager.IComponent;
 public class OperationAbleComponent : IComponent, IUpdateAble
 {
     List<IOperation> Operations = new List<IOperation>();
-    List<EffectBase> EffectList = new List<EffectBase>();
 
     private BattleContext Context;
     private CharacterEntity _entity;

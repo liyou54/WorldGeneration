@@ -1,7 +1,9 @@
 namespace Battle.Buffer
 {
-    public class BufferBase
+    public class BufferRuntimeBase
     {
+        
+        
         public void OnAttach()
         {
             

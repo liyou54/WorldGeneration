@@ -1,13 +1,11 @@
+using Sirenix.OdinInspector;
+
 namespace Battle.Effect
 {
-    public class ValueChangeEffect:EffectBase
+    [LabelText("数值变化效果")]
+    public class ValueChangeEffect : EffectBase
     {
-        public int Value;
-        public EffectKeyTable Key;
-        public ValueChangeEffect(EffectKeyTable key,int value)
-        {
-            Value = value;
-            Key = key;
-        }
+        [LabelText("效果值")] public int Value;
+        [LabelText("效果类型")] public EffectKeyTable Key;
     }
 }
