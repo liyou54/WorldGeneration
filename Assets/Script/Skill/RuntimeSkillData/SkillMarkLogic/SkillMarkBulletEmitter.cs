@@ -33,7 +33,7 @@ namespace Script.Skill.SkillLogic
                 bulletBuilder.SetTarget(TargetPos.GetValue(context));
             }
 
-            bulletBuilder.SetBulletSrc(context.Character.GetComponent<EntityBase>());
+            bulletBuilder.SetBulletCaster(context.Character.GetComponent<EntityBase>());
             bulletManager.Build(bulletBuilder);
         }
     }

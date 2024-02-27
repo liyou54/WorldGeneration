@@ -4,8 +4,8 @@ namespace Battle.Effect
     public abstract class RuntimeEffectBase
     {
         
-        public EntityBase EffectSrc;
-        public EntityBase EffectAim;
+        public EntityBase EffectCaster;
+        public EntityBase EffectTarget;
         
         public abstract void Apply();
     }

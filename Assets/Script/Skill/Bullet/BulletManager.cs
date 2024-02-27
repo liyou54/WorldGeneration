@@ -10,9 +10,9 @@ namespace Battle.Bullet
     {
         BulletRuntimeData Result = new BulletRuntimeData();
         
-        public BulletBuilder SetBulletSrc(EntityBase src)
+        public BulletBuilder SetBulletCaster(EntityBase caster)
         {
-            Result.Src = src;
+            Result.Caster = caster;
             return this;
         }
         

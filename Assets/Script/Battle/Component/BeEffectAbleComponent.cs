@@ -8,21 +8,14 @@ namespace Battle.Effect
     public class BeEffectAbleComponent:EntityComponentBase,IUpdateAble
     {
         public List<BufferRuntimeBase> BufferList = new List<BufferRuntimeBase>();
-        public Queue<RuntimeEffectBase> EffectList = new Queue<RuntimeEffectBase>();
 
         
-        public void AddEffect(RuntimeEffectBase effect)
+        public void ApplyEffect(RuntimeEffectBase effect)
         {
-            EffectList.Enqueue(effect);
+            effect.Apply();
         }
         
-        public void AddEffectList(List<RuntimeEffectBase> effectList)
-        {
-            foreach (var effect in effectList)
-            {
-                EffectList.Enqueue(effect);
-            }
-        }
+
         
         public override void OnCreate()
         {
@@ -39,11 +32,7 @@ namespace Battle.Effect
 
         public void Update()
         {
-            while (EffectList.Count > 0)
-            {
-                var effect = EffectList.Dequeue();
-                effect.Apply();
-            }
+
         }
     }
 }

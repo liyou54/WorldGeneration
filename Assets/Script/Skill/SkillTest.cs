@@ -12,10 +12,10 @@ public class SkillTest : MonoBehaviour
     public Vector3 TargetPosition;
     public SkillTimeline skillTimeline;
 
-    public CharacterEntity CharacterEntity;
-    public CharacterEntity TargetEntity;
+    private CharacterEntity CharacterEntity;
+    private CharacterEntity TargetEntity;
 
-    public SkillPlay SkillPlay;
+    private SkillPlay SkillPlay;
 
     [Button("Play")]
     public void Play()

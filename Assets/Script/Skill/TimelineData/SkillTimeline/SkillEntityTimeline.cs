@@ -10,7 +10,6 @@ using Sirenix.Serialization;
 using UnityEngine;
 using UnityEngine.Timeline;
 
-[CreateAssetMenu(fileName = "伤害效果", menuName = "战斗/技能", order = 0)]
 public abstract class SkillEntityTimeline : TimelineAsset, ISerializationCallbackReceiver
 {
     [NonSerialized, ShowInInspector] public BlackBoardParamSet Data = new BlackBoardParamSet();

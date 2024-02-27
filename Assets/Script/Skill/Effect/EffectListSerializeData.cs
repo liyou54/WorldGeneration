@@ -11,7 +11,7 @@ namespace Battle.Effect
     [Serializable]
     public class EffectListSerializeData
     {
-        [LabelText("子弹效果")] [ShowInInspector] [NonSerialized] public List<EffectBase> EffectList;
+        [LabelText("效果")] [ShowInInspector] [NonSerialized] public List<EffectBase> EffectList;
         [HideInInspector,SerializeField] private byte[] effectListBytes;
 
         public void OnBeforeEffectListSerialize()

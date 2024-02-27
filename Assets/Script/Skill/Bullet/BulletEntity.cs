@@ -42,15 +42,20 @@ public class BulletEntity : EntityBase
     }
 
     public void OnAttachToTarget(EntityBase entityBase, TargetAbleComponent target)
-    {
+    { 
         EntityManager.Instance.ReleaseEntity(this);
         if (target != null)
         {   
+            var beEffectAble = target.Entity.GetEntityComponent<BeEffectAbleComponent>();
+            if (beEffectAble == null)
+            {
+                return;
+            }
             foreach (var effect in BulletRuntimeData.BulletSo.EffectListSerializeData.EffectList)
             {
                 var runtimeEffect = effect.ConvertToRuntimeEffect();
-                runtimeEffect.EffectSrc = BulletRuntimeData.Src;
-                target.Entity.GetEntityComponent<BeEffectAbleComponent>()?.AddEffect(runtimeEffect);
+                runtimeEffect.EffectCaster = BulletRuntimeData.Caster;
+                beEffectAble.ApplyEffect(runtimeEffect);
             }
             
         }

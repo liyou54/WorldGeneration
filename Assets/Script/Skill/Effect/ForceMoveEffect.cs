@@ -19,6 +19,10 @@ namespace Battle.Effect
     {
         public Vector3 direction;
         public float distance;
+
+        public override EffectMajorType MajorType { get; set; }
+        public override EffectMinorType MinorType { get; set; }
+
         public override RuntimeEffectBase ConvertToRuntimeEffect()
         {
             var rt = new RuntimeForceMoveEffect();
@@ -26,5 +30,6 @@ namespace Battle.Effect
             rt.distance = distance;
             return rt;
         }
+
     }
 }

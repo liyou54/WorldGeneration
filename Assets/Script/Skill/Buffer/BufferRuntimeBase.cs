@@ -4,10 +4,11 @@ namespace Battle.Buffer
 {
     public abstract class BufferRuntimeBase
     {
+        public string Name;
+        public int Priority;
         
-        // 这里不知道放什么?
-        public object BufferSrc;
-        public object BufferAim;
+        public EntityBase Caster;
+        public EntityBase Target;
         
         public void OnAttach()
         {
