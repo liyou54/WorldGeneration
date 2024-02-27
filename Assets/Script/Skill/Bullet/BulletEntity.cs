@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Battle.Bullet;
 using Battle.Bullet.BulletRuntime;
+using Battle.Effect;
 using Script.EntityManager;
 using Script.EntityManager.Attribute;
 using UnityEngine;
@@ -13,18 +14,22 @@ public class BulletEntity : EntityBase
     public  BulletRuntimeData BulletRuntimeData;
     void Start()
     {
-        var moveComp = this.GetEntityComponent<MoveToTargetEntityComponentBase>();
-        if (BulletRuntimeData.TargetGo != null)
+
+        if (BulletRuntimeData.BulletSo is FlyBulletSO flyBullet)
         {
-            moveComp.TargetGo = BulletRuntimeData.TargetGo;
+            var moveComp = this.GetEntityComponent<MoveToTargetEntityComponentBase>();
+            if (BulletRuntimeData.TargetGo != null)
+            {
+                moveComp.TargetGo = BulletRuntimeData.TargetGo;
+            }
+            else
+            {
+                moveComp.TargetPosition = BulletRuntimeData.TargetPos;
+            }
+            moveComp.Speed = flyBullet.Speed;
+            moveComp.RotationType = MoveRotationType.LookAt;
+            moveComp.OnAttachTarget = OnAttachToTarget;
         }
-        else
-        {
-            moveComp.TargetPosition = BulletRuntimeData.TargetPos;
-        }
-        moveComp.Speed = (BulletRuntimeData.BulletSo as FlyBulletSO).Speed;
-        moveComp.RotationType = MoveRotationType.LookAt;
-        moveComp.OnAttachTarget = OnAttachToTarget;
     }
 
     void Update()
@@ -36,9 +41,19 @@ public class BulletEntity : EntityBase
     {
     }
 
-    public void OnAttachToTarget(EntityBase entityBase, GameObject o)
+    public void OnAttachToTarget(EntityBase entityBase, TargetAbleComponent target)
     {
         EntityManager.Instance.ReleaseEntity(this);
+        if (target != null)
+        {   
+            foreach (var effect in BulletRuntimeData.BulletSo.EffectListSerializeData.EffectList)
+            {
+                var runtimeEffect = effect.ConvertToRuntimeEffect();
+                runtimeEffect.EffectSrc = BulletRuntimeData.Src;
+                target.Entity.GetEntityComponent<BeEffectAbleComponent>()?.AddEffect(runtimeEffect);
+            }
+            
+        }
     }
     
     public override IReadOnlyList<EntityComponentBase> Components { get; set; }

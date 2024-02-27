@@ -12,7 +12,7 @@ public class AIManager : GameSingleton<AIManager>
     [AssetsOnly] public List<CharacterAgent> agentPrefabList;
     
     
-    public void CreatAgent(OperationAbleEntityComponentBase ctrl)
+    public void CreatAgent(OperationAbleComponent ctrl)
     {
         var agentInst = Instantiate(agentPrefabList[0]);
         agentInst.BindCharacterCtrl(ctrl);

@@ -24,8 +24,8 @@ namespace Script.Test
             // // 添加到阵营
             // // 添加AI
             var aiManager = AIManager.Instance as AIManager;
-            var ctrl1 = entity1.GetEntityComponent<OperationAbleEntityComponentBase>();
-            var ctrl2 = entity2.GetEntityComponent<OperationAbleEntityComponentBase>();
+            var ctrl1 = entity1.GetEntityComponent<OperationAbleComponent>();
+            var ctrl2 = entity2.GetEntityComponent<OperationAbleComponent>();
             aiManager.CreatAgent(ctrl1);
             aiManager.CreatAgent(ctrl2);
 

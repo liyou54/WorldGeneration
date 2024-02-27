@@ -28,16 +28,23 @@ namespace Script.Skill
             EndTime = endTime;
         }
     }
-
+    public enum SkillPlayState
+    {
+        Doing,
+        Finish,
+    }
 
     public class SkillPlay
     {
         private SkillContext _context;
-
+        
         private float _timeScale = 1f;
-
+        
+        public SkillPlayState State { get; private set; }
+        
         public SkillPlay(SkillTimeline skillTimeline, GameObject character, GameObject target)
         {
+            State = SkillPlayState.Doing;
             InitSkill(skillTimeline);
             _context.SetBlackData("TargetGo", target);
             _context.Character = character;
@@ -136,7 +143,9 @@ namespace Script.Skill
                 }
             }
         }
-
+        
+        
+        
         public void Update()
         {
             if (_context == null)
@@ -144,8 +153,14 @@ namespace Script.Skill
                 return;
             }
 
+            if (State == SkillPlayState.Finish)
+            {
+                return;
+            }
+            
             if (_context.GetTimelineTime() > _context.SkillDataRuntime.SkillDuring)
             {
+                State = SkillPlayState.Finish;
                 OnSkillFinish();
                 return;
             }
@@ -286,4 +301,6 @@ namespace Script.Skill
             }
         }
     }
+
+
 }

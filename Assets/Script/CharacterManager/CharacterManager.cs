@@ -16,7 +16,7 @@ namespace Script.CharacterManager
             
             var entityManager = global::EntityManager.Instance as global::EntityManager;
             var inst = entityManager.CopyEntity(characterPrefab);
-            var operationComp = inst.GetEntityComponent<OperationAbleEntityComponentBase>();
+            var operationComp = inst.GetEntityComponent<OperationAbleComponent>();
             operationComp.Entity.transform.position = new Vector3(pos.x,0,pos.y);
             operationComp.BindEntity(inst);
 

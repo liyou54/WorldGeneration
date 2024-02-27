@@ -1,4 +1,5 @@
 using Battle.Bullet.BulletRuntime;
+using Battle.Effect;
 using Script.GameLaunch;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -8,8 +9,14 @@ namespace Battle.Bullet
     public class BulletBuilder
     {
         BulletRuntimeData Result = new BulletRuntimeData();
-
-        public BulletBuilder SetTarget(GameObject targetGo)
+        
+        public BulletBuilder SetBulletSrc(EntityBase src)
+        {
+            Result.Src = src;
+            return this;
+        }
+        
+        public BulletBuilder SetTarget(EntityBase targetGo)
         {
             Result.TargetGo = targetGo;
             return this;

@@ -22,13 +22,18 @@ namespace Script.Skill.SkillLogic
             bulletBuilder.SetBulletSO(BulletSo);
             if (TargetGo != null)
             {
-                bulletBuilder.SetTarget(TargetGo.GetValue(context));
+                var target = TargetGo.GetValue(context);
+                if (target != null)
+                {
+                    bulletBuilder.SetTarget(target.GetComponent<EntityBase>());
+                }
             }
             else if (TargetPos != null)
             {
                 bulletBuilder.SetTarget(TargetPos.GetValue(context));
             }
 
+            bulletBuilder.SetBulletSrc(context.Character.GetComponent<EntityBase>());
             bulletManager.Build(bulletBuilder);
         }
     }

@@ -1,8 +1,13 @@
+using Battle.Effect;
+
 namespace Battle.Buffer
 {
-    public class BufferRuntimeBase
+    public abstract class BufferRuntimeBase
     {
         
+        // 这里不知道放什么?
+        public object BufferSrc;
+        public object BufferAim;
         
         public void OnAttach()
         {

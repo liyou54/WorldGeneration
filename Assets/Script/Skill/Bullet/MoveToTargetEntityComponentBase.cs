@@ -1,5 +1,6 @@
 using System;
 using Battle.Bullet.BulletRuntime;
+using Battle.Effect;
 using Script.EntityManager;
 using UnityEngine;
 
@@ -16,9 +17,9 @@ namespace Battle.Bullet
     public class MoveToTargetEntityComponentBase : EntityComponentBase, IUpdateAble
     {
         public Vector3 TargetPosition { get; set; }
-        public GameObject TargetGo;
+        public EntityBase TargetGo;
 
-        public Action<EntityBase, GameObject> OnAttachTarget;
+        public Action<EntityBase, TargetAbleComponent> OnAttachTarget;
 
         public float Speed;
 
@@ -43,7 +44,8 @@ namespace Battle.Bullet
             var currentPos = Entity.transform.position;
             if (targetPos == currentPos)
             {
-                OnAttachTarget?.Invoke(Entity, TargetGo);
+                var target = TargetGo?.GetComponent<EntityBase>()?.GetEntityComponent<TargetAbleComponent>();
+                OnAttachTarget?.Invoke(Entity, target);
                 OnAttachTarget = null;
             }
 
@@ -73,7 +75,8 @@ namespace Battle.Bullet
             if (towardDistance * towardDistance >= dir.sqrMagnitude)
             {
                 Entity.transform.position = targetPos;
-                OnAttachTarget?.Invoke(Entity, TargetGo);
+                var target = TargetGo?.GetComponent<EntityBase>()?.GetEntityComponent<TargetAbleComponent>();
+                OnAttachTarget?.Invoke(Entity, target);
                 OnAttachTarget = null;
             }
             else

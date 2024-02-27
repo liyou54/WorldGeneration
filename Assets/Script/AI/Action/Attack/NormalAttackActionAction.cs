@@ -24,7 +24,7 @@ public class NormalAttackActionAction : AttackBaseAction
     }
 
     
-    public  void EffectAttack(TargetAbleEntityComponentBase targetable)
+    public  void EffectAttack(TargetAbleComponent targetable)
     {
     }
 }

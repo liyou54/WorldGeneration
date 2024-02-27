@@ -15,16 +15,16 @@ namespace AI.Agent
 
     public class CharacterAgent : BasicAgent
     {
-        public OperationAbleEntityComponentBase OperationAbleEntityCharacter { get; set; }
-        public TargetAbleEntityComponentBase Target { get; set; }
+        public OperationAbleComponent OperationAbleCharacter { get; set; }
+        public TargetAbleComponent Target { get; set; }
         
         public float CharacteSafeDistance = 10;
         
         public bool NeedUpdateTarget;
 
-        public void BindCharacterCtrl(OperationAbleEntityComponentBase operationAbleEntityComponentBase)
+        public void BindCharacterCtrl(OperationAbleComponent operationAbleComponent)
         {
-            OperationAbleEntityCharacter = operationAbleEntityComponentBase;
+            OperationAbleCharacter = operationAbleComponent;
             ResetAgentStatus();
         }
 

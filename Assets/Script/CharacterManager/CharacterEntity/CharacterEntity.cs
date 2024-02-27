@@ -11,11 +11,12 @@ using UnityEngine;
 
 [InitRequiredComp(
     typeof(MoveToTargetEntityComponentBase),
-    typeof(LiveEntityComponentBase),
-    typeof(TargetAbleEntityComponentBase),
+    typeof(LiveEntityComponent),
+    typeof(TargetAbleComponent),
     typeof(FactionMemberEntityComponentBase),
-    typeof(OperationAbleEntityComponentBase),
-    typeof(AreaEntityComponentBase)
+    typeof(OperationAbleComponent),
+    typeof(AreaEntityComponentBase),
+    typeof(BeEffectAbleComponent)
 )]
 public class CharacterEntity : EntityBase
 {

@@ -5,13 +5,10 @@ using Script.EntityManager.Attribute;
 namespace Battle.Effect
 {
     [AddOnce]
-    public class LiveEntityComponentBase:EntityComponentBase
+    public class TargetAbleComponent:EntityComponentBase
     {
-        public int Hp = 100;
-        public int MaxHp = 100;
-        
-        public ECharacterAliveStatus AliveStatus = ECharacterAliveStatus.None;
-        
+        public LiveEntityComponent LiveEntityComponent { get; set; }
+        public bool IsAlive => LiveEntityComponent?.AliveStatus == ECharacterAliveStatus.Alive;
         public override void OnCreate()
         {
             
@@ -24,7 +21,7 @@ namespace Battle.Effect
 
         public override void Start()
         {
-            AliveStatus = ECharacterAliveStatus.Alive;
+            LiveEntityComponent = Entity.GetEntityComponent<LiveEntityComponent>();
         }
     }
 }

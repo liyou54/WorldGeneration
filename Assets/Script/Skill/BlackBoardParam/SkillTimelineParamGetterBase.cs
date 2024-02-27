@@ -29,9 +29,11 @@ namespace Script.Skill.BlackBoardParam
 
         [ShowIf("InputType", EInputType.BlackBoard)] 
         [ValueDropdown("GetBlackBoardKey")]
+        [LabelText("黑板Key")]
         public String BlackBoardKey;
 
         [ShowIf("InputType", EInputType.Default), SerializeField]
+        [LabelText("默认值")]
         private T Value;
 
 

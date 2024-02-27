@@ -8,17 +8,12 @@ namespace Battle.Operation
     public class SkillOperation:IOperation
     {
         public OperationStatus Status { get; set; }
-        public ESkillTargetFunctionType SkillTargetFunctionType { get; set; }
-        public SkillBase SkillBase { get; set; }
         public SkillPlay SkillPlay;
-        public SkillOperation(SkillBase skillBase, TargetAbleEntityComponentBase targetAbleEntityComponentBase)
+        public SkillOperation(SkillPlay skillPlay)
         {
+            SkillPlay = skillPlay;
         }
 
-        public SkillOperation(SkillBase skillBase,Vector3 targetPos)
-        {
-        }
-        
         public void Start(BattleContext context, EntityBase entityBase)
         {
         }
@@ -26,6 +21,10 @@ namespace Battle.Operation
         public void Update(BattleContext context, EntityBase entityBase)
         {
             SkillPlay.Update();
+            if (SkillPlay.State == SkillPlayState.Finish)
+            {
+                Status = OperationStatus.Success;
+            }
         }
 
         public void Finish(BattleContext context, EntityBase entityBase)

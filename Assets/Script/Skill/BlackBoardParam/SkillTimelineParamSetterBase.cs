@@ -11,10 +11,12 @@ namespace Script.Skill.BlackBoardParam
     public class SkillTimelineParamSetterBase<T> :IBlackBoardKey
     {
         [ValueDropdown("GetBlackBoardKey")]
+        [LabelText("黑板Key")]
         public string BlackBoardKey;
 
 
         [SerializeField]
+        [LabelText("设置值")]
         private T Value;
         
         

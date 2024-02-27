@@ -12,7 +12,7 @@ using Script.EntityManager.Attribute;
 
 
 [AddOnce]
-public class OperationAbleEntityComponentBase : EntityComponentBase, IUpdateAble
+public class OperationAbleComponent : EntityComponentBase, IUpdateAble
 {
     List<IOperation> Operations = new List<IOperation>();
 
