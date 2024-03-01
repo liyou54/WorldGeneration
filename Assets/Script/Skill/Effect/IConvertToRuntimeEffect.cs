@@ -1,17 +1,39 @@
+using Battle.Bullet;
+using Script.EntityManager;
+
 namespace Battle.Effect
 {
-    
-    public abstract class RuntimeEffectBase
+    public abstract class EffectRuntimeBase : IAttachToSystem
     {
-        
+        /// <summary>
+        /// 效果施加者
+        /// </summary>
         public EntityBase EffectCaster;
+
+        /// <summary>
+        /// 效果施加目标
+        /// </summary>
         public EntityBase EffectTarget;
         
-        public abstract void Apply();
+        public EffectMajorType MajorType;
+        public EffectMinorType MinorType;
+
+        internal abstract void Apply();
+
+        public EAttachToSystemRunStatus RunStatus { get; set; }
+        public bool Valid => true;
+
+        public void OnAttachToSystem()
+        {
+        }
+
+        public void OnAttachToSystem(CharacterEffectSystem system)
+        {
+        }
     }
-    
+
     public interface IConvertToRuntimeEffect
     {
-        RuntimeEffectBase ConvertToRuntimeEffect();
+        EffectRuntimeBase ConvertToRuntimeEffect(EntityBase caster, EntityBase target);
     }
 }

@@ -1,6 +1,7 @@
 using AI.Agent;
 using Battle.Effect;
 using Battle.Operation;
+using Script.EntityManager;
 using SGoap;
 using UnityEngine;
 
@@ -25,17 +26,17 @@ namespace AI.Action
                 dir = new Vector3(rand.x, 0, rand.y);
             }
             safeDistance = characterAgent.CharacteSafeDistance;
-            moveOperation = new MoveOperation(targetTrs.position + dir * safeDistance);
+            moveOperation = new MoveOperation(targetTrs.position + dir * safeDistance, agent.Entity);
             characterAgent.OperationAbleCharacter.AddOperation(moveOperation);
         }
 
         public override void OnUpdatePerform()
         {
-            if (moveOperation.Status == OperationStatus.Success)
-            {
-                characterAgent.States.RemoveState("InDanger");
-                status = EActionStatus.Success;
-            }
+            // if (moveOperation.RunStatus == EAttachToSystemRunStatus.Success)
+            // {
+            //     characterAgent.States.RemoveState("InDanger");
+            //     status = EActionStatus.Success;
+            // }
         }
     }
 }

@@ -1,0 +1,44 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Script.EntityManager.Attribute
+{
+    public class SystemUpdateBeforeOtherAttribute:CachedAttribute
+    {
+        public  Type[] TypesList;
+        private static Dictionary<Type, Type[]> Data = new();
+
+        public SystemUpdateBeforeOtherAttribute(params Type[] type)
+        {
+            TypesList = type;
+        }
+        
+        public static Type[] TryGetComps(SystemBase systemBase)
+        {
+            var type = systemBase.GetType();
+            Type[] res = null;
+            if (Data.TryGetValue(type, out res))
+            {
+                return res;
+            }
+            res = type.GetCustomAttributes(typeof(SystemUpdateAfterOtherAttribute), true).Cast<SystemUpdateAfterOtherAttribute>().FirstOrDefault()?.TypesList;
+            Data.Add(type, res);
+            return res;
+        } 
+
+        
+        public static Type[] TryGetComps(Type type)
+        {
+            Type[] res = null;
+            if (Data.TryGetValue(type, out res))
+            {
+                return res;
+            }
+            res = type.GetCustomAttributes(typeof(SystemUpdateAfterOtherAttribute), true).Cast<SystemUpdateAfterOtherAttribute>().FirstOrDefault()?.TypesList;
+            Data.Add(type, res);
+            return res;
+        } 
+        
+    }
+}

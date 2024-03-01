@@ -1,34 +1,41 @@
+using Battle.Bullet;
 using Battle.Context;
 using Battle.Effect;
+using Script.EntityManager;
 using Script.Skill;
 using UnityEngine;
 
 namespace Battle.Operation
 {
-    public class SkillOperation:IOperation
+    public class SkillOperation : IOperation
     {
-        public OperationStatus Status { get; set; }
+
+        public void OnFinish()
+        {
+        }
+
         public SkillPlay SkillPlay;
+
         public SkillOperation(SkillPlay skillPlay)
         {
             SkillPlay = skillPlay;
         }
 
-        public void Start(BattleContext context, EntityBase entityBase)
+
+        public EOperationStatus Status { get; set; }
+
+        public void OnStart()
         {
+            var skillSystem = EntityManager.Instance.TryGetOrAddSystem<SkillSystem>();
+            skillSystem.AddToUpdate(SkillPlay);
         }
 
-        public void Update(BattleContext context, EntityBase entityBase)
+        public void Update(float deltaTime)
         {
-            SkillPlay.Update();
-            if (SkillPlay.State == SkillPlayState.Finish)
+            if (SkillPlay.RunStatus == EAttachToSystemRunStatus.End)
             {
-                Status = OperationStatus.Success;
+                Status = EOperationStatus.Success;
             }
-        }
-
-        public void Finish(BattleContext context, EntityBase entityBase)
-        {
         }
     }
 }

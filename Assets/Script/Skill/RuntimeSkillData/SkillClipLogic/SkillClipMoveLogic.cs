@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using Battle.Bullet;
+using Script.EntityManager;
 using Script.Skill.BlackBoardParam;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -13,47 +15,38 @@ namespace Script.Skill.SkillLogic
         public SkillTimelineParamGetterBase<Vector3> MovePosition;
         public SkillTimelineParamSetterBase<bool> OnAttachTarget;
 
-        
+
         public float Speed { get; set; }
         public bool IsDynamicMoveTarget { get; set; }
-
-        // 逻辑与表现先混着
+        
+        public MoveToTargetEntityComponent moveToTargetEntityComponent { get; set; }
+        
         public override void Start(SkillContext context)
         {
+            var target = MovePosition.GetValue(context.SkillDataRuntime.BlackBoard);
+            moveToTargetEntityComponent = context.Character.GetComponent<EntityBase>().GetEntityComponent<MoveToTargetEntityComponent>();
+            moveToTargetEntityComponent.Speed = Speed;
+            
             if (!IsDynamicMoveTarget)
             {
-                var trs = context.Character.transform;
-                var forward = trs.forward * MovePosition.GetValue(context.SkillDataRuntime.BlackBoard).z;
-                var right = trs.right * MovePosition.GetValue(context.SkillDataRuntime.BlackBoard).x;
-                var up = trs.up * MovePosition.GetValue(context.SkillDataRuntime.BlackBoard).y;
-                TargetPosition = context.Character.transform.position + forward + right + up;
+                moveToTargetEntityComponent.TargetPosition = target;
             }
             else
             {
-                TargetPosition = MoveTarget.GetValue(context.SkillDataRuntime.BlackBoard).transform.position;
+                moveToTargetEntityComponent.TargetGo = MoveTarget.GetValue(context.SkillDataRuntime.BlackBoard).GetComponent<EntityBase>();
             }
+
+            var moveSys = global::EntityManager.Instance.TryGetOrAddSystem<MoveToTargetSystem>();
+            moveSys.AddToUpdate(moveToTargetEntityComponent);
         }
 
         public override void Update(SkillContext context)
         {
-            if (IsDynamicMoveTarget)
+            if (moveToTargetEntityComponent.RunStatus == EAttachToSystemRunStatus.End)
             {
-                TargetPosition = MoveTarget.GetValue(context.SkillDataRuntime.BlackBoard).transform.position;
+                OnAttachTarget?.SetValue(context.SkillDataRuntime.BlackBoard);
+                Finish(context);
             }
-            
-            var distance = Vector3.Distance(context.Character.transform.position, TargetPosition);
-            if (distance < Speed * context.DeltaTime)
-            {
-                context.Character.transform.position = TargetPosition;
-                OnAttachTarget.SetValue(context.SkillDataRuntime.BlackBoard);        
-                Debug.Log("finish");
-            }
-            else
-            {
-                var dir = (TargetPosition - context.Character.transform.position).normalized;
-                context.Character.transform.position += dir * Speed * context.DeltaTime;
-            }
-           
         }
 
         public override void Finish(SkillContext context)

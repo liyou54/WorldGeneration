@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Battle.Bullet;
 using Script.EntityManager;
 using Script.EntityManager.Attribute;
 using Script.GameLaunch;
@@ -91,7 +92,6 @@ public class EntityManager : GameSingleton<EntityManager>
     private readonly IDAllocator IDAllocator = new IDAllocator();
     [ShowInInspector] private readonly Dictionary<long, EntityWithComp> EntityDic = new Dictionary<long, EntityWithComp>();
     [ShowInInspector] private readonly Dictionary<Type, HashSet<EntityComponentBase>> ComponentList = new Dictionary<Type, HashSet<EntityComponentBase>>();
-    private readonly HashSet<Type> NeedUpdateCompsType = new HashSet<Type>();
 
 
     public void ReleaseEntity(EntityBase entityBase)
@@ -160,7 +160,9 @@ public class EntityManager : GameSingleton<EntityManager>
         var entity = instance.AddComponent<T>();
         return _AddEntityToMgr(instance, entity);
     }
-
+    
+    
+    
     public void AttachComponent<T>(EntityBase entityBase) where T : EntityComponentBase, new()
     {
         var entityWithComp = EntityDic[entityBase.Id];
@@ -178,10 +180,7 @@ public class EntityManager : GameSingleton<EntityManager>
         }
 
         set.Add(comp);
-        if (comp is IUpdateAble)
-        {
-            NeedUpdateCompsType.Add(comp.GetType());
-        }
+
     }
 
     public void RemoveComponent<T>(EntityBase entityBase) where T : EntityComponentBase
@@ -201,41 +200,88 @@ public class EntityManager : GameSingleton<EntityManager>
     }
 
     // 辅助变量 用于遍历component
-    private Type[] _needUpdateTypeIter = new Type[1024];
+    private SystemBase[] _needUpdateTypeIter = new SystemBase[1024];
     private EntityComponentBase[] _needUpdateCompsIter = new EntityComponentBase[1024];
 
-    public void Update()
+    private Dictionary<Type, SystemBase> _updateSystem = new Dictionary<Type, SystemBase>();
+    
+    private List<SystemBase> _sortedSystemList = new List<SystemBase>();
+
+    public T TryGetOrAddSystem<T>() where T : SystemBase
     {
-        var iterCount = NeedUpdateCompsType.Count;
-        if (_needUpdateTypeIter.Length < iterCount)
+        if (_updateSystem.TryGetValue(typeof(T), out var system))
         {
-            _needUpdateTypeIter = new Type[iterCount];
+            return (T)system;
         }
+        
+        
+        // 重新构建系统列表
+        Graph<Type> graph = new Graph<Type>();
 
-        NeedUpdateCompsType.CopyTo(_needUpdateTypeIter);
-
-        for (int i = 0; i < iterCount; i++)
+        void AddToGraph(Type type)
         {
-            var type = _needUpdateTypeIter[i];
-            if (ComponentList.TryGetValue(type, out var set))
-            {
-                var iterCountComp = set.Count;
-                if (_needUpdateCompsIter.Length < iterCountComp)
-                {
-                    _needUpdateCompsIter = new EntityComponentBase[iterCountComp];
-                }
+            graph.AddVertex(type);
 
-                set.CopyTo(_needUpdateCompsIter);
-                for (int j = 0; j < iterCountComp; j++)
+            var beforeList = SystemUpdateBeforeOtherAttribute.TryGetComps(type);
+            if (beforeList != null)
+            {
+                foreach (var beforeType in beforeList)
                 {
-                    var comp = _needUpdateCompsIter[j];
-                    if (comp.Valid)
-                    {
-                        (comp as IUpdateAble)?.Update();
-                    }
+                    graph.AddEdge(beforeType, type);
+                }
+            }
+            var afterList = SystemUpdateAfterOtherAttribute.TryGetComps(type);
+            if (afterList != null)
+            {
+                foreach (var afterType in afterList)
+                {
+                    graph.AddEdge(type, afterType);
                 }
             }
         }
+        
+        AddToGraph(typeof(T));
+        
+        foreach (var type in _updateSystem)
+        {
+            AddToGraph(type.Key);
+        }
+        
+        var res = graph.TopologicalSort();
+        
+        system = (T)Activator.CreateInstance(typeof(T));
+        Debug.Log("Add System " + typeof(T).Name);
+        _updateSystem.Add(typeof(T), system);
+        _sortedSystemList.Clear();
+        foreach (var type in res)
+        {
+            if (!_updateSystem.TryGetValue(type, out var systemBase))
+            {
+                Debug.LogError("TryGetOrAddSystem Error! System Not Exist!");
+                continue;
+            }
+            _sortedSystemList.Add(systemBase);
+        }
+        
+        system.OnCreate();
+        
+        return (T)system;
+    }
+    
+    public void Update()
+    {
+        var iterCount = _sortedSystemList.Count;
+        if (_needUpdateTypeIter.Length < iterCount)
+        {
+            _needUpdateTypeIter = new SystemBase[iterCount];
+        }
+
+        _sortedSystemList.CopyTo(_needUpdateTypeIter);
+        for (int i = 0; i < iterCount; i++)
+        {
+            _needUpdateTypeIter[i].Update(Time.deltaTime);
+        }
+
     }
 
     private T _AddEntityToMgr<T>(GameObject go, T entity) where T : EntityBase
@@ -252,10 +298,6 @@ public class EntityManager : GameSingleton<EntityManager>
             foreach (var compType in list)
             {
                 var compInst = entityWithComp.AddComponent(compType);
-                if (compInst is IUpdateAble)
-                {
-                    NeedUpdateCompsType.Add(compType);
-                }
 
                 if (!ComponentList.TryGetValue(compInst.GetType(), out var set))
                 {

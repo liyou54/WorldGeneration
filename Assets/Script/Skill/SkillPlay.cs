@@ -1,14 +1,11 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Animancer;
-using Script.Skill.BlackBoardParam;
+using Battle.Bullet;
+using Script.EntityManager;
 using Script.Skill.RuntimeSkillData.SkillView;
 using Script.Skill.SkillLogic;
 using Script.Skill.TimelineTrack;
-using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 namespace Script.Skill
@@ -34,17 +31,15 @@ namespace Script.Skill
         Finish,
     }
 
-    public class SkillPlay
+    public class SkillPlay : IAttachToSystem
     {
         private SkillContext _context;
         
         private float _timeScale = 1f;
         
-        public SkillPlayState State { get; private set; }
         
         public SkillPlay(SkillTimeline skillTimeline, GameObject character, GameObject target)
         {
-            State = SkillPlayState.Doing;
             InitSkill(skillTimeline);
             _context.SetBlackData("TargetGo", target);
             _context.Character = character;
@@ -143,24 +138,26 @@ namespace Script.Skill
                 }
             }
         }
-        
-        
-        
-        public void Update()
+
+
+        public EAttachToSystemRunStatus RunStatus { get; set; }
+        public bool Valid => true;
+
+        public void Update(float deltaTime)
         {
             if (_context == null)
             {
                 return;
             }
 
-            if (State == SkillPlayState.Finish)
+            if (RunStatus != EAttachToSystemRunStatus.Running)
             {
                 return;
             }
             
             if (_context.GetTimelineTime() > _context.SkillDataRuntime.SkillDuring)
             {
-                State = SkillPlayState.Finish;
+                RunStatus = EAttachToSystemRunStatus.Success;
                 OnSkillFinish();
                 return;
             }
@@ -171,10 +168,35 @@ namespace Script.Skill
             UpdateLogic();
             _context.SkillDataRuntime.UpdateMarkEmitter(_context);
             UpdateView();
-            float scaleDeltaTime = Time.deltaTime * _timeScale;
+            float scaleDeltaTime = deltaTime * _timeScale;
             _context.DeltaTime = scaleDeltaTime;
             _context.LastTimeLineTime = timelineTime;
             _context.AllRunTime += scaleDeltaTime;
+        }
+
+        public void OnSuccess()
+        {
+            
+        }
+
+        public void OnFail()
+        {
+        }
+
+        public void OnInterrupt()
+        {
+        }
+
+        public void OnFinish()
+        {
+        }
+
+        public void OnAttachToSystem(SkillSystem system)
+        {
+        }
+
+        public void OnDetachFromSystem(SkillSystem system)
+        {
         }
 
 
@@ -240,6 +262,7 @@ namespace Script.Skill
             }
 
             Debug.Log("技能结束");
+            RunStatus = EAttachToSystemRunStatus.Success;
             _context.Character.transform.position = Vector3.zero;
             _context = null;
         }
@@ -300,6 +323,10 @@ namespace Script.Skill
                 }
             }
         }
+
+        
+        
+        
     }
 
 

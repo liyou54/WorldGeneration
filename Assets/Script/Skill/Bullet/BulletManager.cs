@@ -53,6 +53,7 @@ namespace Battle.Bullet
             EntityManager entityManager = EntityManager.Instance;
             var bulletEntity = entityManager.CreateEntityFromPrefab(runtimeData.BulletSo.BulletPrefab);
             bulletEntity.BulletRuntimeData = runtimeData;
+            
             return bulletEntity;
         }
 

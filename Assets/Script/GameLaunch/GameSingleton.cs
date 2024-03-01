@@ -18,6 +18,7 @@ namespace Script.GameLaunch
                 if (instance == null)
                 {
                     instance = new GameObject(typeof(T).Name).AddComponent<T>();
+                    DontDestroyOnLoad(instance);
                 }
 
                 return instance;

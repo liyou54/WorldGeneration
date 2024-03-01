@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AreaManager;
+using Battle;
 using Battle.Bullet;
 using Battle.Effect;
 using Faction;
@@ -10,7 +11,7 @@ using Script.EntityManager.Attribute;
 using UnityEngine;
 
 [InitRequiredComp(
-    typeof(MoveToTargetEntityComponentBase),
+    typeof(MoveToTargetEntityComponent),
     typeof(LiveEntityComponent),
     typeof(TargetAbleComponent),
     typeof(FactionMemberEntityComponentBase),

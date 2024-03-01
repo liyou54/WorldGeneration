@@ -5,7 +5,7 @@ using UnityEngine;
 namespace AreaManager
 {
     [AddOnce]
-    public class AreaEntityComponentBase : EntityComponentBase,IUpdateAble
+    public class AreaEntityComponentBase : EntityComponentBase
     {
 
         public Vector3 LastPosition;
@@ -36,6 +36,11 @@ namespace AreaManager
             
             var areaManager = AreaManager.Instance as AreaManager;
             areaManager.UpdateChunkPosition(this);
+        }
+
+        public void Update(float deltaTime)
+        {
+            
         }
     }
 }

@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Battle.Effect
 {
 
-    public class RuntimeForceMoveEffect:RuntimeEffectBase
+    public class EffectRuntimeForceMove:EffectRuntimeBase
     {
        public Vector3 direction;
        public float distance;
-       public override void Apply()
+       internal override void Apply()
        {
            
        }
@@ -22,13 +22,9 @@ namespace Battle.Effect
 
         public override EffectMajorType MajorType { get; set; }
         public override EffectMinorType MinorType { get; set; }
-
-        public override RuntimeEffectBase ConvertToRuntimeEffect()
+        public override EffectRuntimeBase ConvertToRuntimeEffect(EntityBase caster, EntityBase target)
         {
-            var rt = new RuntimeForceMoveEffect();
-            rt.direction = direction;
-            rt.distance = distance;
-            return rt;
+            throw new System.NotImplementedException();
         }
 
     }

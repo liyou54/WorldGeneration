@@ -14,12 +14,21 @@ namespace Battle.Effect
     [HideReferenceObjectPicker]
     public abstract class EffectBase : IConvertToRuntimeEffect
     {
-        public abstract EffectMajorType  MajorType { get; set; }
+        public abstract EffectMajorType MajorType { get; set; }
 
         public abstract EffectMinorType MinorType { get; set; }
 
+        /// <summary>
+        /// 影响目标 自己 还是 对方
+        /// </summary>
         [LabelText("影响目标")] public ETargetEffect TargetEffect;
+        private IConvertToRuntimeEffect _convertToRuntimeEffectImplementation;
 
-        public abstract RuntimeEffectBase ConvertToRuntimeEffect();
+        /// <summary>
+        /// </summary>
+        /// <param name="target"> 效果目标</param>
+        /// <param name="caster"> 效果施加者</param>
+        /// <returns></returns>
+        public abstract EffectRuntimeBase ConvertToRuntimeEffect(EntityBase target, EntityBase caster);
     }
 }
