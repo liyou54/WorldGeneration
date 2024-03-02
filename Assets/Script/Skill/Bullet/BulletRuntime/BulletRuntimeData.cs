@@ -1,7 +1,8 @@
-using Battle.Effect;
+using Script.Skill.Effect;
+using Script.Entity;
 using UnityEngine;
 
-namespace Battle.Bullet.BulletRuntime
+namespace Script.Skill.Bullet.BulletRuntime
 {
     public class BulletRuntimeData
     {

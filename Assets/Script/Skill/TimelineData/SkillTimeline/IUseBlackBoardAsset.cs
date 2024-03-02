@@ -9,11 +9,17 @@ namespace Script.Skill.SkillLogic.SkillTimeline
 {
     public interface IUseBlackBoardAsset
     {
+
         public SkillEntityTimeline GetTimeLine()
         {
+#if UNITY_EDITOR
             var path = AssetDatabase.GetAssetPath(this as UnityEngine.Object);
             var asset = AssetDatabase.LoadAssetAtPath<SkillEntityTimeline>(path);
-            return asset;
+            return asset; 
+#else
+            return null;            
+#endif
+
         }
         
         public List<FieldInfo> GetTimelineBoardParamUsed()

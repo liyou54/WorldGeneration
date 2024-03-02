@@ -1,0 +1,34 @@
+ManifestFileVersion: 0
+CRC: 2985150013
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ddc70bf9aed3fc3dae955b58757b270a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e28bf0949b6926c4b6d767beab4c947c
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: bb8c052acfbe20d4c82166985b4d5843, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Res/Skill_Config/Bullet/Trail.prefab
+- Assets/Res/Skill_Config/Bullet/Rockets.prefab
+Dependencies:
+- D:/Project/unity/WorldGeneration/Bundles/StandaloneWindows64/MainPackage/OutputCache/mainpackage_share_assets_pixel
+  sprite effects pack_15 pixel sprite effects_material.bundle

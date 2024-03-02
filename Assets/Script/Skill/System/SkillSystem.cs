@@ -1,8 +1,8 @@
 using System;
-using Script.EntityManager;
+using Script.Entity;
 using Script.Skill;
 
-namespace Battle.Bullet
+namespace Script.Skill.Bullet
 {
     public delegate void SkillDecorator(ref SkillPlay skill);
 

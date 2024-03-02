@@ -1,6 +1,6 @@
 using Sirenix.OdinInspector;
 
-namespace Battle.Effect
+namespace Script.Skill.Effect
 {
     [LabelText("添加Buffer效果")]
     public class AddBufferEffect

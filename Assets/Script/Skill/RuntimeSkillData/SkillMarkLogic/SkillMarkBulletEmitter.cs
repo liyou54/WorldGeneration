@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using Battle.Bullet;
-using Battle.Effect;
+using Script.Skill.Bullet;
+using Script.Skill.Effect;
+using Script.Entity;
 using Script.Skill.BlackBoardParam;
 using UnityEngine;
 using UnityEngine.Pool;

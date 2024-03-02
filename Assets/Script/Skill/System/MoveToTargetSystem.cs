@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Script.EntityManager;
+using Script.Entity;
 
-namespace Battle.Bullet
+namespace Script.Skill.Bullet
 {
     
     public class MoveToTargetSystem:SystemBaseWithUpdateItem<MoveToTargetEntityComponent>

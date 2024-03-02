@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
-using Battle.Bullet;
-using Battle.Effect;
-using GraphProcessor;
+using Script.Skill.Bullet;
+using Script.Skill.Effect;
 using Script.Skill.BlackBoardParam;
 using Script.Skill.SkillLogic;
 using Sirenix.OdinInspector;

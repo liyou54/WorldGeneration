@@ -1,6 +1,6 @@
 using System;
 
-namespace Battle.Effect
+namespace Script.Skill.Effect
 {
     public class Enum2StaticClassAttribute:Attribute
     {

@@ -1,5 +1,5 @@
 using System.ComponentModel;
-using Battle.Bullet;
+using Script.Skill.Bullet;
 using Script.Skill.BlackBoardParam;
 using Sirenix.OdinInspector;
 

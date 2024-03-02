@@ -1,7 +1,7 @@
-using Battle.Bullet;
-using Script.EntityManager;
+using Script.Skill.Bullet;
+using Script.Entity;
 
-namespace Battle.Effect
+namespace Script.Skill.Effect
 {
     public abstract class EffectRuntimeBase : IAttachToSystem
     {
@@ -18,6 +18,9 @@ namespace Battle.Effect
         public EffectMajorType MajorType;
         public EffectMinorType MinorType;
 
+        /// <summary>
+        /// 此方法应该由EffectSystem调用 直接调用会导致Buff没有触发
+        /// </summary>
         internal abstract void Apply();
 
         public EAttachToSystemRunStatus RunStatus { get; set; }

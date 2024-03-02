@@ -1,5 +1,5 @@
 using Battle.Context;
-using Script.EntityManager;
+using Script.Entity;
 
 namespace Battle.Operation
 {

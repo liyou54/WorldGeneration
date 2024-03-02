@@ -1,0 +1,10 @@
+ManifestFileVersion: 0
+CRC: 764501212
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: modtest_assets_modplugin_testmodres_dll_mod_test_dll_bytes.rawfile
+      Dependencies: {}
+    Info_1:
+      Name: modtest_assets_modplugin_testmodres_prefab.bundle
+      Dependencies: {}

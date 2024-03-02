@@ -1,13 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Battle;
-using Battle.Bullet;
-using Battle.Bullet.BulletRuntime;
-using Battle.Effect;
-using Script.EntityManager;
-using Script.EntityManager.Attribute;
-using UnityEngine;
+using Script.Skill.Bullet;
+using Script.Skill.Bullet.BulletRuntime;
+using Script.Skill.Effect;
+using Script.Entity;
+using Script.Entity.Attribute;
 
 [InitRequiredComp(typeof(MoveToTargetEntityComponent))]
 public class BulletEntity : EntityBase
@@ -48,9 +46,10 @@ public class BulletEntity : EntityBase
     public void OnAttachToTarget(EntityBase entityBase, TargetAbleComponent target)
     { 
         EntityManager.Instance.ReleaseEntity(this);
+        var effectManager = EntityManager.Instance.TryGetOrAddSystem<CharacterEffectSystem>();
         if (target != null)
         {   
-            var beEffectAble = target.Entity.GetEntityComponent<BeEffectAbleComponent>();
+            var beEffectAble = target.Entity.GetEntityComponent<BuffComponent>();
             if (beEffectAble == null)
             {
                 return;
@@ -58,7 +57,7 @@ public class BulletEntity : EntityBase
             foreach (var effect in BulletRuntimeData.BulletSo.EffectListSerializeData.EffectList)
             {
                 var runtimeEffect = effect.ConvertToRuntimeEffect(target.Entity,BulletRuntimeData.Caster);
-                beEffectAble.ApplyEffect(runtimeEffect);
+                effectManager.ExecuteEffect(runtimeEffect);
             }
             
         }

@@ -1,0 +1,26 @@
+ManifestFileVersion: 0
+CRC: 775908084
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 78f94bdbd525ab1ad1f906e4706cc40a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 7e2896cd1d470364c890d5695627e4c8
+HashAppended: 0
+ClassTypes:
+- Class: 114
+  Script: {fileID: 11500000, guid: 1bf76d20962d46ce949d26fa398b97a4, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: custom_script
+  ClassName: Script.Skill.Effect.EffectListSerializeData
+- AssemblyName: custom_script
+  ClassName: Script.Skill.Effect.EffectMajorType
+- AssemblyName: custom_script
+  ClassName: Script.Skill.Effect.EffectMinorType
+Assets:
+- "Assets/Res/Skill_Config/Buff/\u53CD\u4F24.asset"
+- "Assets/Res/Skill_Config/Buff/\u5438\u8840.asset"
+Dependencies: []

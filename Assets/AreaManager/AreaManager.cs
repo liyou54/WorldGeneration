@@ -182,9 +182,6 @@ namespace AreaManager
             }
         }
 
-        public override void OnInit()
-        {
-            base.OnInit();
-        }
+ 
     }
 }

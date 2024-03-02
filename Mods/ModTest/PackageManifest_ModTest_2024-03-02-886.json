@@ -1,0 +1,52 @@
+{
+    "FileVersion": "2.0.0",
+    "EnableAddressable": false,
+    "LocationToLower": false,
+    "IncludeAssetGUID": false,
+    "OutputNameStyle": 0,
+    "BuildPipeline": "BuiltinBuildPipeline",
+    "PackageName": "ModTest",
+    "PackageVersion": "2024-03-02-886",
+    "AssetList": [
+        {
+            "Address": "",
+            "AssetPath": "Assets/ModPlugin/TestModRes/DLL/mod_test.dll.bytes",
+            "AssetGUID": "",
+            "AssetTags": [
+                "ModDll"
+            ],
+            "BundleID": 0
+        },
+        {
+            "Address": "",
+            "AssetPath": "Assets/ModPlugin/TestModRes/Prefab/New Prefab.prefab",
+            "AssetGUID": "",
+            "AssetTags": [],
+            "BundleID": 1
+        }
+    ],
+    "BundleList": [
+        {
+            "BundleName": "modtest_assets_modplugin_testmodres_dll_mod_test_dll_bytes.rawfile",
+            "UnityCRC": 2507657699,
+            "FileHash": "1a90e34dd90977fae552a58d74305819",
+            "FileCRC": "f9cd29b3",
+            "FileSize": 3610,
+            "Encrypted": false,
+            "Tags": [
+                "ModDll"
+            ],
+            "DependIDs": []
+        },
+        {
+            "BundleName": "modtest_assets_modplugin_testmodres_prefab.bundle",
+            "UnityCRC": 4022207551,
+            "FileHash": "82485e79a43f0df62ee698c6bf90c87b",
+            "FileCRC": "7c6466bc",
+            "FileSize": 1723,
+            "Encrypted": false,
+            "Tags": [],
+            "DependIDs": []
+        }
+    ]
+}

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Battle.Effect;
+using Script.Skill.Effect;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine;
 
 
-namespace Battle.Bullet
+namespace Script.Skill.Bullet
 {
     [LabelText("子弹配置")]
     public abstract class BulletSO : ScriptableObject, ISerializationCallbackReceiver

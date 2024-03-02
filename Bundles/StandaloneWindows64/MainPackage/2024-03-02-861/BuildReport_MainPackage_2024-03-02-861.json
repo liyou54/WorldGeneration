@@ -1,0 +1,228 @@
+{
+    "Summary": {
+        "YooVersion": "2.1.1",
+        "UnityVersion": "2022.3.5f1",
+        "BuildDate": "2024/3/2 14:21:57",
+        "BuildSeconds": 5,
+        "BuildTarget": 19,
+        "BuildMode": 0,
+        "BuildPipeline": "BuiltinBuildPipeline",
+        "BuildPackageName": "MainPackage",
+        "BuildPackageVersion": "2024-03-02-861",
+        "UniqueBundleName": true,
+        "EnableAddressable": false,
+        "LocationToLower": false,
+        "IncludeAssetGUID": false,
+        "IgnoreDefaultType": true,
+        "AutoCollectShaders": true,
+        "EnableSharePackRule": true,
+        "EncryptionClassName": "null",
+        "FileNameStyle": 0,
+        "CompressOption": 2,
+        "DisableWriteTypeTree": false,
+        "IgnoreTypeTreeChanges": true,
+        "AssetFileTotalCount": 11,
+        "MainAssetTotalCount": 7,
+        "AllBundleTotalCount": 6,
+        "AllBundleTotalSize": 95315,
+        "EncryptedBundleTotalCount": 0,
+        "EncryptedBundleTotalSize": 0
+    },
+    "AssetInfos": [
+        {
+            "Address": "",
+            "AssetPath": "Assets/Res/Skill_Config/Buff/反伤.asset",
+            "AssetGUID": "c0f3f75466c60ce4099b6fce2dadf204",
+            "AssetTags": [
+                "Config"
+            ],
+            "MainBundleName": "mainpackage_assets_res_skill_config_buff.bundle",
+            "MainBundleSize": 2450,
+            "DependAssets": []
+        },
+        {
+            "Address": "",
+            "AssetPath": "Assets/Res/Skill_Config/Buff/吸血.asset",
+            "AssetGUID": "50a61f595c0f66e4fa385d2783bdbe22",
+            "AssetTags": [
+                "Config"
+            ],
+            "MainBundleName": "mainpackage_assets_res_skill_config_buff.bundle",
+            "MainBundleSize": 2450,
+            "DependAssets": []
+        },
+        {
+            "Address": "",
+            "AssetPath": "Assets/Res/Skill_Config/Bullet/BulletSo/子弹.asset",
+            "AssetGUID": "4146ff89ef5ac4847b44828afb5ab239",
+            "AssetTags": [
+                "Config"
+            ],
+            "MainBundleName": "mainpackage_assets_res_skill_config_bullet_bulletso.bundle",
+            "MainBundleSize": 2518,
+            "DependAssets": [
+                "Assets/Res/Skill_Config/Bullet/Trail.prefab",
+                "Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Texture/Trail.png",
+                "Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Material/Trail.mat"
+            ]
+        },
+        {
+            "Address": "",
+            "AssetPath": "Assets/Res/Skill_Config/Bullet/BulletSo/子弹_AOE.asset",
+            "AssetGUID": "a7a57b98d02d49c4a8e5e7a7d653d39b",
+            "AssetTags": [
+                "Config"
+            ],
+            "MainBundleName": "mainpackage_assets_res_skill_config_bullet_bulletso.bundle",
+            "MainBundleSize": 2518,
+            "DependAssets": [
+                "Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Texture/Rockets.png",
+                "Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Material/Rockets.mat",
+                "Assets/Res/Skill_Config/Bullet/Rockets.prefab"
+            ]
+        },
+        {
+            "Address": "",
+            "AssetPath": "Assets/Res/Skill_Config/Bullet/Rockets.prefab",
+            "AssetGUID": "cb0f871f3b3009b45b7e0b824a13abc9",
+            "AssetTags": [
+                "Prefab"
+            ],
+            "MainBundleName": "mainpackage_assets_res_skill_config_bullet.bundle",
+            "MainBundleSize": 29131,
+            "DependAssets": [
+                "Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Texture/Rockets.png",
+                "Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Material/Rockets.mat"
+            ]
+        },
+        {
+            "Address": "",
+            "AssetPath": "Assets/Res/Skill_Config/Bullet/Trail.prefab",
+            "AssetGUID": "acf72dd7734772e4e9c78c9833c94d3f",
+            "AssetTags": [
+                "Prefab"
+            ],
+            "MainBundleName": "mainpackage_assets_res_skill_config_bullet.bundle",
+            "MainBundleSize": 29131,
+            "DependAssets": [
+                "Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Texture/Trail.png",
+                "Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Material/Trail.mat"
+            ]
+        },
+        {
+            "Address": "",
+            "AssetPath": "Assets/GlobalConfig/ui_asset.asset",
+            "AssetGUID": "79f3719048433ee4f803b8b5ccad6913",
+            "AssetTags": [],
+            "MainBundleName": "mainpackage_assets_globalconfig.bundle",
+            "MainBundleSize": 1881,
+            "DependAssets": []
+        }
+    ],
+    "BundleInfos": [
+        {
+            "BundleName": "mainpackage_assets_res_skill_config_buff.bundle",
+            "FileName": "65c75129c3976ec702c1253a6a7a942b.bundle",
+            "FileHash": "65c75129c3976ec702c1253a6a7a942b",
+            "FileCRC": "caf7a39a",
+            "FileSize": 2450,
+            "Encrypted": false,
+            "Tags": [
+                "Config"
+            ],
+            "DependBundles": [],
+            "AllBuiltinAssets": [
+                "Assets/Res/Skill_Config/Buff/反伤.asset",
+                "Assets/Res/Skill_Config/Buff/吸血.asset"
+            ]
+        },
+        {
+            "BundleName": "mainpackage_assets_res_skill_config_bullet_bulletso.bundle",
+            "FileName": "4a49eef33df5826af28941c5a50a31a2.bundle",
+            "FileHash": "4a49eef33df5826af28941c5a50a31a2",
+            "FileCRC": "d8a0bbb5",
+            "FileSize": 2518,
+            "Encrypted": false,
+            "Tags": [
+                "Config"
+            ],
+            "DependBundles": [
+                "mainpackage_share_assets_pixel sprite effects pack_15 pixel sprite effects_material.bundle",
+                "mainpackage_share_assets_pixel sprite effects pack_15 pixel sprite effects_texture.bundle"
+            ],
+            "AllBuiltinAssets": [
+                "Assets/Res/Skill_Config/Bullet/BulletSo/子弹.asset",
+                "Assets/Res/Skill_Config/Bullet/BulletSo/子弹_AOE.asset"
+            ]
+        },
+        {
+            "BundleName": "mainpackage_assets_res_skill_config_bullet.bundle",
+            "FileName": "d94b2ef3a84c05aa4ccf2f8d93c01989.bundle",
+            "FileHash": "d94b2ef3a84c05aa4ccf2f8d93c01989",
+            "FileCRC": "d2853adf",
+            "FileSize": 29131,
+            "Encrypted": false,
+            "Tags": [
+                "Prefab"
+            ],
+            "DependBundles": [
+                "mainpackage_share_assets_pixel sprite effects pack_15 pixel sprite effects_material.bundle",
+                "mainpackage_share_assets_pixel sprite effects pack_15 pixel sprite effects_texture.bundle"
+            ],
+            "AllBuiltinAssets": [
+                "Assets/Res/Skill_Config/Bullet/Rockets.prefab",
+                "Assets/Res/Skill_Config/Bullet/Trail.prefab"
+            ]
+        },
+        {
+            "BundleName": "mainpackage_assets_globalconfig.bundle",
+            "FileName": "1cd13607f1743552aa1c7ffb8d19ff02.bundle",
+            "FileHash": "1cd13607f1743552aa1c7ffb8d19ff02",
+            "FileCRC": "409c8174",
+            "FileSize": 1881,
+            "Encrypted": false,
+            "Tags": [],
+            "DependBundles": [],
+            "AllBuiltinAssets": [
+                "Assets/GlobalConfig/ui_asset.asset"
+            ]
+        },
+        {
+            "BundleName": "mainpackage_share_assets_pixel sprite effects pack_15 pixel sprite effects_texture.bundle",
+            "FileName": "c222837b9298a56044e7fc086569a8a9.bundle",
+            "FileHash": "c222837b9298a56044e7fc086569a8a9",
+            "FileCRC": "2d83c7d5",
+            "FileSize": 40161,
+            "Encrypted": false,
+            "Tags": [
+                "Config",
+                "Prefab"
+            ],
+            "DependBundles": [],
+            "AllBuiltinAssets": [
+                "Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Texture/Trail.png",
+                "Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Texture/Rockets.png"
+            ]
+        },
+        {
+            "BundleName": "mainpackage_share_assets_pixel sprite effects pack_15 pixel sprite effects_material.bundle",
+            "FileName": "f7b905fffdf3e56fa4ca6d5930f9dea6.bundle",
+            "FileHash": "f7b905fffdf3e56fa4ca6d5930f9dea6",
+            "FileCRC": "fccc36a3",
+            "FileSize": 19174,
+            "Encrypted": false,
+            "Tags": [
+                "Config",
+                "Prefab"
+            ],
+            "DependBundles": [
+                "mainpackage_share_assets_pixel sprite effects pack_15 pixel sprite effects_texture.bundle"
+            ],
+            "AllBuiltinAssets": [
+                "Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Material/Trail.mat",
+                "Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Material/Rockets.mat"
+            ]
+        }
+    ],
+    "IndependAssets": []
+}

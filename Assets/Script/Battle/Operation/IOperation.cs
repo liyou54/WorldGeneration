@@ -1,7 +1,7 @@
 using System;
-using Battle.Bullet;
+using Script.Skill.Bullet;
 using Battle.Context;
-using Script.EntityManager;
+using Script.Entity;
 
 namespace Battle.Operation
 {

@@ -1,8 +1,8 @@
 using Battle.Status;
-using Script.EntityManager;
-using Script.EntityManager.Attribute;
+using Script.Entity;
+using Script.Entity.Attribute;
 
-namespace Battle.Effect
+namespace Script.Skill.Effect
 {
     [AddOnce]
     public class LiveEntityComponent:EntityComponentBase

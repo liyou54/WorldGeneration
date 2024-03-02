@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Sirenix.OdinInspector;
 
-namespace Battle.Effect
+namespace Script.Skill.Effect
 {
     [HideLabel]
     [Enum2StaticClass(typeof(EffectMajorSetting), typeof(EffectMajorType))]

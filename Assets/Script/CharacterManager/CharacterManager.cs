@@ -1,9 +1,6 @@
-using Battle.Effect;
-using Battle.Status;
-using Faction;
+using Script.Entity;
 using Script.GameLaunch;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Script.CharacterManager
@@ -13,8 +10,8 @@ namespace Script.CharacterManager
         [AssetsOnly] public global::CharacterEntity characterPrefab;
         public global::CharacterEntity CreateCharacter(Vector2 pos)
         {
-            
-            var entityManager = global::EntityManager.Instance as global::EntityManager;
+
+            var entityManager = EntityManager.Instance;
             var inst = entityManager.CopyEntity(characterPrefab);
             var operationComp = inst.GetEntityComponent<OperationAbleComponent>();
             operationComp.Entity.transform.position = new Vector3(pos.x,0,pos.y);

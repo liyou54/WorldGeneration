@@ -1,27 +1,16 @@
 using System;
 using System.Collections.Generic;
-using Battle.Buffer;
-using Battle.Bullet;
-using Battle.Effect;
-using Script.EntityManager;
+using Battle;
+using Script.Skill.Buff;
+using Script.Skill.Bullet;
+using Script.Skill.Effect;
+using Script.Entity;
 using UnityEngine;
 
 namespace Script.Skill
 {
-    public class BuffTriggerSystem : SystemBaseWithUpdateItem<BuffRuntimeBase>
+    public class BuffTriggerSystem : SystemBaseWithUpdateItem<BuffComponent>
     {
-        // Buff 触发会从这里面筛选
-        // 效果筛选列表 效果产生时间
-        // buff对象 比如反伤Buff就是效果从效果接收者触发buff 吸血Buff就是效果从效果施加者触发buff
-        Dictionary<(ETargetEffect, EDecoratorTimePointType), Dictionary<EntityBase, List<BuffRuntimeBase>>> checkLists = new()
-        {
-            { (ETargetEffect.Caster, EDecoratorTimePointType.Before), new() },
-            { (ETargetEffect.Caster, EDecoratorTimePointType.After), new() },
-            { (ETargetEffect.Target, EDecoratorTimePointType.Before), new() },
-            { (ETargetEffect.Target, EDecoratorTimePointType.After), new() },
-        };
-
-
         // 角色身上挂载的所有 Buff
         public Dictionary<EntityBase, List<BuffRuntimeBase>> EntityAllBuffList = new();
 
@@ -56,6 +45,7 @@ namespace Script.Skill
             {
                 ExecuteBuff(buff, effect.EffectCaster);
             }
+
             return effect;
         }
 
@@ -66,41 +56,28 @@ namespace Script.Skill
             {
                 ExecuteBuff(buff, effect.EffectCaster);
             }
+
             return effect;
         }
 
         private List<BuffRuntimeBase> TryEffectGetCurrentTriggerBuffList(EffectRuntimeBase effect, EDecoratorTimePointType timePointType)
         {
-            var keyTarget = (ETargetEffect.Target, timePointType);
-            var keyCaster = (ETargetEffect.Caster, timePointType);
-
             var res = new List<BuffRuntimeBase>();
 
-            if (effect.EffectTarget != null && checkLists[keyTarget].TryGetValue(effect.EffectTarget, out var targetList))
+            if (effect.EffectTarget != null)
             {
-                foreach (var buff in targetList)
+                var targetEffect = effect.EffectTarget.GetEntityComponent<BuffComponent>();
+                if (targetEffect != null)
                 {
-                    if (buff is EffectDecoratorBuffRuntime effectDecoratorBuffRuntime)
-                    {
-                        if (effectDecoratorBuffRuntime.IsMarch(effect))
-                        {
-                            res.Add(buff);
-                        }
-                    }
+                    res.AddRange(targetEffect.TryGetEffectDecoratorBuffList(effect,ETargetEffect.Target, timePointType));
                 }
             }
-
-            if (effect.EffectCaster != null && checkLists[keyCaster].TryGetValue(effect.EffectCaster, out var casterList))
+            if (effect.EffectCaster != null)
             {
-                foreach (var buff in casterList)
+                var casterEffect = effect.EffectCaster.GetEntityComponent<BuffComponent>();
+                if (casterEffect != null)
                 {
-                    if (buff is EffectDecoratorBuffRuntime effectDecoratorBuffRuntime)
-                    {
-                        if (effectDecoratorBuffRuntime.IsMarch(effect))
-                        {
-                            res.Add(buff);
-                        }
-                    }
+                    res.AddRange(casterEffect.TryGetEffectDecoratorBuffList(effect,ETargetEffect.Caster, timePointType));
                 }
             }
             return res;
@@ -109,8 +86,15 @@ namespace Script.Skill
         public void AddBuff(BuffRuntimeBase buff)
         {
             OnBuffAddBeforeDecorator(buff);
-            AddBuffToCheckList(buff);
-            // TODO Add Buffer
+            if (buff != null && buff.Owner != null)
+            {
+                var buffComp = buff.Owner.GetEntityComponent<BuffComponent>();
+                if (buffComp != null)
+                {
+                    buffComp.AddBuff_Internal(buff);
+                }
+            }
+
             OnBuffAddAfterDecorator(buff);
         }
 
@@ -131,32 +115,10 @@ namespace Script.Skill
         }
 
 
-        private void AddBuffToCheckList(BuffRuntimeBase buff)
-        {
-            if (buff is EffectDecoratorBuffRuntime effectDecoratorBuffRuntime)
-            {
-                AddBuffToEffectCheckList(effectDecoratorBuffRuntime);
-            }
-        }
-
-        private void AddBuffToEffectCheckList(EffectDecoratorBuffRuntime buff)
-        {
-            var key = (buff.FlitterFrom, buff.TimerType);
-            if (checkLists[key].ContainsKey(buff.Owner))
-            {
-                checkLists[key][buff.Owner].Add(buff);
-            }
-            else
-            {
-                checkLists[key].Add(buff.Owner, new List<BuffRuntimeBase> { buff });
-            }
-        }
-
-
         public override void OnCreate()
         {
             // 注册效果 hook
-            var entityManager = global::EntityManager.Instance;
+            var entityManager = EntityManager.Instance;
             var effectSystem = entityManager.TryGetOrAddSystem<CharacterEffectSystem>();
             effectSystem.OnEffectBeforeDecorator += OnEffectBeforeExecute;
             effectSystem.OnEffectAfterDecorator += OnEffectAfterExecute;

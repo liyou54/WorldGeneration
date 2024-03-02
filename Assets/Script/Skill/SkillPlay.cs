@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Animancer;
-using Battle.Bullet;
-using Script.EntityManager;
+using Script.Skill.Bullet;
+using Script.Entity;
 using Script.Skill.RuntimeSkillData.SkillView;
 using Script.Skill.SkillLogic;
 using Script.Skill.TimelineTrack;

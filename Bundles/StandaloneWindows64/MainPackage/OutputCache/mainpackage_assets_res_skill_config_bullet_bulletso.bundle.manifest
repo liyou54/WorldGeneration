@@ -1,0 +1,28 @@
+ManifestFileVersion: 0
+CRC: 2376346928
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: c10d7117040f0f33fcca73181f6a71f4
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 20820bfaec7bba61c6d2c65b9318bccd
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: d18bbf37aab34bba9953044b04e98389, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: bb8c052acfbe20d4c82166985b4d5843, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: custom_script
+  ClassName: Script.Skill.Effect.EffectListSerializeData
+Assets:
+- "Assets/Res/Skill_Config/Bullet/BulletSo/\u5B50\u5F39.asset"
+- "Assets/Res/Skill_Config/Bullet/BulletSo/\u5B50\u5F39_AOE.asset"
+Dependencies:
+- D:/Project/unity/WorldGeneration/Bundles/StandaloneWindows64/MainPackage/OutputCache/mainpackage_share_assets_pixel
+  sprite effects pack_15 pixel sprite effects_material.bundle

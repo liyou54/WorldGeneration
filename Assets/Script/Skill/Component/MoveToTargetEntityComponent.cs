@@ -1,10 +1,10 @@
 using System;
-using Battle.Bullet.BulletRuntime;
-using Battle.Effect;
-using Script.EntityManager;
+using Script.Skill.Bullet.BulletRuntime;
+using Script.Skill.Effect;
+using Script.Entity;
 using UnityEngine;
 
-namespace Battle.Bullet
+namespace Script.Skill.Bullet
 {
     public enum MoveRotationType
     {

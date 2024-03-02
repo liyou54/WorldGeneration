@@ -1,7 +1,8 @@
+using Script.Entity;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Battle.Effect
+namespace Script.Skill.Effect
 {
 
     public class EffectRuntimeForceMove:EffectRuntimeBase

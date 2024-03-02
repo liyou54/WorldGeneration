@@ -1,0 +1,24 @@
+ManifestFileVersion: 0
+CRC: 398302260
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 067df492cce89ccfd91e2501cbd59d89
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: b30fce1a9ad74efb72be6c308c56e365
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Material/Rockets.mat
+- Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Material/Trail.mat
+Dependencies:
+- D:/Project/unity/WorldGeneration/Bundles/StandaloneWindows64/MainPackage/OutputCache/mainpackage_share_assets_pixel
+  sprite effects pack_15 pixel sprite effects_texture.bundle

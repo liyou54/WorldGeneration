@@ -1,7 +1,7 @@
 using Battle.Operation;
-using Script.EntityManager;
+using Script.Entity;
 
-namespace Battle.Bullet
+namespace Script.Skill.Bullet
 {
     public sealed class OperableComponentSystem : SystemBaseWithUpdateItem<OperationAbleComponent>
     {

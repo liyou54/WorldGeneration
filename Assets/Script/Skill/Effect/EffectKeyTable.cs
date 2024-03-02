@@ -1,4 +1,4 @@
-namespace Battle.Effect
+namespace Script.Skill.Effect
 {
     public enum EffectKeyTable
     {

@@ -2,15 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Battle.Bullet;
+using Script.Skill.Bullet;
 using Battle.Context;
-using Battle.Effect;
+using Script.Skill.Effect;
 using Battle.Operation;
 using Battle.Status;
 using Faction;
+using Script.Entity;
 using UnityEngine;
-using Script.EntityManager;
-using Script.EntityManager.Attribute;
+using Script.Entity.Attribute;
 
 
 [AddOnce]

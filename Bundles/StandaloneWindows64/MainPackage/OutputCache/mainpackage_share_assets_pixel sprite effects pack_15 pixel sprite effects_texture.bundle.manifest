@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 2784681298
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e237f0b8e1fa1351043f20c8b2052bbc
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 2612ac43db082a73502ee80f2eceb73f
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Texture/Rockets.png
+- Assets/Pixel Sprite Effects pack/15 Pixel Sprite effects/Texture/Trail.png
+Dependencies: []

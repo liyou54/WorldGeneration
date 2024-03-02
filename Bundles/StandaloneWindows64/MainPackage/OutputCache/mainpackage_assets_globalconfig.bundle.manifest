@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 3021162328
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 9207d6563493406c5053f98e022e099c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: f2ef8d51a242acb5a5bd06b09c69ce50
+HashAppended: 0
+ClassTypes:
+- Class: 114
+  Script: {fileID: 11500000, guid: 7ea86f1936464757bd88f4fdae065ca2, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/GlobalConfig/ui_asset.asset
+Dependencies: []

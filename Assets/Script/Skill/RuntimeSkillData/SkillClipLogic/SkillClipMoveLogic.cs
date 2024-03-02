@@ -1,6 +1,6 @@
 using System.Diagnostics;
-using Battle.Bullet;
-using Script.EntityManager;
+using Script.Skill.Bullet;
+using Script.Entity;
 using Script.Skill.BlackBoardParam;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -35,8 +35,8 @@ namespace Script.Skill.SkillLogic
             {
                 moveToTargetEntityComponent.TargetGo = MoveTarget.GetValue(context.SkillDataRuntime.BlackBoard).GetComponent<EntityBase>();
             }
-
-            var moveSys = global::EntityManager.Instance.TryGetOrAddSystem<MoveToTargetSystem>();
+            
+            var moveSys =EntityManager.Instance.TryGetOrAddSystem<MoveToTargetSystem>();
             moveSys.AddToUpdate(moveToTargetEntityComponent);
         }
 

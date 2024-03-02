@@ -1,0 +1,28 @@
+ManifestFileVersion: 0
+CRC: 2298899580
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: mainpackage_assets_res_skill_config_buff.bundle
+      Dependencies: {}
+    Info_1:
+      Name: mainpackage_assets_res_skill_config_bullet_bulletso.bundle
+      Dependencies:
+        Dependency_0: mainpackage_share_assets_pixel sprite effects pack_15 pixel
+          sprite effects_material.bundle
+    Info_2:
+      Name: mainpackage_assets_res_skill_config_bullet.bundle
+      Dependencies:
+        Dependency_0: mainpackage_share_assets_pixel sprite effects pack_15 pixel
+          sprite effects_material.bundle
+    Info_3:
+      Name: mainpackage_assets_globalconfig.bundle
+      Dependencies: {}
+    Info_4:
+      Name: mainpackage_share_assets_pixel sprite effects pack_15 pixel sprite effects_texture.bundle
+      Dependencies: {}
+    Info_5:
+      Name: mainpackage_share_assets_pixel sprite effects pack_15 pixel sprite effects_material.bundle
+      Dependencies:
+        Dependency_0: mainpackage_share_assets_pixel sprite effects pack_15 pixel
+          sprite effects_texture.bundle

@@ -1,5 +1,5 @@
-using Script.EntityManager;
-using Script.EntityManager.Attribute;
+using Script.Entity;
+using Script.Entity.Attribute;
 
 namespace Faction
 {

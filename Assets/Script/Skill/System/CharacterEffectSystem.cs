@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using Battle.Buffer;
-using Battle.Effect;
+using Script.Skill.Buff;
+using Script.Skill.Effect;
 using Battle.Operation;
-using Script.EntityManager;
-using SGoap;
+using Script.Entity;
 
-namespace Battle.Effect
+namespace Script.Skill.Effect
 {
     public delegate EffectRuntimeBase EffectDecorator(EffectRuntimeBase effect);
 

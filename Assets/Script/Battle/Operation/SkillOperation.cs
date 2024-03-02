@@ -1,7 +1,7 @@
-using Battle.Bullet;
+using Script.Skill.Bullet;
 using Battle.Context;
-using Battle.Effect;
-using Script.EntityManager;
+using Script.Skill.Effect;
+using Script.Entity;
 using Script.Skill;
 using UnityEngine;
 

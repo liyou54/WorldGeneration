@@ -1,0 +1,155 @@
+{
+    "FileVersion": "2.0.0",
+    "EnableAddressable": false,
+    "LocationToLower": false,
+    "IncludeAssetGUID": false,
+    "OutputNameStyle": 0,
+    "BuildPipeline": "BuiltinBuildPipeline",
+    "PackageName": "MainPackage",
+    "PackageVersion": "2024-03-01-1385",
+    "AssetList": [
+        {
+            "Address": "",
+            "AssetPath": "Assets/Res/Skill_Config/Buff/反伤.asset",
+            "AssetGUID": "",
+            "AssetTags": [
+                "Config"
+            ],
+            "BundleID": 0
+        },
+        {
+            "Address": "",
+            "AssetPath": "Assets/Res/Skill_Config/Buff/吸血.asset",
+            "AssetGUID": "",
+            "AssetTags": [
+                "Config"
+            ],
+            "BundleID": 0
+        },
+        {
+            "Address": "",
+            "AssetPath": "Assets/Res/Skill_Config/Bullet/BulletSo/子弹.asset",
+            "AssetGUID": "",
+            "AssetTags": [
+                "Config"
+            ],
+            "BundleID": 1
+        },
+        {
+            "Address": "",
+            "AssetPath": "Assets/Res/Skill_Config/Bullet/BulletSo/子弹_AOE.asset",
+            "AssetGUID": "",
+            "AssetTags": [
+                "Config"
+            ],
+            "BundleID": 1
+        },
+        {
+            "Address": "",
+            "AssetPath": "Assets/Res/Skill_Config/Bullet/Rockets.prefab",
+            "AssetGUID": "",
+            "AssetTags": [
+                "Prefab"
+            ],
+            "BundleID": 2
+        },
+        {
+            "Address": "",
+            "AssetPath": "Assets/Res/Skill_Config/Bullet/Trail.prefab",
+            "AssetGUID": "",
+            "AssetTags": [
+                "Prefab"
+            ],
+            "BundleID": 2
+        },
+        {
+            "Address": "",
+            "AssetPath": "Assets/GlobalConfig/ui_asset.asset",
+            "AssetGUID": "",
+            "AssetTags": [],
+            "BundleID": 3
+        }
+    ],
+    "BundleList": [
+        {
+            "BundleName": "mainpackage_assets_res_skill_config_buff.bundle",
+            "UnityCRC": 735654186,
+            "FileHash": "053c10117720d4a1893d8b8d474b9899",
+            "FileCRC": "2d1e6020",
+            "FileSize": 2448,
+            "Encrypted": false,
+            "Tags": [
+                "Config"
+            ],
+            "DependIDs": []
+        },
+        {
+            "BundleName": "mainpackage_assets_res_skill_config_bullet_bulletso.bundle",
+            "UnityCRC": 271046334,
+            "FileHash": "602e26fa927e2dfc3a2e5236e2ede0d7",
+            "FileCRC": "cc020f5a",
+            "FileSize": 2518,
+            "Encrypted": false,
+            "Tags": [
+                "Config"
+            ],
+            "DependIDs": [
+                5,
+                4
+            ]
+        },
+        {
+            "BundleName": "mainpackage_assets_res_skill_config_bullet.bundle",
+            "UnityCRC": 1463165994,
+            "FileHash": "a9465d9f8ee6325ace3cddfec9737b00",
+            "FileCRC": "fafbe39c",
+            "FileSize": 29133,
+            "Encrypted": false,
+            "Tags": [
+                "Prefab"
+            ],
+            "DependIDs": [
+                5,
+                4
+            ]
+        },
+        {
+            "BundleName": "mainpackage_assets_globalconfig.bundle",
+            "UnityCRC": 589422543,
+            "FileHash": "51573b1793b63f06d934a954dc58cf6f",
+            "FileCRC": "f0db264f",
+            "FileSize": 1878,
+            "Encrypted": false,
+            "Tags": [],
+            "DependIDs": []
+        },
+        {
+            "BundleName": "mainpackage_share_assets_pixel sprite effects pack_15 pixel sprite effects_texture.bundle",
+            "UnityCRC": 2784681298,
+            "FileHash": "c222837b9298a56044e7fc086569a8a9",
+            "FileCRC": "2d83c7d5",
+            "FileSize": 40161,
+            "Encrypted": false,
+            "Tags": [
+                "Config",
+                "Prefab"
+            ],
+            "DependIDs": []
+        },
+        {
+            "BundleName": "mainpackage_share_assets_pixel sprite effects pack_15 pixel sprite effects_material.bundle",
+            "UnityCRC": 398302260,
+            "FileHash": "f7b905fffdf3e56fa4ca6d5930f9dea6",
+            "FileCRC": "fccc36a3",
+            "FileSize": 19174,
+            "Encrypted": false,
+            "Tags": [
+                "Config",
+                "Prefab"
+            ],
+            "DependIDs": [
+                4
+            ]
+        }
+    ]
+}

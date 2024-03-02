@@ -1,10 +1,10 @@
-using Battle.Bullet.BulletRuntime;
-using Battle.Effect;
+using Script.Skill.Effect;
+using Script.Entity;
 using Script.GameLaunch;
-using Unity.VisualScripting;
+using Script.Skill.Bullet.BulletRuntime;
 using UnityEngine;
 
-namespace Battle.Bullet
+namespace Script.Skill.Bullet
 {
     public class BulletBuilder
     {
@@ -57,9 +57,6 @@ namespace Battle.Bullet
             return bulletEntity;
         }
 
-        public override void OnInit()
-        {
-            base.OnInit();
-        }
+
     }
 }

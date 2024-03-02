@@ -1,7 +1,7 @@
-using Battle.Bullet;
+using Script.Skill.Bullet;
 using Battle.Context;
 using Script.CharacterManager.CharacterEntity;
-using Script.EntityManager;
+using Script.Entity;
 using UnityEngine;
 
 namespace Battle.Operation

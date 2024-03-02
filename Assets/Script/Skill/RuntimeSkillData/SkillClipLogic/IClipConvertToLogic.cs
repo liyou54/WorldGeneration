@@ -1,5 +1,7 @@
 using Script.Skill.SkillLogic;
 
+
+
 public interface IClipConvertToLogic
 {
     public SkillClipExecute ConvertToLogic(float start, float end);

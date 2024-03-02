@@ -4,7 +4,7 @@ using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine;
 
-namespace Battle.Effect
+namespace Script.Skill.Effect
 {
     [HideReferenceObjectPicker]
     [HideLabel]

@@ -1,9 +1,10 @@
 using System;
 using Battle.Status;
+using Script.Entity;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Battle.Effect
+namespace Script.Skill.Effect
 {
     public enum ETargetEffect
     {

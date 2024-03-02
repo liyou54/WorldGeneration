@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Script.GameLaunch
@@ -24,10 +25,11 @@ namespace Script.GameLaunch
                 return instance;
             }
         }
-
-        public virtual void OnInit()
+        
+        
+        public virtual async UniTask OnInit()
         {
-
+            await UniTask.CompletedTask;
         }
     }
 }

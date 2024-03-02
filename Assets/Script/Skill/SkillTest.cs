@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Battle.Buffer;
+using Script.Skill.Buff;
 using Battle.Operation;
+using Script.Entity;
 using Script.Skill;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -10,9 +11,9 @@ using UnityEngine.Serialization;
 public class SkillTest : MonoBehaviour
 {
     public GameObject Character;
-    public List<BufferSO> CharacterBuff;
+    public List<BuffSO> CharacterBuff;
     public GameObject Target;
-    public List<BufferSO> TargetBuff;
+    public List<BuffSO> TargetBuff;
     public Vector3 TargetPosition;
     public SkillTimeline skillTimeline;
 

@@ -1,9 +1,9 @@
 using System;
-using Battle.Effect;
+using Script.Skill.Effect;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Battle.Buffer
+namespace Script.Skill.Buff
 {
     [HideLabel]
     [Enum2StaticClass(typeof(BuffDecoratorTypeSetting), typeof(BuffDecoratorType))]

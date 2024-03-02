@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using AreaManager;
 using Battle;
-using Battle.Bullet;
-using Battle.Effect;
+using Script.Skill.Bullet;
+using Script.Skill.Effect;
 using Faction;
 using Script.CharacterManager.CharacterEntity;
-using Script.EntityManager;
-using Script.EntityManager.Attribute;
+using Script.Entity;
+using Script.Entity.Attribute;
 using UnityEngine;
 
 [InitRequiredComp(
@@ -16,8 +15,7 @@ using UnityEngine;
     typeof(TargetAbleComponent),
     typeof(FactionMemberEntityComponentBase),
     typeof(OperationAbleComponent),
-    typeof(AreaEntityComponentBase),
-    typeof(BeEffectAbleComponent)
+    typeof(BuffComponent)
 )]
 public class CharacterEntity : EntityBase
 {

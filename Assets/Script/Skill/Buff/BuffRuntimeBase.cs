@@ -1,7 +1,7 @@
-using Battle.Effect;
-using Script.EntityManager;
+using Script.Skill.Effect;
+using Script.Entity;
 
-namespace Battle.Effect
+namespace Script.Skill.Effect
 {
     public abstract class BuffRuntimeBase : IAttachToSystem
     {
@@ -20,6 +20,10 @@ namespace Battle.Effect
         public EAttachToSystemRunStatus RunStatus { get; set; }
         public bool Valid => true;
 
+        /// <summary>
+        /// 此方法应该由BuffSystem调用 直接调用会导致其他buff没有触发
+        /// </summary>
+        /// <param name="trigger"></param>
         internal  abstract void Execute(EntityBase trigger);
         
 

@@ -1,7 +1,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Battle.Bullet
+namespace Script.Skill.Bullet
 {
     [CreateAssetMenu(fileName = "子弹", menuName = "战斗/子弹/飞行子弹", order = 0)]
     [LabelText("子弹配置")]

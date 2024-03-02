@@ -1,6 +1,5 @@
-using Script.EntityManager;
-using Script.EntityManager.Attribute;
-using Unity.VisualScripting;
+using Script.Entity;
+using Script.Entity.Attribute;
 using UnityEngine;
 
 namespace Script.CharacterManager.CharacterEntity
